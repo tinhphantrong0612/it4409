@@ -1,0 +1,26 @@
+{
+  "name": "it4409",
+  "version": "1.0.0",
+  "description": "Bài tập lớn Công nghệ Web và dịch vụ trực tuyến",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tinhphantrong0612/it4409.git"
+  },
+  "author": "Phan Trọng Tình, Bùi Hoàng Long, Lưu Hồng Đức",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tinhphantrong0612/it4409/issues"
+  },
+  "homepage": "https://github.com/tinhphantrong0612/it4409#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
