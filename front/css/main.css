@@ -17,3 +17,27 @@
 
 /* Import font-awesome */
 @import url('../content/font/fontawesome-free-6.0.0-beta3-web/css/all.min.css');
+
+@font-face {
+    font-family: NotoSans;
+    src: url('../content/font/NotoSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: NotoSans-Italic;
+    src: url('../content/font/NotoSans-Italic.ttf');
+}
+
+@font-face {
+    font-family: NotoSans-Bold;
+    src: url('../content/font/NotoSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: NotoSans-BoldItalic;
+    src: url('../content/font/NotoSans-BoldItalic.ttf');
+}
+
+body {
+    font-family: NotoSans;
+}
