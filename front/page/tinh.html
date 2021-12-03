@@ -86,6 +86,12 @@
     </div>
     <script>
         let r = document.querySelector(":root");
+        let hexObj = {
+            'a': 10,
+            'b': 11,
+            'c': 12,
+            'd': 13,
+        }
         document.getElementById('showModal').addEventListener('click', () => {
             document.getElementById('modal').classList.add('show');
         })
@@ -98,9 +104,19 @@
         document.getElementById('dark').addEventListener('click', () => {
             let oldColor = getComputedStyle(r).getPropertyValue('--x-body-color');
             let oldBackground = getComputedStyle(r).getPropertyValue('--x-body-bg');
+            let oldBorder = getComputedStyle(r).getPropertyValue('--x-border-color');
             r.style.setProperty('--x-body-bg', oldColor);
             r.style.setProperty('--x-body-color', oldBackground);
+            r.style.setProperty('--x-border-color', reverseColor(oldBorder));
         })
+        function reverseColor(color) {
+            let array = String(color).split('#')[1].split('');
+            array.forEach((e, i, a) => {
+                a[i] = (15 - Number(`0x${e}`)).toString(16);
+            })
+            array.unshift('#')
+            return array.join('');
+        }
     </script>
 </body>
 </html>
