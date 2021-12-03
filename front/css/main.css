@@ -44,7 +44,9 @@
 body {
     font-family: NotoSans;
     margin: 0px;
-    font-size: 13px;
+    font-size: var(--x-body-font-size);
+    font-weight: var(--x-body-font-weight);
+    line-height: var(--x-body-line-height);
     color: var(--x-body-color);
     background-color: var(--x-body-bg);
 }
