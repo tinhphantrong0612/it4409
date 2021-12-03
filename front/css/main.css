@@ -11,6 +11,7 @@
 @import url('./component/radio.css');
 @import url('./component/select.css');
 @import url('./component/spinner.css');
+@import url('./component/table.css');
 
 /* Import layout */
 @import url('./layout/grid.css');
