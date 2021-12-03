@@ -1,17 +1,19 @@
 .x-table {
+    --x-background-on-hover: #565e64;
     width: 100%;
     margin-bottom: 1rem;
-    color: #212529;
-    vertical-align: top;
-    border-color: #dee2e6;
-    caption-side: bottom;
-    border-collapse: collapse;
     color: inherit;
     box-sizing: border-box;
+    border-spacing: 0;
 }
 
-.x-table .x-thead {
+.x-table .x-thead tr {
     border-top: 2px solid var(--x-border-color);
+    border-bottom: 2px solid var(--x-border-color);
+}
+
+.x-table .x-thead tr > th {
+    padding: 0.5rem;
     border-bottom: 2px solid var(--x-border-color);
 }
 
@@ -20,14 +22,16 @@
 }
 
 .x-table .x-tbody tr > td {
+    padding: 0rem 0.5rem;
     border-left: 1px dotted var(--x-border-color);
     border-bottom: 1px solid var(--x-border-color);
 }
 
 .x-table .x-tbody tr > td:first-child {
-    border-left: none !important;
+    border-left: none;
 }
 
 .x-table .x-tbody tr:hover > td {
     opacity: 0.75;
+    background-color: var(--x-background-on-hover);
 }
