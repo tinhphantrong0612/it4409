@@ -1,3 +1,6 @@
+/* Import root */
+@import url('./common/root.css');
+
 /* Import component */
 @import url('./component/button.css');
 @import url('./component/checkbox.css');
@@ -42,4 +45,6 @@ body {
     font-family: NotoSans;
     margin: 0px;
     font-size: 13px;
+    color: var(--x-body-color);
+    background-color: var(--x-body-bg);
 }

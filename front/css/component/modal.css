@@ -30,9 +30,10 @@
     flex-direction: column;
     width: 100%;
     pointer-events: auto;
-    background-color: #fff;
+    background-color: var(--x-body-bg);
+    color: var(--x-body-color);
     background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: .3rem;
     outline: 0;
     box-sizing: border-box;
@@ -50,7 +51,7 @@
 }
 
 .x-modal-header .x-modal-title {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 

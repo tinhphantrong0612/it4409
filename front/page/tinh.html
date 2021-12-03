@@ -18,7 +18,7 @@
             <button class="x-btn x-btn-warning">Warning</button>
             <button class="x-btn x-btn-info">Info</button>
             <button class="x-btn x-btn-light">Light</button>
-            <button class="x-btn x-btn-dark">Dark</button>
+            <button class="x-btn x-btn-dark" id="dark">Dark</button>
             <button class="x-btn x-btn-link">Link</button>
         </div>
     </div>
@@ -30,7 +30,7 @@
                 <div class="x-modal-content">
                     <div class="x-modal-header">
                         <div class="x-modal-title">This is modal header</div>
-                        <button class="x-btn-close"></button>
+                        <button class="x-btn-close"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="x-modal-body">
                         <div class="x-row">
@@ -49,6 +49,7 @@
     </div>
     3. table  
     <script>
+        let r = document.querySelector(":root");
         document.getElementById('showModal').addEventListener('click', () => {
             document.getElementById('modal').classList.add('show');
         })
@@ -57,6 +58,12 @@
         })
         document.getElementById('modal').getElementsByClassName('x-btn-secondary')[0].addEventListener('click', () => {
             document.getElementById('modal').classList.remove('show');
+        })
+        document.getElementById('dark').addEventListener('click', () => {
+            let oldColor = getComputedStyle(r).getPropertyValue('--x-body-color');
+            let oldBackground = getComputedStyle(r).getPropertyValue('--x-body-bg');
+            r.style.setProperty('--x-body-bg', oldColor);
+            r.style.setProperty('--x-body-color', oldBackground);
         })
     </script>
 </body>

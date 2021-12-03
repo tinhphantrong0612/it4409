@@ -117,15 +117,22 @@
 }
 
 .x-btn-close {
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
     padding: 0.25rem;
-    color: black;
-    background: transparent url('../../content/close.svg') center/1rem auto no-repeat;
-    opacity: 0.5;
+    color: var(--x-body-color);
+    background: transparent;
     border: 0;
+    opacity: 0.5;
     box-sizing: content-box;
     border-radius: 0.25rem;
+}
+
+.x-btn-close > *{
+    height: 1.5rem;
+    width: 1.5rem;
+    font-size: 1.5rem;
+    padding: auto;
 }
 
 .x-btn-close:hover {
