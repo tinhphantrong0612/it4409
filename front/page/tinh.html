@@ -10,9 +10,54 @@
 <body>
     <div>
         <label for="" class="x-label">1. Button</label>
-        <button class="x-btn x-btn-primary">Primary</button>
+        <div class="x-row justify-content-evenly">
+            <button class="x-btn x-btn-primary">Primary</button>
+            <button class="x-btn x-btn-secondary">Secondary</button>
+            <button class="x-btn x-btn-success">Success</button>
+            <button class="x-btn x-btn-danger">Danger</button>
+            <button class="x-btn x-btn-warning">Warning</button>
+            <button class="x-btn x-btn-info">Info</button>
+            <button class="x-btn x-btn-light">Light</button>
+            <button class="x-btn x-btn-dark">Dark</button>
+            <button class="x-btn x-btn-link">Link</button>
+        </div>
     </div>
-    2. modal  
+    <div>
+        <label for="" class="x-label">2. Modal</label>
+        <button class="x-btn x-btn-primary" id="showModal">Show</button>
+        <div class="x-modal" id="modal">
+            <div class="x-modal-dialog">
+                <div class="x-modal-content">
+                    <div class="x-modal-header">
+                        <div class="x-modal-title">This is modal header</div>
+                        <button class="x-btn-close"></button>
+                    </div>
+                    <div class="x-modal-body">
+                        <div class="x-row">
+                            <div class="x-col x-col-4" style="background-color: red;">1</div>
+                            <div class="x-col x-col-4" style="background-color: green;">2</div>
+                            <div class="x-col x-col-4" style="background-color: blue;">3</div>
+                        </div>
+                    </div>
+                    <div class="x-modal-footer">
+                        <button class="x-btn x-btn-secondary">Close</button>
+                        <button class="x-btn x-btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     3. table  
+    <script>
+        document.getElementById('showModal').addEventListener('click', () => {
+            document.getElementById('modal').classList.add('show');
+        })
+        document.getElementById('modal').getElementsByClassName('x-btn-close')[0].addEventListener('click', () => {
+            document.getElementById('modal').classList.remove('show');
+        })
+        document.getElementById('modal').getElementsByClassName('x-btn-secondary')[0].addEventListener('click', () => {
+            document.getElementById('modal').classList.remove('show');
+        })
+    </script>
 </body>
 </html>
