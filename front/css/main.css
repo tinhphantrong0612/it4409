@@ -1,0 +1,19 @@
+/* Import component */
+@import url('./component/button.css');
+@import url('./component/checkbox.css');
+@import url('./component/icon.css');
+@import url('./component/input.css');
+@import url('./component/label.css');
+@import url('./component/modal.css');
+@import url('./component/radio.css');
+@import url('./component/select.css');
+@import url('./component/spinner.css');
+
+/* Import layout */
+@import url('./layout/grid.css');
+
+/* Import common */
+@import url('./common/common.css');
+
+/* Import font-awesome */
+@import url('../content/font/fontawesome-free-6.0.0-beta3-web/css/all.min.css');
