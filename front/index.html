@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,11 +8,47 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/main.css">
 </head>
+
 <body>
+
     Định nghĩa các component trong thư mục page<br>
     Các lớp css định nghĩa có tiền tố x
-    <div>
-        <label for="" class="x-label">1. This is a label</label>
+
+    <div style="margin: 1rem;">
+        <label for="" class="x-label">1. This is a ( x-label )</label>
     </div>
+
+    <div style="margin: 1rem;">
+        <button class="x-btn x-btn-danger">2. This is a ( x-btn-danger )</button>
+    </div>
+
+    <div style="margin: 1rem;">
+        <label class="x-label x-label-title"><input type="checkbox" class="x-checkbox x-checkbox-primary"
+                value="3. Is this true ?">
+            3.This is a ( x-checkbox-primary ) ( put inside x-label-title )
+        </label>
+    </div>
+
+    <form style="margin: 1rem;">
+        <label class="x-label x-label-title"> 4. ( x-label-title ) Input your name below:</label>
+        <input type="text" class="x-input x-input-primary" placeholder="( x-input-primary )..."></input>
+    </form>
+
+    <div style="margin: 1rem;">
+        <label class="x-label x-label-title"><input type="radio" class="x-radio x-radio-primary" name="radio-group">
+            5.1. This is a ( x-radio-primary ) 1 ( put inside x-label-title )
+        </label>
+        <label class="x-label x-label-title"><input type="radio" class="x-radio x-radio-primary" name="radio-group">
+            5.2. This is a ( x-radio-primary ) 2 ( put inside x-label-title )
+        </label>
+    </div>
+
+    <div style="margin: 1rem;">
+        <button class="x-btn x-btn-success">
+            <i class="fa fa-spinner fa-spin"></i> 7. Spinner Button
+        </button>
+    </div>
+
 </body>
+
 </html>

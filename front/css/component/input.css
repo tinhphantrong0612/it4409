@@ -1,0 +1,25 @@
+.x-input {
+    display: inline;
+    outline: none;
+    cursor: pointer;
+    padding: 0.32rem 0.36rem 0.16rem;
+    margin: 0.32rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 0.2rem solid transparent;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.x-input.x-input-primary {
+    min-width: 25%;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    box-shadow: -0.5px 2.5px #6c757d;
+}
+
+.x-input.x-input-primary:focus {
+    background-color: #e9ecef;
+}
