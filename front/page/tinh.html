@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>Định nghĩa các component</title>
     <link rel="stylesheet" href="../css/main.css">
 </head>
+
 <body>
     <div>
         <label for="" class="x-label">1. Button</label>
@@ -23,7 +25,14 @@
         </div>
     </div>
     <div>
-        <label for="" class="x-label">2. Modal</label>
+        <label for="" class="x-label">2. Spinner</label>
+        <button class="x-btn x-btn-primary" id="showSpinnerButton">Show Spinner</button>
+        <div class="x-spinner" id="spinner">
+            <div class="x-spinner-page-loading"></div>
+        </div>
+    </div>
+    <div>
+        <label for="" class="x-label">3. Modal</label>
         <button class="x-btn x-btn-primary" id="showModal">Show</button>
         <div class="x-modal" id="modal">
             <div class="x-modal-dialog">
@@ -47,7 +56,41 @@
             </div>
         </div>
     </div>
-    <label for="" class="x-label">3. Table</label>
+    <div>
+        <label for="" class="x-label">4. Radio button</label>
+        <div>
+            <label for="gender-0" class="x-label x-label-radio">
+                <input class="x-radio" type="radio" name="gender" id="gender-0">
+                Nam
+            </label>
+            <label for="gender-1" class="x-label x-label-radio">
+                <input type="radio" class="x-radio" name="gender" id="gender-1">
+                Nữ
+            </label>
+            <label for="gender-2" class="x-label x-label-radio">
+                <input type="radio" class="x-radio" name="gender" id="gender-2">
+                Khác
+            </label>
+        </div>
+    </div>
+    <div>
+        <label for="" class="x-label">5. Checkbox</label>
+        <div>
+            <div class="x-checkbox-container">
+                <input type="checkbox" name="order" id="first" class="x-checkbox">
+                <label for="first" class="x-label x-label-checkbox">First</label>
+            </div>
+            <div class="x-checkbox-container">
+                <input type="checkbox" name="order" id="second" class="x-checkbox">
+                <label for="first" class="x-label x-label-checkbox">Second</label>
+            </div>
+            <div class="x-checkbox-container">
+                <input type="checkbox" name="order" id="third" class="x-checkbox">
+                <label for="first" class="x-label x-label-checkbox">Third</label>
+            </div>
+        </div>
+    </div>
+    <label for="" class="x-label">4. Table</label>
     <div class="x-table-container" style="width: 80%; margin: auto;">
         <table class="x-table">
             <thead class="x-thead">
@@ -86,12 +129,6 @@
     </div>
     <script>
         let r = document.querySelector(":root");
-        let hexObj = {
-            'a': 10,
-            'b': 11,
-            'c': 12,
-            'd': 13,
-        }
         document.getElementById('showModal').addEventListener('click', () => {
             document.getElementById('modal').classList.add('show');
         })
@@ -109,6 +146,10 @@
             r.style.setProperty('--x-body-color', oldBackground);
             r.style.setProperty('--x-border-color', reverseColor(oldBorder));
         })
+
+        document.getElementById('showSpinnerButton').addEventListener('click', () => {
+            document.getElementById('spinner').style.display = 'block';
+        })
         function reverseColor(color) {
             let array = String(color).split('#')[1].split('');
             array.forEach((e, i, a) => {
@@ -119,4 +160,5 @@
         }
     </script>
 </body>
+
 </html>
