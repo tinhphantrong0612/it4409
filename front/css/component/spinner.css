@@ -10,7 +10,7 @@
 }
 
 .x-spinner .x-spinner-page-loading {
-	color: #ffffff;
+	color: var(--x-body-color);
 	font-size: 20px;
 	top: 50%;
 	left: 50%;
