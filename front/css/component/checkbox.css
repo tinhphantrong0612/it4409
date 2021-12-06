@@ -1,0 +1,24 @@
+.x-checkbox {
+    display: inline-block;
+	vertical-align: middle;
+	border: 0.01rem blueviolet;
+	padding: 0.3rem;
+	border-radius: 0.15rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+.x-checkbox.x-checkbox-primary {
+	color: #fff;	
+}
+
+.x-checkbox.x-checkbox-primary:hover {
+	background-color: pink;
+    border-color: grey;
+}
+
+.x-checkbox.x-checkbox-primary:checked {
+	background-color: #198754;
+    border-color: grey;
+}
