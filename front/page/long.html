@@ -5,11 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/main.css">
-    <title>Document</title>
+    <title>Test component</title>
 </head>
 <body>
-    1. checkbox
-    2. icon 
-    3. input 
+    <div>
+        <label for="" class="x-label">1. Select</label>
+        <div class="x-row justify-content-evenly">
+            <select class="x-select x-size-lg"> 
+                <option selected disabled>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select> 
+            <select class="x-select x-size-sm"> 
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select> 
+            <select class="x-select x-size-sm" disabled> 
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select> 
+        </div>
+    </div>
+    <div> 
+        <label for="" class="x-label">2. Icon</label>
+        <div class="x-row justify-content-evenly">
+            <a href="#"><i class="fa fa-home fa-fw"></i>&nbsp; Home</a>
+            <a href="#"><i class="fa fa-book fa-fw"></i>&nbsp; Library</a>
+            <a href="#"><i class="fa fa-pencil fa-fw"></i>&nbsp; Applications</a>
+            <a href="#"><i class="fa fa-cog fa-fw"></i>&nbsp; Settings</a>
+        </div>
+    </div>
 </body>
 </html>
