@@ -10,9 +10,23 @@
     width: 1rem;
     height: 1rem;
     background-size: 1rem 1rem;
+    opacity: 0.5;
+    filter:var(--x-body-color);
 }
 
-.x-icon-size-050 {
+.x-icon:hover {
+    opacity: 0.75;
+}
+
+.x-icon:focus {
+    opacity: 1;
+}
+
+.x-icon:disabled {
+    opacity: 0.25;
+}
+
+.x-icon-size-075 {
     width: 0.75rem;
     height: 0.75rem;
     background-size: 0.75rem 0.75rem;
@@ -60,4 +74,8 @@
 
 .x-icon.x-icon-close {
     background-image: url("../../content/icon/close.svg");
+}
+
+.x-icon.x-icon-search{
+    background-image: url("../../content/icon/search.svg");
 }

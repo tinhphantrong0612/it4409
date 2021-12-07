@@ -19,9 +19,6 @@
 /* Import common */
 @import url('./common/common.css');
 
-/* Import font-awesome */
-@import url('../content/font/fontawesome-free-6.0.0-beta3-web/css/all.min.css');
-
 @font-face {
     font-family: NotoSans;
     src: url('../content/font/NotoSans-Regular.ttf');

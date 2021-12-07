@@ -1,19 +1,8 @@
 .x-select {
-    box-shadow: 0.24rem 0.24rem 1rem;
     margin: 0.32rem;
-    border-radius: 5px;
-    display: inline-block;
-    position: relative;
-}
-
-.x-select.x-size-lg {
-    padding: 0.32rem 0.36rem 0.32rem;
-    font-size: 1.2rem; 
-    border: 0.2rem solid transparent;
-}
-
-.x-select.x-size-sm {
-    padding: 0.08rem 0.1rem 0.08rem;
-    font-size: 0.75rem; 
-    border: 0.1rem solid transparent;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: none;
+    background-color: var(--x-body-color);
+    color: var(--x-body-bg);
 }
