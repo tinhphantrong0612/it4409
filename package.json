@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/tinhphantrong0612/it4409#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-mysql-session": "^2.1.7",
+    "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
