@@ -6,3 +6,5 @@ const config = {
         database: 'storagemanagement'
     }
 }
+
+module.exports = config;

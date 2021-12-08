@@ -1,4 +1,6 @@
+const express = require('express');
 const session = require('express-session');
+const path = require('path');
 // const sessionStore = require('./back+db/models/sessionConnection')
 
 /**
@@ -20,5 +22,19 @@ module.exports = function (app) {
             maxAge: 86400000 // Thời hạn của cookie
         }
         // store: sessionStore // Sử dụng database
-    }));
+    }))
+        /**
+         * urlencoded
+         */
+        .use(express.urlencoded({ extended: true }))
+        /**
+         * json body
+         */
+        .use(express.json())
+        /**
+         * Serve css, content, js
+         */
+        .use('/css', express.static('front/css'))
+        .use('/content', express.static('front/content'))
+        .use('/js', express.static('front/js'));
 }

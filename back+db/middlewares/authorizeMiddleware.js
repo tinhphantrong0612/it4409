@@ -7,7 +7,7 @@
 
 module.exports = (req, res, next) => {
     // Unauthorized, redirect to login
-    if (!req.session.userId) {
-        res.redirect('/login');
+    if (!req.session.Id) {
+        res.redirect('/authorize');
     } else next();
 }

@@ -3,7 +3,7 @@ const config = require('../../config');
 
 class User {
     static findOneByUsername(username) {
-        let query = `SELECT * FROM ${config.database.database}.user WHERE username = ${username}`;
+        let query = `SELECT * FROM ${config.database.database}.user WHERE username = '${username}'`;
         return new Promise((resolve, reject) => {
             connection.query(query, (error, result) => {
                 if (error) {
@@ -31,20 +31,22 @@ class User {
     static async login(username, password) {
         try {
             let user = await User.findOneByUsername(username);
-            if (!user || user.password !== password) {
+            if (!user || user.Password !== password) {
                 return {
-                    success: false,
+                    status: 400,
                     error: "Tên đăng nhập hoặc mật khẩu không chính xác"
                 }
             } else {
                 return {
-                    success: true
+                    status: 200,
+                    user
                 }
             }
         } catch (error) {
+            console.log(error);
             return {
-                success: false,
-                error: error
+                success: 500,
+                error: "Internal Server Error"
             }
         }
     }
@@ -53,11 +55,11 @@ class User {
         try {
             let result = await User.addUser(username, password, displayName, idrole);
             return {
-                success: true
+                status: 200
             }
         } catch (error) {
             return {
-                success: false,
+                success: 400,
                 error: error
             }
         }
