@@ -106,23 +106,12 @@ CREATE TABLE `storagemanagement`.`importinfo` (
 );
 
 -- -----------------------------------------------------
--- Table `storagemanagement`.`userrole`
--- -----------------------------------------------------
-CREATE TABLE `storagemanagement`.`userrole` (
-  `DisplayName` VARCHAR(50) NOT NULL,
-  `Id` INT(11) NOT NULL,
-  PRIMARY KEY (`Id`)
-);
-
--- -----------------------------------------------------
 -- Table `storagemanagement`.`user`
 -- -----------------------------------------------------
 CREATE TABLE `storagemanagement`.`user` (
   `Id` INT(11) NOT NULL AUTO_INCREMENT,
   `DisplayName` VARCHAR(50) NOT NULL,
   `Username` VARCHAR(50) NOT NULL,
-  `Password` VARCHAR(200) NOT NULL,
-  `userrole_Id` INT(11) NOT NULL,
-  PRIMARY KEY (`Id`),
-  FOREIGN KEY (`userrole_Id`) REFERENCES `storagemanagement`.`userrole` (`Id`)
+  `Password` VARCHAR(200) NOT NULL
+  PRIMARY KEY (`Id`)
 );
