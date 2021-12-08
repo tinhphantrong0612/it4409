@@ -112,6 +112,6 @@ CREATE TABLE `storagemanagement`.`user` (
   `Id` INT(11) NOT NULL AUTO_INCREMENT,
   `DisplayName` VARCHAR(50) NOT NULL,
   `Username` VARCHAR(50) NOT NULL,
-  `Password` VARCHAR(200) NOT NULL
+  `Password` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`Id`)
 );
