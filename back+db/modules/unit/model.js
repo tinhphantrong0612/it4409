@@ -30,7 +30,7 @@ class Unit {
         return await connection.queryDB(query);
     }
 
-    static async delete(id, name) {
+    static async delete(id) {
         let query = `DELETE FROM ${config.database.database}.unit WHERE Id=${id}`;
         return await connection.queryDB(query);
     }

@@ -7,3 +7,7 @@ Dùng live server add-on để sửa front-end3
 - Long: customer  
 - Duc: supplier  
 - Tinh: object  
+
+# Truoc khi chay:
+- Khoi tao database  
+- Chay `npm install` de cai thu vien  
