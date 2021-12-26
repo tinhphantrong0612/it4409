@@ -1,11 +1,11 @@
 const path = require('path');
-const User = require('../models/user/model');
+const User = require('./model');
 
 module.exports = {
     get: async (req, res) => {
         if (req.session.Id) res.redirect('/');
         else {
-            res.sendFile(path.resolve(__dirname, '../../front/login.html'));
+            res.sendFile(path.resolve(__dirname, '../../../front/login.html'));
         }
     },
     login: async (req, res) => {

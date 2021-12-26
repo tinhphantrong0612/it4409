@@ -19,12 +19,13 @@ module.exports = function (app) {
      * Mọi hoạt động yêu cầu đăng nhập
      * Nếu đã đăng nhập mà truy cập vào trang đăng nhập, sẽ được chuyển tới trang chủ
      */
-    app.use('/authorize', authorizeRouter)
+    app
+    .use('/authorize', authorizeRouter)
         /**
          * Kiểm tra đăng nhập trước khi vào các đường dẫn khác
          * Chuyển hướng về /authorize nếu chưa đăng nhập
          */
-        .use(authorizeMiddleware)
+        // .use(authorizeMiddleware)
         /**
          * Serve static thư mục front
          */

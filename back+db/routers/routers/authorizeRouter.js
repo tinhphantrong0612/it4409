@@ -1,5 +1,5 @@
 const authorizeRouter = require('express').Router();
-const authorizeController = require('../../controllers/authorizeController');
+const authorizeController = require('../../modules/user/controller');
 
 authorizeRouter .get('/', authorizeController.get)
                 .post('/login', authorizeController.login)

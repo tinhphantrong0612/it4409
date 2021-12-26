@@ -7,30 +7,14 @@ class User {
     Password;
     DisplayName;
 
-    static findOneByUsername(username) {
+    static async findOneByUsername(username) {
         let query = `SELECT * FROM ${config.database.database}.user WHERE username = '${username}'`;
-        return new Promise((resolve, reject) => {
-            connection.query(query, (error, result) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(result[0]);
-                }
-            })
-        })
+        return await connection.queryDB(query);
     }
 
-    static addUser(username, password, displayName) {
+    static async addUser(username, password, displayName) {
         let query = `INSERT INTO ${config.database.database}.user (username, password, displayName) VALUES ("${username}", "${password}", "${displayName}")`;
-        return new Promise((resolve, reject) => {
-            connection.query(query, (error, result) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve("Success");
-                }
-            })
-        })
+        return await connection.queryDB(query);
     }
 
     static async login(username, password) {

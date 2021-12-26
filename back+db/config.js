@@ -3,7 +3,7 @@ const config = {
         host: 'localhost',
         port: 3306,
         user: 'root',
-        database: 'storagemanagement'
+        database: 'it4409'
     }
 }
 
