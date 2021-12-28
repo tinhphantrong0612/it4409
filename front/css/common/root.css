@@ -9,7 +9,7 @@
     --x-green: #198754;
     --x-teal: #20c997;
     --x-cyan: #0dcaf0;
-    --x-white: #fff;
+    --x-white: var(--x-gray-200);
     --x-gray: #6c757d;
     --x-gray-dark: #343a40;
     --x-gray-100: #f8f9fa;
@@ -47,7 +47,7 @@
     --x-body-font-size: 1rem;
     --x-body-font-weight: 400;
     --x-body-line-height: 1.5;
-    --x-body-color: #dedad6;
-    --x-body-bg: #212529;
-    --x-border-color: #dee2e6;
+    --x-body-color: var(--x-gray-900);
+    --x-body-bg: var(--x-gray-200);
+    --x-border-color: var(--x-gray-500);
 }

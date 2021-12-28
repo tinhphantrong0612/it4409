@@ -1,4 +1,4 @@
-.x-icon {
+.xi {
     vertical-align: middle;
     display: inline-flex;
     padding: 0.25rem;
@@ -7,75 +7,69 @@
     background: transparent;
     background-repeat: no-repeat;
     background-position: center;
+    opacity: 0.5;
+    filter: var(--x-body-color);
     width: 1rem;
     height: 1rem;
     background-size: 1rem 1rem;
-    opacity: 0.5;
-    filter:var(--x-body-color);
 }
 
-.x-icon:hover {
+.xi:hover {
     opacity: 0.75;
 }
 
-.x-icon:focus {
+.xi:active {
     opacity: 1;
 }
 
-.x-icon:disabled {
+.xi:disabled {
     opacity: 0.25;
 }
 
-.x-icon-size-075 {
-    width: 0.75rem;
-    height: 0.75rem;
-    background-size: 0.75rem 0.75rem;
+.xi-size-075 {
+    zoom: .75
 }
 
-.x-icon-size-125 {
-    width: 1.25rem;
-    height: 1.25rem;
-    background-size: 1.25rem 1.25rem;
+.xi-size-125 {
+    zoom: 1.25;
 }
 
-.x-icon-size-150 {
-    width: 1.5rem;
-    height: 1.5rem;
-    background-size: 1.5rem 1.5rem;
+.xi-size-150 {
+    zoom: 1.5;
 }
 
-.x-icon-size-x2 {
-    width: 2rem;
-    height: 2rem;
-    background-size: 2rem 2rem;
+.xi-size-x2 {
+    zoom: 2;
 }
 
-.x-icon-size-x3 {
-    width: 3rem;
-    height: 3rem;
-    background-size: 3rem 3rem;
+.xi-size-x3 {
+    zoom: 3;
 }
 
-.x-icon-size-x4 {
-    width: 4rem;
-    height: 4rem;
-    background-size: 4rem 4rem;
+.xi-size-x4 {
+    zoom: 4;
 }
 
-.x-icon-size-x5 {
-    width: 5rem;
-    height: 5rem;
-    background-size: 5rem 5rem;
+.xi-size-x5 {
+    zoom: 5;
 }
 
 .x-filter-green {
     filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
 }
 
-.x-icon.x-icon-close {
+.xi.xi-close {
     background-image: url("../../content/icon/close.svg");
 }
 
-.x-icon.x-icon-search{
+.xi.xi-search {
     background-image: url("../../content/icon/search.svg");
+}
+
+.xi.xi-dropdown {
+    background-image: url('../../content/icon/chevron-down.svg');
+}
+
+.xi.xi-reload {
+    background-image: url('../../content/icon/arrow-clockwise.svg');
 }

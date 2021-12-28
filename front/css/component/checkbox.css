@@ -10,7 +10,7 @@
 }
 
 /* .x-checkbox.x-checkbox-primary {
-	color: #fff;	
+	color: var(--x-body-bg);	
 }
 
 .x-checkbox.x-checkbox-primary:hover {

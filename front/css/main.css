@@ -15,9 +15,23 @@
 
 /* Import layout */
 @import url('./layout/grid.css');
+@import url('./layout/content.css');
+@import url('./layout/header.css');
+@import url('./layout/navbar.css');
 
 /* Import common */
 @import url('./common/common.css');
+
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: var(--x-body-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--x-secondary);
+}
+
+
 
 @font-face {
     font-family: NotoSans;

@@ -45,7 +45,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1rem;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--x-border-color);
     border-top-left-radius: calc(.3rem - 1px);
     border-top-right-radius: calc(.3rem - 1px);
 }
@@ -64,6 +64,9 @@
     position: relative;
     flex: 1 1 auto;
     padding: 1rem;
+    max-height: calc(100vh - 190px);
+    overflow: auto;
+    box-sizing: border-box;
 }
 
 .x-modal-footer {
@@ -73,9 +76,10 @@
     align-items: center;
     justify-content: flex-end;
     padding: .75rem;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--x-border-color);
     border-bottom-right-radius: calc(.3rem - 1px);
     border-bottom-left-radius: calc(.3rem - 1px);
+    box-sizing: border-box;
 }
 
 .x-modal-footer > * {

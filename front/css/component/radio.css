@@ -14,7 +14,7 @@
 }
 
 .x-radio.x-radio-primary:hover {
-	color: #fff;
+	color: var(--x-body-bg);
 	background-color: pink;
     border-color: grey;
 }

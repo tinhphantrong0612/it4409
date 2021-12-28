@@ -7,6 +7,7 @@
     box-sizing: border-box;
     font-weight: 400;
     line-height: 1.2;
+    height: 36px;
 }
 
 .x-btn.x-btn-primary {
@@ -16,7 +17,7 @@
 }
 
 .x-btn.x-btn-primary:hover {
-    color: #fff;
+    color: var(--x-body-bg);
     background-color: #0b5ed7;
     border-color: #0a58ca;
 }
@@ -113,4 +114,11 @@
 
 .x-btn.x-btn-link:hover {
     color: #0a58ca;
+}
+
+.x-btn-icon {
+    width: 32px;
+    height: 32px;
+    max-width: 32px;
+    min-height: 32px;
 }
