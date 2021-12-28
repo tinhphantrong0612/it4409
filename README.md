@@ -24,3 +24,5 @@ Bài tập lớn Công nghệ Web và dịch vụ trực tuyến
 # Chay Backend Server
 - `npm run start`
 - Dia chi: [http://localhost:3000]
+
+# Can chay song song hai server nay
