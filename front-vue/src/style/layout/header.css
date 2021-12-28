@@ -1,0 +1,23 @@
+.x-header {
+    background-color: var(--x-body-bg);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--x-secondary);
+    color: var(--x-body-color);
+}
+
+.x-header .x-app-name {
+    font-size: 30px;
+}
+
+.x-header .x-user {
+    font-size: 18px
+}
+
+.x-header-control {
+    display: flex;
+}

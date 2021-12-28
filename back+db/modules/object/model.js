@@ -18,7 +18,7 @@ class IObject {
     }
 
     static async getAll() {
-        let query = `SELECT * FROM ${config.database.database}.object`;
+        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM ${config.database.database}.object INNER JOIN ${config.database.database}.unit ON ${config.database.database}.object.unitId = ${config.database.database}.unit.Id`;
         return await connection.queryDB(query);
     }
 

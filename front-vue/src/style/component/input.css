@@ -1,0 +1,46 @@
+.x-input {
+    outline: none;
+    padding: 0.32rem;
+    margin: 0.32rem 0rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 0.1rem solid var(--x-secondary);
+    font-weight: 500;
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+
+.x-input:focus {
+    border: 0.1rem solid var(--x-primary);
+}
+
+.x-input-valid {
+    border: 0.1rem solid var(--x-success);
+}
+
+.x-input-error {
+    border: 0.1rem solid var(--x-danger);
+}
+
+.x-input-searchbox {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    width: fit-content;
+    align-items: center;
+}
+
+.x-input-search {
+    padding-right: 2rem;
+}
+
+.x-input-search::placeholder {
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+.x-input-search-icon {
+    position: absolute;
+    right: 0.75rem;
+    cursor: pointer;
+}

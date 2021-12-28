@@ -1,0 +1,25 @@
+.x-radio {
+    display: inline-block;
+	vertical-align: middle;
+	border: 0.01rem solid var(--x-gray-500);
+	padding: 0.3rem;
+	border-radius: 0.15rem;
+    width: 1rem;
+    height: 1rem;
+    margin: auto 0.5rem;
+}
+/* 
+.x-radio.x-radio-primary {
+    border-color: var(--x-primary);
+}
+
+.x-radio.x-radio-primary:hover {
+	color: var(--x-body-bg);
+	background-color: pink;
+    border-color: grey;
+}
+
+.x-radio.x-radio-primary:checked {
+    color: #198754;
+	background:#198754;
+} */

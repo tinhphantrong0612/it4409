@@ -1,8 +1,5 @@
 # it4409
 Bài tập lớn Công nghệ Web và dịch vụ trực tuyến
-# Start server
-npm run start
-Dùng live server add-on để sửa front-end3
 # Writing basic api (model, controller, router, example: Unit, test api with postman)
 - Long: customer  
 - Duc: supplier  
@@ -11,3 +8,19 @@ Dùng live server add-on để sửa front-end3
 # Truoc khi chay:
 - Khoi tao database  
 - Chay `npm install` de cai thu vien  
+
+# Moi lan pull ve, chay `npm install` de keo cac package can thiet
+- Chu y: Vi co hai thu muc node_modules rieng, nen can chay `npm install` o hai thu muc
+  - it4409
+  - it4409/front-vue
+
+# Cai Vue-CLI
+- `npm install -g @vue/cli`
+
+# Chay Vue Developement server  
+- `yarn serve`
+- Dia chi: [http://localhost:8080]  
+
+# Chay Backend Server
+- `npm run start`
+- Dia chi: [http://localhost:3000]

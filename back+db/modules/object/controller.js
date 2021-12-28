@@ -1,5 +1,7 @@
 const Unit = require('../unit/model');
 const IObject = require('./model');
+const IImportInfo = require('../importInfo/model');
+const IEmportInfo = require('../exportInfo/model');
 
 module.exports = {
     getAll: async (req, res) => {
@@ -13,12 +15,17 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const result = await IObject.getById(req.params.id);
+            const [result, importInfo, exportInfo] = await Promise.all([IObject.getById(req.params.id), IImportInfo.getTotalObjectAmoutAndPrice(req.params.id), IEmportInfo.getTotalObjectAmoutAndPrice(req.params.id)]);           
             if (result.length == 0) {
-                console.log("Get IObject: No content")
-                res.status(204).send(result);
+                console.log("Get IObject: No content");
+                res.status(204).send(0);
             } else {
-                res.status(200).send(result);
+                let trueResult = result[0];
+                trueResult.importAmount = importInfo.amount;
+                trueResult.exportAmount = exportInfo.amount;
+                trueResult.importPrice = importInfo.importPrice;
+                trueResult.exportPrice = exportInfo.exportPrice;
+                res.status(200).send(trueResult);
             }
         } catch (error) {
             console.log(error);

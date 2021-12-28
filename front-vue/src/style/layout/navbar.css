@@ -1,0 +1,33 @@
+.x-navbar {
+    background-color: var(--x-body-bg);
+    height: calc(100vh - 48px);
+    width: 225px;
+    float: left;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.x-navbar-item {
+    height: 42px;
+    line-height: 42px;
+    padding: 0px 16px;
+    margin: 4px 0px;
+    cursor: pointer;
+    box-sizing: border-box;
+    color: var(--x-body-color);
+    display: block;
+}
+
+.router-link-exact-active.router-link-active {
+    background-color: var(--x-primary);
+    color: var(--x-body-bg);
+}
+
+.x-navbar-item:hover {
+    background-color: var(--x-secondary);
+}
+
+.x-navbar-item.x-selected {
+    background-color: var(--x-primary);
+    color: var(--x-body-bg);
+}

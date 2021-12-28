@@ -5,200 +5,245 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mặt hàng</title>
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body>
-    <div>
-        <label for="" class="x-label">1. Button</label>
-        <div class="x-row justify-content-evenly">
-            <button class="x-btn x-btn-primary">Primary</button>
-            <button class="x-btn x-btn-secondary">Secondary</button>
-            <button class="x-btn x-btn-success">Success</button>
-            <button class="x-btn x-btn-danger">Danger</button>
-            <button class="x-btn x-btn-warning">Warning</button>
-            <button class="x-btn x-btn-info">Info</button>
-            <button class="x-btn x-btn-light">Light</button>
-            <button class="x-btn x-btn-dark" id="dark">Dark</button>
-            <button class="x-btn x-btn-link">Link</button>
+    <div class="x-header">
+        <div class="x-app-name">Quản lý kho hàng</div>
+        <div class="x-header-control">
+            <div class="x-user">Phan Trọng Tình</div>
+            <div class="x-func xi xi-dropdown xi-size-125"></div>
         </div>
     </div>
-    <div>
-        <label for="" class="x-label">2. Spinner</label>
-        <button class="x-btn x-btn-primary" id="showSpinnerButton">Show Spinner</button>
-        <div class="x-spinner" id="spinner">
-            <div class="x-spinner-page-loading"></div>
+    <div class="x-navbar">
+        <div class="x-navbar-item x-selected">Mặt hàng</div>
+        <div class="x-navbar-item">Khách hàng</div>
+        <div class="x-navbar-item">Nhà Cung cấp</div>
+        <div class="x-navbar-item">Nhập hàng</div>
+        <div class="x-navbar-item">Xuất hàng</div>
+        <div class="x-navbar-item">Đơn vị</div>
+    </div>
+    <div class="x-content">
+        <div class="x-headbar">
+            <div class="x-headbar-title">Danh sách mặt hàng</div>
+            <button class="x-btn x-btn-primary" id="btnAdd">Thêm mặt hàng</button>
+        </div>
+        <div class="x-toolbar">
+            <div class="x-searchgroup">
+                <div class="x-input-searchbox">
+                    <input type="search" class="x-input x-input-search" placeholder="Nhập tên hàng hóa">
+                    <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+                </div>
+            </div>
+            <div class="x-btngroup">
+                <button class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"></button>
+            </div>
+        </div>
+        <div class="x-table-container">
+            <table class="x-table">
+                <thead>
+                    <tr>
+                        <th>Tên mặt hàng</th>
+                        <th>Đơn vị</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                    <tr>
+                        <td>SỮA ÔNG THỌ</td>
+                        <td>LỌ</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div>
-        <label for="" class="x-label">3. Modal</label>
-        <button class="x-btn x-btn-primary" id="showModal">Show</button>
-        <div class="x-modal" id="modal">
-            <div class="x-modal-dialog">
-                <div class="x-modal-content">
-                    <div class="x-modal-header">
-                        <div class="x-modal-title">This is modal header</div>
-                        <button class="xi xi-close"></button>
-                    </div>
-                    <div class="x-modal-body">
-                        <div class="x-row">
-                            <div class="x-col x-col-4" style="background-color: red;">1</div>
-                            <div class="x-col x-col-4" style="background-color: green;">2</div>
-                            <div class="x-col x-col-4" style="background-color: blue;">3</div>
+    <div class="x-modal" id="modalAdd">
+        <div class="x-modal-dialog">
+            <div class="x-modal-content">
+                <div class="x-modal-header">
+                    <div class="x-modal-title">Thêm mặt hàng</div>
+                    <button class="xi xi-close" id="btnHeaderClose"></button>
+                </div>
+                <div class="x-modal-body">
+                    <div class="x-col x-col-10 m-auto">
+                        <div class="x-row justify-content-center">
+                            <div class="x-col x-col-12">
+                                <label for="inpName" class="x-label">Tên mặt hàng</label>
+                                <input type="text" class="x-input x-input-100" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="x-row justify-content-center">
+                            <div class="x-col x-col-12">
+                                <label for="inpName" class="x-label">Đơn vị</label>
+                                <select type="text" class="x-input x-input-100">
+                                    <option value="">LỌ</option>
+                                    <option value="">CHAI</option>
+                                    <option value="">KG</option>
+                                    <option value="">BAO</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="x-modal-footer">
-                        <button class="x-btn x-btn-secondary">Close</button>
-                        <button class="x-btn x-btn-primary">Save</button>
-                    </div>
+                </div>
+                <div class="x-modal-footer">
+                    <button class="x-btn x-btn-secondary" id="btnFooterClose">Close</button>
+                    <button class="x-btn x-btn-primary">Save</button>
                 </div>
             </div>
         </div>
     </div>
-    <div>
-        <label for="" class="x-label">4. Radio button</label>
-        <div>
-            <label for="gender-0" class="x-label x-label-radio">
-                <input class="x-radio" type="radio" name="gender" id="gender-0">
-                Nam
-            </label>
-            <label for="gender-1" class="x-label x-label-radio">
-                <input type="radio" class="x-radio" name="gender" id="gender-1">
-                Nữ
-            </label>
-            <label for="gender-2" class="x-label x-label-radio">
-                <input type="radio" class="x-radio" name="gender" id="gender-2">
-                Khác
-            </label>
-        </div>
-    </div>
-    <div>
-        <label for="" class="x-label">5. Checkbox</label>
-        <div>
-            <div class="x-checkbox-container">
-                <input type="checkbox" name="order" id="first" class="x-checkbox">
-                <label for="first" class="x-label x-label-checkbox">First</label>
+    <div class="x-modal" id="modalEdit">
+        <div class="x-modal-dialog">
+            <div class="x-modal-content">
+                <div class="x-modal-header">
+                    <div class="x-modal-title">This is modal header</div>
+                    <button class="xi xi-close" id="btnEditHeaderClose"></button>
+                </div>
+                <div class="x-modal-body">
+                    <div class="x-col x-col-12 m-auto">
+                        <div class="x-row justify-content-center">
+                            <div class="x-col x-col-12">
+                                <label for="inpName" class="x-label">Tên mặt hàng</label>
+                                <input type="text" class="x-input x-input-100" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="x-row justify-content-center">
+                            <div class="x-col x-col-12">
+                                <label for="inpName" class="x-label">Đơn vị</label>
+                                <select type="text" class="x-input x-input-100">
+                                    <option value="">LỌ</option>
+                                    <option value="">CHAI</option>
+                                    <option value="">KG</option>
+                                    <option value="">BAO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="x-row justify-content-center">
+                            <div class="x-col x-col-4 justify-content-start"
+                                style="border-right: 1px solid var(--x-border-color);">
+                                <div class="x-row">
+                                    <label for="inpName" class="pl-1 x-label x-col x-col-6">Đã nhập:</label>
+                                    <div class="pr-1 x-col x-col-6 text-right">
+                                        6
+                                    </div>
+                                </div>
+                                <div class="x-row">
+                                    <label for="inpName" class="pl-1 x-label x-col x-col-6">Bán ra: </label>
+                                    <div class="pr-1 x-col x-col-6 text-right">
+                                        5
+                                    </div>
+                                </div>
+                                <div class="x-row">
+                                    <label for="inpName" class="pl-1 x-label x-col x-col-6">Còn lại: </label>
+                                    <div class="pr-1 x-col x-col-6 text-right">
+                                        1
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="x-col x-col-8 justify-content-start">
+                                <div class="x-col x-col-12 justify-content-start">
+                                    <div class="x-row">
+                                        <label for="inpName" class="pl-1 x-label x-col x-col-6">Chi phí mua vào:</label>
+                                        <div class="x-col x-col-6 pr-1 text-right">
+                                            100.000đ
+                                        </div>
+                                    </div>
+                                    <div class="x-row">
+                                        <label for="inpName" class="pl-1 x-label x-col x-col-6">Giá trị đã bán:</label>
+                                        <div class="x-col x-col-6 pr-1 text-right">
+                                            200.000đ
+                                        </div>
+                                    </div>
+                                    <div class="x-row">
+                                        <label for="inpName" class="pl-1 x-label x-col x-col-6">Thu về:</label>
+                                        <div class="x-col x-col-6 pr-1 text-right">
+                                            100.000đ
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-modal-footer">
+                    <button class="x-btn x-btn-secondary" id="btnEditFooterClose">Close</button>
+                    <button class="x-btn x-btn-primary">Save</button>
+                </div>
             </div>
-            <div class="x-checkbox-container">
-                <input type="checkbox" name="order" id="second" class="x-checkbox">
-                <label for="first" class="x-label x-label-checkbox">Second</label>
-            </div>
-            <div class="x-checkbox-container">
-                <input type="checkbox" name="order" id="third" class="x-checkbox">
-                <label for="first" class="x-label x-label-checkbox">Third</label>
-            </div>
         </div>
-    </div>
-    <div>
-        <label for="" class="x-label">6. Icon</label>
-        <div class="xi xi-close"></div>
-        <div class="xi xi-close xi-size-075"></div>
-        <div class="xi xi-close xi-size-125"></div>
-        <div class="xi xi-close xi-size-150"></div>
-        <div class="xi xi-close xi-size-x2"></div>
-    </div>
-    <div>
-        <label for="" class="x-label">7. Select</label>
-        <div class="x-row justify-content-evenly">
-            <select class="x-input x-select">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select> 
-            <select class="x-input x-select">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select> 
-            <select class="x-input x-select" disabled>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select> 
-        </div>
-    </div>
-    <div>
-        <label for="" class="x-label">8. Input</label>
-        <input type="text" class="x-input">
-        <input type="text" class="x-input x-input-valid">
-        <input type="text" class="x-input x-input-error">
-    </div>
-    <div>
-        <label for="" class="x-label">9. Input search</label>
-        <div class="x-input-searchbox">
-            <input type="search" class="x-input x-input-search" placeholder="Nhập tên hàng hóa">
-            <div class="xi xi-search x-input-search-icon"></div>
-        </div>
-    </div>
-    <label for="" class="x-label">9. Table</label>
-    <div class="x-table-container" style="width: 80%; margin: auto;">
-        <table class="x-table">
-            <thead class="x-thead">
-                <tr class="x-thead-tr">
-                    <th>#</th>
-                    <th class="text-left">Họ và tên</th>
-                    <th class="text-center">Ngày sinh</th>
-                    <th class="text-left">Giới tính</th>
-                    <th class="text-left">Địa chỉ</th>
-                </tr>
-            </thead>
-            <tbody class="x-tbody">
-                <tr class="x-tbody-tr">
-                    <td class="text-center">1</td>
-                    <td>Phan Trọng Tình</td>
-                    <td class="text-center">06/12/2000</td>
-                    <td>Nam</td>
-                    <td>Bắc Giang</td>
-                </tr>
-                <tr class="x-tbody-tr">
-                    <td class="text-center">2</td>
-                    <td>Phan Trọng Tình</td>
-                    <td class="text-center">06/12/2000</td>
-                    <td>Nam</td>
-                    <td>Bắc Giang</td>
-                </tr>
-                <tr class="x-tbody-tr">
-                    <td class="text-center">3</td>
-                    <td>Phan Trọng Tình</td>
-                    <td class="text-center">06/12/2000</td>
-                    <td>Nam</td>
-                    <td>Bắc Giang</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
     <script>
-        let r = document.querySelector(":root");
-        document.getElementById('showModal').addEventListener('click', () => {
-            document.getElementById('modal').classList.add('show');
-        })
-        document.getElementById('modal').getElementsByClassName('xi-close')[0].addEventListener('click', () => {
-            document.getElementById('modal').classList.remove('show');
-        })
-        document.getElementById('modal').getElementsByClassName('x-btn-secondary')[0].addEventListener('click', () => {
-            document.getElementById('modal').classList.remove('show');
-        })
-        document.getElementById('dark').addEventListener('click', () => {
-            let oldColor = getComputedStyle(r).getPropertyValue('--x-body-color');
-            let oldBackground = getComputedStyle(r).getPropertyValue('--x-body-bg');
-            let oldBorder = getComputedStyle(r).getPropertyValue('--x-border-color');
-            r.style.setProperty('--x-body-bg', oldColor);
-            r.style.setProperty('--x-body-color', oldBackground);
-            r.style.setProperty('--x-border-color', reverseColor(oldBorder));
+        const modalAdd = document.getElementById('modalAdd');
+        const modalEdit = document.getElementById('modalEdit');
+        const tableBody = document.getElementById('tableBody');
+
+        document.getElementById('btnAdd').addEventListener('click', () => {
+            modalAdd.style.display = 'block';
         })
 
-        document.getElementById('showSpinnerButton').addEventListener('click', () => {
-            document.getElementById('spinner').style.display = 'block';
+        document.getElementById('btnHeaderClose').addEventListener('click', () => {
+            modalAdd.style.display = 'none';
         })
-        function reverseColor(color) {
-            let array = String(color).split('#')[1].split('');
-            array.forEach((e, i, a) => {
-                a[i] = (15 - Number(`0x${e}`)).toString(16);
-            })
-            array.unshift('#')
-            return array.join('');
+
+        document.getElementById('btnFooterClose').addEventListener('click', () => {
+            modalAdd.style.display = 'none';
+        })
+
+        tableBody.addEventListener('click', () => {
+            modalEdit.style.display = 'block';
+        })
+
+        document.getElementById('btnEditHeaderClose').addEventListener('click', () => {
+            modalEdit.style.display = 'none';
+        })
+
+        document.getElementById('btnEditFooterClose').addEventListener('click', () => {
+            modalEdit.style.display = 'none';
+        })
+
+        async function getObjectList() {
+            const response = await fetch('http://localhost:3000/api/object');
+            const data = await response.json();
+            console.log(data);
         }
+
+        async function getUnitList() {
+            const response = await fetch('http://localhost:3000/api/unit');
+            const data = await response.json();
+            console.log(data);
+        }
+
+        getObjectList();
+        getUnitList();
     </script>
 </body>
 
