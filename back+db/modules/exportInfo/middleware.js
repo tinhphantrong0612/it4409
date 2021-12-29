@@ -4,7 +4,11 @@ const ExportInfo = require('./model');
 
 module.exports = {
     emptyValidate: (req, res, next) => {
-        if (!req.body.ObjectId.trim() || !req.body.CustomerId.trim() || !req.body.ExportId.trim() || !req.body.ExportPrice || !req.body.Amount) {
+        if (!req.body ||
+            !req.body.ObjectId || !req.body.ObjectId.trim() || 
+            !req.body.CustomerId || !req.body.CustomerId.trim() || 
+            !req.body.ExportId || !req.body.ExportId.trim() || 
+            !req.body.ExportPrice || !req.body.Amount) {
             res.status(400).send("Thiếu trường thông tin");
         } else next();
     },

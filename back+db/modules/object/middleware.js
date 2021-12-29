@@ -3,7 +3,7 @@ const Unit = require('../unit/model');
 
 module.exports = {
     emptyValidate: (req, res, next) => {
-        if (!req.body.DisplayName.trim() || !req.body.UnitId) {
+        if (!req.body || !req.body.DisplayName || !req.body.DisplayName.trim() || !req.body.UnitId) {
             res.status(400).send("Thiếu trường thông tin");
         } else next();
     },
