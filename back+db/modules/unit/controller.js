@@ -15,9 +15,9 @@ module.exports = {
             const result = await Unit.getById(req.params.id);
             if (result.length == 0) {
                 console.log("Get unit: No content")
-                res.status(204).send(result);
+                res.status(204).send({});
             } else {
-                res.status(200).send(result);
+                res.status(200).send(result[0]);
             }
         } catch (error) {
             console.log(error);
@@ -26,12 +26,7 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const duplicateList = await Unit.findByName(req.body.name.toUpperCase());
-            if (duplicateList.length !== 0) {
-                res.status(400).send("Duplicate unit");
-                return;
-            }
-            const result = await Unit.post(req.body.name.toUpperCase());
+            const result = await Unit.insert(req.body.DisplayName.toUpperCase());
             if (result.insertId) {
                 res.status(201).send("1");
             } else {
@@ -45,12 +40,7 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const duplicateList = await Unit.findByName(req.body.name.toUpperCase());
-            if (duplicateList.length !== 0) {
-                res.status(400).send("Duplicate unit");
-                return;
-            }
-            const result = await Unit.put(req.params.id, req.body.name.toUpperCase());
+            const result = await Unit.update(req.params.id, req.body.DisplayName.toUpperCase());
             if (result.changedRows) {
                 res.status(201).send("1");
             } else {

@@ -22,12 +22,12 @@ class IObject {
         return await connection.queryDB(query);
     }
 
-    static async post(name, unitId) {
+    static async insert(name, unitId) {
         let query = `INSERT INTO ${config.database.database}.object (displayName, unitId, Id) VALUES ("${name}", ${unitId}, '${uuidv4()}')`;
         return await connection.queryDB(query);
     }
 
-    static async put(id, name, unitId) {
+    static async update(id, name, unitId) {
         let query = `UPDATE ${config.database.database}.object SET displayName='${name}', unitId=${unitId} WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }

@@ -11,12 +11,12 @@ class IImportInfo {
         let query = `SELECT importPrice, amount FROM ${config.database.database}.importInfo WHERE objectId = '${objectId}'`;
         let result = {
             amount: 0,
-            importPrice: 0
+            importMoney: 0
         }
         let queryResult = await connection.queryDB(query);
         for (const singleImport of queryResult) {
             result.amount += singleImport.amount;
-            result.importPrice += singleImport.importPrice;
+            result.importMoney += singleImport.importPrice * singleImport.amount;
         }
         return result;
     }

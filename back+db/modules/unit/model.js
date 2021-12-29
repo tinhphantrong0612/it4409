@@ -6,7 +6,7 @@ class Unit {
     displayName;
 
     static async getById(id) {
-        let query = `SELECT * FROM ${config.database.database}.unit WHERE Id = '${id}'`;
+        let query = `SELECT * FROM ${config.database.database}.unit WHERE Id = ${id}`;
         return await connection.queryDB(query);
     }
 
@@ -20,12 +20,12 @@ class Unit {
         return await connection.queryDB(query);
     }
 
-    static async post(name) {
+    static async insert(name) {
         let query = `INSERT INTO ${config.database.database}.unit (displayName) VALUES ("${name}")`;
         return await connection.queryDB(query);
     }
 
-    static async put(id, name) {
+    static async update(id, name) {
         let query = `UPDATE ${config.database.database}.unit SET displayName='${name}' WHERE Id=${id}`;
         return await connection.queryDB(query);
     }

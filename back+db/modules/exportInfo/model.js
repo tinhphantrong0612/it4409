@@ -11,14 +11,24 @@ class IEmportInfo {
         let query = `SELECT exportPrice, amount FROM ${config.database.database}.exportInfo WHERE objectId = '${objectId}'`;
         let result = {
             amount: 0,
-            exportPrice: 0
+            exportMoney: 0
         }
         let queryResult = await connection.queryDB(query);
-        for (const singleImport of queryResult) {
-            result.amount += singleImport.amount;
-            result.exportPrice += singleImport.exportPrice;
+        for (const singleExport of queryResult) {
+            result.amount += singleExport.amount;
+            result.exportMoney += singleExport.exportPrice * singleExport.amount;
         }
         return result;
+    }
+
+    static async insertSingleExportInfo(exportId, exportInfo) {
+        let query = `INSERT INTO ${config.database.database}.exportInfo (Id, ObjectId, ExportId, Amount, ExportPrice) VALUES ("${uuidv4()}", '${exportInfo.ObjectId}', '${exportId}', ${exportInfo.Amount}, ${exportInfo.ExportPrice})`;
+        return await connection.queryDB(query);
+    }
+
+    static async insertExportInfoList(exportId, exportInfoList) {
+        const promises = exportInfoList.map(exportInfo => insertSingleExportInfo(exportId, exportInfo))
+        return await Promise.allSettled(promises);
     }
 }
 

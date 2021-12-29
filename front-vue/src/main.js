@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
+import { store } from './script/store'
 
 
 import ObjectView from './views/object/ObjectView.vue';
@@ -29,6 +30,7 @@ const router = new VueRouter({
 })
 
 Vue.config.productionTip = false
+Vue.prototype.$store = store;
 
 new Vue({
   router,

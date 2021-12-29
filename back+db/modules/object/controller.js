@@ -18,13 +18,13 @@ module.exports = {
             const [result, importInfo, exportInfo] = await Promise.all([IObject.getById(req.params.id), IImportInfo.getTotalObjectAmoutAndPrice(req.params.id), IEmportInfo.getTotalObjectAmoutAndPrice(req.params.id)]);           
             if (result.length == 0) {
                 console.log("Get IObject: No content");
-                res.status(204).send(0);
+                res.status(204).send("0");
             } else {
                 let trueResult = result[0];
                 trueResult.importAmount = importInfo.amount;
                 trueResult.exportAmount = exportInfo.amount;
-                trueResult.importPrice = importInfo.importPrice;
-                trueResult.exportPrice = exportInfo.exportPrice;
+                trueResult.importMoney = importInfo.importMoney;
+                trueResult.exportMoney = exportInfo.exportMoney;
                 res.status(200).send(trueResult);
             }
         } catch (error) {
@@ -34,20 +34,7 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            // Validate:
-            // 1. duplicate name
-            const duplicateList = await IObject.findByName(req.body.name.toUpperCase());
-            if (duplicateList.length !== 0) {
-                res.status(400).send("Duplicate IObject");
-                return;
-            }
-            // 2. Non-existen unit id
-            const unit = await Unit.getById(req.body.unitId);
-            if (!unit) {
-                res.status(400).send("Non-existen unit");
-                return;
-            }
-            const result = await IObject.post(req.body.name.toUpperCase(), req.body.unitId);
+            const result = await IObject.insert(req.body.DisplayName.toUpperCase(), req.body.UnitId);
             if (result.affectedRows) {
                 res.status(201).send("1");
             } else {
@@ -60,20 +47,8 @@ module.exports = {
         }
     },
     put: async (req, res) => {
-        try {// Validate:
-            // 1. duplicate name
-            const duplicateList = await IObject.findByName(req.body.name.toUpperCase());
-            if (duplicateList.length !== 0) {
-                res.status(400).send("Duplicate IObject");
-                return;
-            }
-            // 2. Non-existen unit id
-            const unit = await Unit.getById(req.body.unitId);
-            if (!unit) {
-                res.status(400).send("Non-existen unit");
-                return;
-            }
-            const result = await IObject.put(req.params.id, req.body.name.toUpperCase(), req.body.unitId);
+        try {
+            const result = await IObject.update(req.params.id, req.body.DisplayName.toUpperCase(), req.body.UnitId);
             if (result.changedRows) {
                 res.status(201).send("1");
             } else {

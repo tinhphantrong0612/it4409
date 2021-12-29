@@ -39,3 +39,7 @@
     opacity: 0.75;
     background-color: var(--x-background-on-hover);
 }
+
+.x-table .x-selected-row {
+    background-color: red;
+}

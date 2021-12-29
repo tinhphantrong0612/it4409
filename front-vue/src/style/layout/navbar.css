@@ -23,6 +23,11 @@
     color: var(--x-body-bg);
 }
 
+.router-link-exact-active.router-link-active:hover {
+    background-color: var(--x-success);
+    color: var(--x-body-bg);
+}
+
 .x-navbar-item:hover {
     background-color: var(--x-secondary);
 }
@@ -30,4 +35,8 @@
 .x-navbar-item.x-selected {
     background-color: var(--x-primary);
     color: var(--x-body-bg);
+}
+
+a.x-navbar-item {
+    text-decoration: none;
 }
