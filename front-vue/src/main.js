@@ -6,6 +6,7 @@ import { store } from './script/store'
 
 import ObjectView from './views/object/ObjectView.vue';
 import UnitView from './views/unit/UnitView.vue';
+import CustomerView from './views/customer/CustomerView.vue';
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,10 @@ const routes = [
   {
     path: '/unit',
     component: UnitView
+  },
+  {
+    path: '/customer',
+    component: CustomerView
   },
   {
     path: '/',

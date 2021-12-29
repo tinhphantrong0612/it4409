@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Docker data
+docker-mysql/data/
+back+db/config.js
