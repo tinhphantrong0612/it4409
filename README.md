@@ -26,3 +26,7 @@ Bài tập lớn Công nghệ Web và dịch vụ trực tuyến
 - Dia chi: [http://localhost:3000]
 
 # Can chay song song hai server nay
+
+# Chay mysql bang docker neu can
+- `docker-compose up -d`
+- Dia chi: [http://localhost:8080]
