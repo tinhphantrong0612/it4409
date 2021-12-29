@@ -20,7 +20,7 @@ class IImport {
      * @returns 
      */
     static async getById(id) {
-        const query = `SELECT ${config.database.database}.import.Id, ${config.database.database}.import.ImportDate, ${config.database.database}.import.SupplierId, ${config.database.database}.supplier.DisplayName as SupplierName FROM ${config.database.database}.import INNER JOIN ${config.database.database}.supplier ON ${config.database.database}.import.SupplierId = ${config.database.database}.supplier.Id WHERE ${config.database.database}.import.Id = '${id}'`;
+        const query = `SELECT import.Id, import.ImportDate, import.SupplierId,supplier.DisplayName as SupplierName FROM import INNER JOIN supplier ON import.SupplierId = supplier.Id WHERE import.Id = '${id}'`;
         return await connection.queryDB(query);
     }
 
@@ -47,8 +47,8 @@ class IImport {
     }
 
     /**
-     * Xóa đơn xuất
-     * @param {uuid} importId Mã đơn xuất
+     * Xóa đơn nhập
+     * @param {uuid} importId Mã đơn nhập
      * @returns Số dòng bị xóa
      */
     static async delete(importId) {

@@ -17,7 +17,7 @@ class Customer {
 
     static async findByInfo(name, address, phone, email) {
         let query = `SELECT * FROM ${config.database.database}.customer 
-        WHERE displayName = '${name}', address = '${address}', phone = '${phone}', email = '${email}'`;
+        WHERE displayName = '${name}' AND address = '${address}' AND phone = '${phone}' AND email = '${email}'`;
         return await connection.queryDB(query);
     }
 
@@ -28,7 +28,7 @@ class Customer {
 
     static async post(name, address, phone, email, moreInfo = null) {
         let query = `INSERT INTO ${config.database.database}.customer (displayName, address, phone, email, moreInfo, Id) 
-        VALUES ("${name}", "${address}", "${phone}", "${email}", "${moreInfo}" '${uuidv4()}')`;
+        VALUES ("${name}", "${address}", "${phone}", "${email}", "${moreInfo}", '${uuidv4()}')`;
         return await connection.queryDB(query);
     }
 

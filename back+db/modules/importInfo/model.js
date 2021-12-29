@@ -20,6 +20,17 @@ class IImportInfo {
         }
         return result;
     }
+
+    /**
+     * Trả về số lượng đã nhập vào của một mặt hàng
+     * @param {uuid} objectId Id của object nhập vào
+     * @returns Tổng số object đã nhập kho
+     */
+     static async getTotalImportAmount(objectId) {
+        let query = `SELECT amount FROM importInfo WHERE objectId='${objectId}'`;
+        const result = await connection.queryDB(query);
+        return result.reduce((a, b) => a + b);
+    }
 }
 
 module.exports = IImportInfo;

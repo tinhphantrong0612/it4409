@@ -32,7 +32,7 @@ module.exports = {
                 return;
             }
             const result = await Customer.post(req.body.name, req.body.address, req.body.phone, req.body.email, req.body.moreInfo);
-            if (result.insertId) {
+            if (result.affectedRows) {
                 res.status(201).send("1");
             } else {
                 console.log("Post customer: Not insert")
