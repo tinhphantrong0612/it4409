@@ -106,3 +106,6 @@ dist
 # Docker data
 docker-mysql/data/
 back+db/config.js
+
+#Unused folder
+front/
