@@ -10,5 +10,10 @@ module.exports = {
         if (duplicateList.length !== 0) {
             res.status(400).send("Lặp đơn vị");
         } else next();
+    },
+    usedValidate: async (req, res, next) => {
+        const isUsed = await Unit.isUnitIdUsed(req.params.id);
+        if (isUsed) res.status(400).send("Một số mặt hàng đang sử dụng đơn vị này");
+        else next();
     }
 }

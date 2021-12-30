@@ -7,6 +7,6 @@ unitRouter
     .get('/:id', unitController.getById)
     .post('/', unitValidate.emptyValidate, unitValidate.duplicateValidate, unitController.post)
     .put('/:id', unitValidate.emptyValidate, unitValidate.duplicateValidate, unitController.put)
-    .delete('/:id', unitController.delete);
+    .delete('/:id', unitValidate.usedValidate, unitController.delete);
 
 module.exports = unitRouter;

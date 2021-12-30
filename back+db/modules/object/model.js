@@ -36,6 +36,42 @@ class IObject {
         let query = `DELETE FROM ${config.database.database}.object WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
+
+    /**
+     * Kiểm tra mặt hàng đã được xuất ra hay chưa
+     * @param {uuid} objectId Mã mặt hàng
+     * @returns {Promise<boolean>} true - Đã sử dụng/false - Chưa sử dụng
+     */
+    static async isExported(objectId) {
+        let query = `SELECT Id FROM exportInfo WHERE ObjectId='${objectId}'`;
+        const result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
+
+    /**
+     * Kiểm tra mặt hàng đã được nhập vào hay chưa
+     * @param {uuid} objectId Mã mặt hàng
+     * @returns {Promise<boolean>} true - Đã sử dụng/false - Chưa sử dụng
+     */
+     static async isImported(objectId) {
+        let query = `SELECT Id FROM importInfo WHERE ObjectId='${objectId}'`;
+        const result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
+
+    /**
+     * Kiểm tra đơn vị có tồn tại
+     * @param {number} id Mã đơn vị
+     * @returns {Promise<boolean>} true - tồn tại / false không tồn tại
+     */
+    static async isUnitExist(id) {
+        let query = `SELECT * FROM ${config.database.database}.unit WHERE Id = ${id}`;
+        const result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
 }
 
 module.exports = IObject;
