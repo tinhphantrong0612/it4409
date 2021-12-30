@@ -11,7 +11,8 @@ class Customer {
     moreInfo;
 
     static async getById(id) {
-        let query = `SELECT * FROM ${config.database.database}.customer WHERE Id = '${id}'`;
+        let query = `SELECT customer.displayName, customer.address, customer.phone, customer.email, customer.moreInfo
+        FROM ${config.database.database}.customer WHERE Id = '${id}'`;
         return await connection.queryDB(query);
     }
 
