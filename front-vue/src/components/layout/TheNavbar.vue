@@ -5,7 +5,7 @@
         <router-link class="x-navbar-item" to="/customer">Khách hàng</router-link>
         <router-link class="x-navbar-item" to="/supplier">Nhà cung cấp</router-link>
         <router-link class="x-navbar-item" to="/import">Nhập hàng</router-link>
-        <div class="x-navbar-item">Xuất hàng</div>
+        <router-link class="x-navbar-item" to="/export">Xuất hàng</router-link>
     </div>
 </template>
 

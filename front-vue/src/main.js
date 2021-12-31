@@ -9,6 +9,7 @@ import UnitView from './views/unit/UnitView.vue';
 import CustomerView from './views/customer/CustomerView.vue';
 import SupplierView from './views/supplier/SupplierView.vue';
 import ImportView from './views/import/ImportView.vue';
+import ExportView from './views/export/ExportView.vue';
 
 Vue.use(VueRouter);
 
@@ -32,6 +33,10 @@ const routes = [
   {
     path: '/import',
     component: ImportView
+  },
+  {
+    path: '/export',
+    component: ExportView
   },
   {
     path: '/',
