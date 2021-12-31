@@ -26,11 +26,6 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const duplicateList = await Supplier.findByInfo(req.body.displayName, req.body.address, req.body.phone, req.body.email);
-            if (duplicateList.length !== 0) {
-                res.status(400).send("Duplicate supplier");
-                return;
-            }
             const result = await Supplier.post(req.body.displayName, req.body.address, req.body.phone, req.body.email, req.body.moreInfo);
             if (result.affectedRows) {
                 res.status(201).send("1");
@@ -45,11 +40,6 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const duplicateList = await Supplier.findByInfo(req.body.displayName, req.body.address, req.body.phone, req.body.email);
-            if (duplicateList.length !== 0) {
-                res.status(400).send("Duplicate supplier");
-                return;
-            }
             const result = await Supplier.put(req.params.id, req.body.displayName, req.body.address, req.body.phone, req.body.email, req.body.moreInfo);
             if (result.changedRows) {
                 res.status(201).send("1");

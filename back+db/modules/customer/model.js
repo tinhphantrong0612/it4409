@@ -44,6 +44,18 @@ class Customer {
         let query = `DELETE FROM customer WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
+
+    /**
+     * Kiểm tra xem khách hàng có trong danh sách thông tin xuất hàng không
+     * @param {number} id Mã khách hàng
+     * @returns {boolean} 
+     */
+    static async isCustomerIdUsed(id) {
+        let query = `SELECT Id FROM export WHERE export.customerId='${id}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
 }
 
 module.exports = Customer;

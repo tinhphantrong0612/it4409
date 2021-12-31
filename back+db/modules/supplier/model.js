@@ -44,6 +44,18 @@ class Supplier {
         let query = `DELETE FROM supplier WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
+
+    /**
+     * Kiểm tra xem nhà cung cấp có trong danh sách thông tin nhập hàng không
+     * @param {number} id Mã nhà cung cấp
+     * @returns {boolean} 
+     */
+     static async isSupplierIdUsed(id) {
+        let query = `SELECT Id FROM import WHERE import.supplierId='${id}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
 }
 
 module.exports = Supplier;
