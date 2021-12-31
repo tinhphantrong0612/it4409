@@ -78,7 +78,7 @@ class IImportInfo {
     }
 
     static async update(id, importInfo) {
-        let query = `UPDATE importInfo SET ObjectId='${importInfo.ObjectId}', Barcode='${importInfo.Barcode}', ImportPrice='${importInfo.ImportPrice}', Amount='${importInfo.Amount}' WHERE Id='${id}'`;
+        let query = `UPDATE importInfo SET Barcode='${importInfo.Barcode}', ImportPrice='${importInfo.ImportPrice}', Amount='${importInfo.Amount}' WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
 

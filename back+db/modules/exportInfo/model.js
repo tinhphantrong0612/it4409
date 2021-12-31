@@ -87,7 +87,7 @@ class IExportInfo {
      */
     static async update(exportInfoId, exportInfo) {
         let query = `UPDATE exportInfo
-                        SET ObjectId='${exportInfo.ObjectId}', Amount = ${exportInfo.Amount}, ExportPrice = ${exportInfo.ExportPrice}
+                        SET Amount = ${exportInfo.Amount}, ExportPrice = ${exportInfo.ExportPrice}
                         WHERE Id='${exportInfoId}'`;
         return await connection.queryDB(query);
     }
