@@ -1,9 +1,9 @@
 <template>
   <div class="x-content">
     <div class="x-headbar">
-      <div class="x-headbar-title">Danh sách khách hàng</div>
-      <button class="x-btn x-btn-primary" @click="customerAddShow = true">
-        Thêm khách hàng
+      <div class="x-headbar-title">Danh sách nhà cung cấp</div>
+      <button class="x-btn x-btn-primary" @click="supplierAddShow = true">
+        Thêm nhà cung cấp
       </button>
     </div>
     <div class="x-toolbar justify-content-between">
@@ -12,7 +12,7 @@
           <input
             type="search"
             class="x-input x-input-search"
-            placeholder="Nhập tên khách hàng"
+            placeholder="Nhập tên nhà cung cấp"
           />
           <div class="xi xi-search x-input-search-icon xi-size-100"></div>
         </div>
@@ -20,11 +20,11 @@
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getCustomerList()"
+          @click="getSupplierList()"
         ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
-          @click="deleteCustomer()"
+          @click="deleteSupplier()"
         ></button>
       </div>
     </div>
@@ -32,7 +32,7 @@
       <table class="x-table">
         <thead>
           <tr>
-            <th>Tên khách hàng</th>
+            <th>Tên nhà cung cấp</th>
             <th>Địa chỉ</th>
             <th>Số điện thoại</th>
             <th>Email</th>
@@ -41,45 +41,45 @@
         </thead>
         <tbody id="tableBody">
           <tr
-            v-for="customer in customerList"
-            :key="customer.Id"
-            @click="selectedCustomerId = customer.Id"
+            v-for="supplier in supplierList"
+            :key="supplier.Id"
+            @click="selectedSupplierId = supplier.Id"
             @dblclick="
-              selectedCustomerId = customer.Id;
-              customerDetailShow = true;
+              selectedSupplierId = supplier.Id;
+              supplierDetailShow = true;
             "
-            :class="{ 'x-selected-row': customer.Id == selectedCustomerId }"
+            :class="{ 'x-selected-row': supplier.Id == selectedSupplierId }"
           >
-            <td>{{ customer.DisplayName }}</td>
-            <td>{{ customer.Address }}</td>
-            <td>{{ customer.Phone }}</td>
-            <td>{{ customer.Email }}</td>
-            <td>{{ checkNull(customer.MoreInfo) }}</td>
+            <td>{{ supplier.DisplayName }}</td>
+            <td>{{ supplier.Address }}</td>
+            <td>{{ supplier.Phone }}</td>
+            <td>{{ supplier.Email }}</td>
+            <td>{{ checkNull(supplier.MoreInfo) }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <customer-add
-      v-if="customerAddShow"
-      @close="customerAddShow = false"
+    <supplier-add
+      v-if="supplierAddShow"
+      @close="supplierAddShow = false"
       @save="
-        customerAddShow = false;
-        getCustomerList();
+        supplierAddShow = false;
+        getSupplierList();
       "
-    ></customer-add>
-    <customer-detail
-      v-show="customerDetailShow"
-      :show="customerDetailShow"
-      :selectedCustomerId="selectedCustomerId"
+    ></supplier-add>
+    <supplier-detail
+      v-show="supplierDetailShow"
+      :show="supplierDetailShow"
+      :selectedSupplierId="selectedSupplierId"
       @close="
-        customerDetailShow = false;
-        selectedCustomertId = '';
+        supplierDetailShow = false;
+        selectedSuppliertId = '';
       "
       @save="
-        customerDetailShow = false;
-        getCustomerList();
+        supplierDetailShow = false;
+        getSupplierList();
       "
-    ></customer-detail>
+    ></supplier-detail>
     <base-inform-popup
       v-show="errorMessage != ''"
       :message="errorMessage"
@@ -89,36 +89,36 @@
 </template>
 
 <script>
-import CustomerAdd from "./CustomerAdd.vue";
-import CustomerDetail from "./CustomerDetail.vue";
+import SupplierAdd from "./SupplierAdd.vue";
+import SupplierDetail from "./SupplierDetail.vue";
 import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
 
 export default {
-  components: { CustomerAdd, CustomerDetail, BaseInformPopup },
-  name: "CustomerView",
+  components: { SupplierAdd, SupplierDetail, BaseInformPopup },
+  name: "SupplierView",
   data() {
     return {
-      customerList: [],
-      customerAddShow: false,
-      customerDetailShow: false,
-      selectedCustomerId: "",
+      supplierList: [],
+      supplierAddShow: false,
+      supplierDetailShow: false,
+      selectedSupplierId: "",
       errorMessage: "",
     };
   },
   methods: {
-    async getCustomerList() {
+    async getSupplierList() {
       this.$store.action.showLoading();
-      this.selectedCustomerId = "";
-      const response = await fetch(`http://localhost:3000/api/customer`);
+      this.selectedSupplierId = "";
+      const response = await fetch(`http://localhost:3000/api/supplier`);
       const data = await response.json();
-      this.customerList = data;
+      this.supplierList = data;
       this.$store.action.hideLoading();
     },
-    async deleteCustomer() {
-      if (!this.selectedCustomerId) return;
+    async deleteSupplier() {
+      if (!this.selectedSupplierId) return;
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/customer/${this.selectedCustomerId}`,
+        `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,
         {
           method: "DELETE",
         }
@@ -128,7 +128,7 @@ export default {
       } else {
         const data = await response.text();
         console.log(data);
-        await this.getCustomerList();
+        await this.getSupplierList();
       }
       this.$store.action.hideLoading();
     },
@@ -138,7 +138,7 @@ export default {
     },
   },
   created() {
-    this.getCustomerList();
+    this.getSupplierList();
   },
 };
 </script>

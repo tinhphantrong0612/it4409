@@ -1,12 +1,12 @@
-const IExport = require('./model');
+const IImport = require('./model');
 const { v4: uuidv4 } = require('uuid');
 const Utils = require('../../utils/Utils');
-const IExportInfo = require('../exportInfo/model');
+const IImportInfo = require('../importInfo/model');
 
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const result = await IExport.getAll();
+            const result = await IImport.getAll();
             res.status(200).send(result);
         } catch (error) {
             console.log(error);
@@ -15,7 +15,7 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const result = await IExport.getById(req.params.id);
+            const result = await IImport.getById(req.params.id);
             if (result.length > 0) {
                 res.status(200).send(result[0]);
             } else {
@@ -28,15 +28,12 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            // console.log(req.body);
-            // res.send("1");
-            // return;
             const newId = uuidv4();
-            const [saveExportResult, saveExportInfoResult] = await Promise.all([IExport.insert(newId, {
-                ExportDate: Utils.toSQLDate(new Date()),
-                CustomerId: req.body.CustomerId
-            }), IExportInfo.insertExportInfoList(newId, req.body.ExportInfoList)]);
-            if (saveExportResult.affectedRows < 1) {
+            const [saveImportResult, saveImportInfoResult] = await Promise.all([IImport.insert(newId, {
+                ImportDate: Utils.toSQLDate(new Date()),
+                SupplierId: req.body.SupplierId
+            }), IImportInfo.insertImportInfoList(newId, req.body.ImportInfoList)]);
+            if (saveImportResult.affectedRows < 1) {
                 res.status(200).send("0");
             } else {
                 res.status(201).send("1");
@@ -48,7 +45,7 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const result = await IExport.update(req.params.id, req.body);
+            const result = await IImport.update(req.params.id, req.body);
             if (result.affectedRows < 1) {
                 res.status(200).send("0");
             } else {
@@ -61,7 +58,7 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            const result = await IExport.delete(req.params.id);
+            const result = await IImport.delete(req.params.id);
             if (result.affectedRows < 1) {
                 res.status(200).send("0");
             } else {

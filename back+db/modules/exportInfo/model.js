@@ -44,7 +44,7 @@ class IExportInfo {
      * @param {uuid} objectId
      */
     static async getTotalObjectAmoutAndPrice(objectId) {
-        let query = `SELECT exportPrice, amount FROM ${config.database.database}.exportInfo WHERE objectId = '${objectId}'`;
+        let query = `SELECT exportPrice, amount FROM exportInfo WHERE objectId = '${objectId}'`;
         let result = {
             amount: 0,
             exportMoney: 0
@@ -75,7 +75,7 @@ class IExportInfo {
      * @returns Mảng kết quả thực hiện thêm
      */
     static async insertExportInfoList(exportId, exportInfoList) {
-        const promises = exportInfoList.map(exportInfo => insertSingleExportInfo(exportId, exportInfo))
+        const promises = exportInfoList.map(exportInfo => IExportInfo.insertSingleExportInfo(exportId, exportInfo))
         return await Promise.allSettled(promises);
     }
 
@@ -86,7 +86,9 @@ class IExportInfo {
      * @returns Số dòng bị ảnh hưởng
      */
     static async update(exportInfoId, exportInfo) {
-        let query = `UPDATE ${config.database.database}.exportInfo SET ObjectId='${exportInfo.ObjectId}', Amount = ${exportInfo.Amount}, ExportPrice = ${exportInfo.ExportPrice} WHERE Id='${exportInfoId}'`;
+        let query = `UPDATE exportInfo
+                        SET ObjectId='${exportInfo.ObjectId}', Amount = ${exportInfo.Amount}, ExportPrice = ${exportInfo.ExportPrice}
+                        WHERE Id='${exportInfoId}'`;
         return await connection.queryDB(query);
     }
 

@@ -1,6 +1,5 @@
 const connection = require('../databaseConnection');
 const config = require('../../config');
-const {v4: uuidv4} = require('uuid');
 
 class IImport {
     Id;
@@ -31,7 +30,7 @@ class IImport {
      * @returns Số dòng kết quả được thêm vào
      */
     static async insert(importId, data) {
-        let query = `INSERT INTO ${config.database.database}.import (Id, ImportDate, SupplierId) VALUES ("${importId}", ${data.ImportDate}, '${data.SupplierId}')`;
+        let query = `INSERT INTO ${config.database.database}.import (Id, ImportDate, SupplierId) VALUES ("${importId}", '${data.ImportDate}', '${data.SupplierId}')`;
         return await connection.queryDB(query);
     }
 
@@ -42,7 +41,7 @@ class IImport {
      * @returns Số dòng kết quả được thay thế
      */
     static async update(importId, data) {
-        let query = `UPDATE ${config.database.database}.import SET importDate = ${data.ImportDate}, SupplierId='${data.SupplierId}' WHERE Id='${importId}'`;
+        let query = `UPDATE ${config.database.database}.import SET SupplierId='${data.SupplierId}' WHERE Id='${importId}'`;
         return await connection.queryDB(query);
     }
 
@@ -54,6 +53,30 @@ class IImport {
     static async delete(importId) {
         let query = `DELETE FROM ${config.database.database}.import WHERE Id='${importId}'`;
         return await connection.queryDB(query);
+    }
+
+    static async isSupplierExist(supplierId) {
+        let query = `SELECT * FROM supplier WHERE Id='${supplierId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
+
+    static async isObjectExist(objectId) {
+        let query = `SELECT * FROM object WHERE Id='${objectId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) throw new Error(false);
+        else return true;
+    }
+
+    static async isMultipleCoexist(objectIdList) {
+        try {
+            let promises = objectIdList.map(objectId => IImport.isObjectExist(objectId));
+            let results = await Promise.all(promises);
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 }
 

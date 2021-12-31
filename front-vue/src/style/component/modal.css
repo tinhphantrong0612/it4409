@@ -84,3 +84,7 @@
 .x-modal-footer > * {
     margin: 0.25rem;
 }
+
+.x-inform-modal {
+    z-index: 102;
+}

@@ -31,7 +31,7 @@ class IExport {
      * @returns Số dòng kết quả được thêm vào
      */
     static async insert(exportId, data) {
-        let query = `INSERT INTO ${config.database.database}.export (Id, ExportDate, CustomerId) VALUES ("${exportId}", ${data.ExportDate}, '${data.CustomerId}')`;
+        let query = `INSERT INTO ${config.database.database}.export (Id, ExportDate, CustomerId) VALUES ("${exportId}", '${data.ExportDate}', '${data.CustomerId}')`;
         return await connection.queryDB(query);
     }
 
@@ -42,7 +42,7 @@ class IExport {
      * @returns Số dòng kết quả được thay thế
      */
     static async update(exportId, data) {
-        let query = `UPDATE ${config.database.database}.export SET exportDate = ${data.ExportDate}, CustomerId='${data.CustomerId}' WHERE Id='${exportId}'`;
+        let query = `UPDATE ${config.database.database}.export SET CustomerId='${data.CustomerId}' WHERE Id='${exportId}'`;
         return await connection.queryDB(query);
     }
 
@@ -54,6 +54,13 @@ class IExport {
     static async delete(exportId) {
         let query = `DELETE FROM ${config.database.database}.export WHERE Id='${exportId}'`;
         return await connection.queryDB(query);
+    }
+
+    static async isCustomerExist(customerId) {
+        let query = `SELECT * FROM customer WHERE Id='${customerId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
     }
 }
 

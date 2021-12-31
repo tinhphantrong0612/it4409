@@ -8,7 +8,10 @@
     </div>
     <div class="x-toolbar justify-content-end">
       <div class="x-btngroup">
-        <button class="x-btn x-btn-secondary xi xi-size-x2 xi-reload" @click="getUnitList()"></button>
+        <button
+          class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
+          @click="getUnitList()"
+        ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
           @click="deleteUnit()"
@@ -32,7 +35,7 @@
               selectedUnitId = unit.Id;
               unitDetailShow = true;
             "
-            :class="{'x-selected-row': unit.Id == selectedUnitId}"
+            :class="{ 'x-selected-row': unit.Id == selectedUnitId }"
           >
             <td>{{ unit.Id }}</td>
             <td>{{ unit.DisplayName }}</td>
@@ -61,18 +64,25 @@
         getUnitList();
       "
     ></unit-detail>
+    <base-inform-popup
+      v-show="errorMessage != ''"
+      :message="errorMessage"
+      @close="errorMessage = ''"
+    ></base-inform-popup>
   </div>
 </template>
 
 <script>
 import UnitAdd from "./UnitAdd.vue";
 import UnitDetail from "./UnitDetail.vue";
+import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
 
 export default {
   name: "UnitView",
   components: {
     UnitAdd,
     UnitDetail,
+    BaseInformPopup,
   },
   data() {
     return {
@@ -80,6 +90,7 @@ export default {
       unitAddShow: false,
       unitDetailShow: false,
       selectedUnitId: "",
+      errorMessage: "",
     };
   },
   methods: {
@@ -94,14 +105,21 @@ export default {
     async deleteUnit() {
       if (!this.selectedUnitId) return;
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/unit/${this.selectedUnitId}`, {
-        method: "DELETE"
-      });
-      const data = await response.json();
-      console.log(data);
-      await this.getUnitList();
+      const response = await fetch(
+        `http://localhost:3000/api/unit/${this.selectedUnitId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.status > 300) {
+        this.errorMessage = await response.text();
+      } else {
+        const data = await response.text();
+        console.log(data);
+        await this.getUnitList();
+      }
       this.$store.action.hideLoading();
-    }
+    },
   },
   created() {
     this.getUnitList();

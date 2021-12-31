@@ -15,9 +15,9 @@ module.exports = {
             const result = await Customer.getById(req.params.id);
             if (result.length == 0) {
                 console.log("Get customer: No content")
-                res.status(204).send(result);
+                res.status(204).send({});
             } else {
-                res.status(200).send(result);
+                res.status(200).send(result[0]);
             }
         } catch (error) {
             console.log(error);

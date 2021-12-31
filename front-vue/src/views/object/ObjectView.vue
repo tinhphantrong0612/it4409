@@ -22,8 +22,14 @@
         </div>
       </div>
       <div class="x-btngroup">
-        <button class="x-btn x-btn-secondary xi xi-size-x2 xi-reload" @click="getObjectList()"></button>
-        <button class="x-btn x-btn-danger xi xi-size-x2 xi-close" @click="deleteObject()"></button>
+        <button
+          class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
+          @click="getObjectList()"
+        ></button>
+        <button
+          class="x-btn x-btn-danger xi xi-size-x2 xi-close"
+          @click="deleteObject()"
+        ></button>
       </div>
     </div>
     <div class="x-table-container">
@@ -38,7 +44,7 @@
           <tr
             v-for="obj in objectList"
             :key="obj.Id"
-            :class="{'x-selected-row': selectedObjectId == obj.Id}"
+            :class="{ 'x-selected-row': selectedObjectId == obj.Id }"
             @dblclick="
               objectDetailShow = true;
               selectedObjectId = obj.Id;
@@ -65,24 +71,31 @@
     <object-add
       v-if="objectAddShow"
       :unitList="unitList"
-      @close="objectAddShow = false;"
+      @close="objectAddShow = false"
       @save="
         objectAddShow = false;
         getObjectList();
       "
     ></object-add>
+    <base-inform-popup
+      v-show="errorMessage != ''"
+      :message="errorMessage"
+      @close="errorMessage = ''"
+    ></base-inform-popup>
   </div>
 </template>
 
 <script>
 import ObjectDetail from "./ObjectDetail.vue";
 import ObjectAdd from "./ObjectAdd.vue";
+import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
 
 export default {
   name: "ObjectView",
   components: {
     ObjectDetail,
     ObjectAdd,
+    BaseInformPopup
   },
   data() {
     return {
@@ -91,6 +104,7 @@ export default {
       objectDetailShow: false,
       objectAddShow: false,
       selectedObjectId: "",
+      errorMessage: ''
     };
   },
   computed: {
@@ -101,7 +115,7 @@ export default {
   methods: {
     async getObjectList() {
       this.$store.action.showLoading();
-      this.selectedObjectId = '';
+      this.selectedObjectId = "";
       const response = await fetch(`http://localhost:3000/api/object`);
       const data = await response.json();
       this.objectList = data;
@@ -115,14 +129,21 @@ export default {
     async deleteObject() {
       if (!this.selectedObjectId) return;
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/object/${this.selectedObjectId}`, {
-        method: "DELETE"
-      });
-      const data = await response.json();
-      console.log(data);
-      await this.getObjectList();
+      const response = await fetch(
+        `http://localhost:3000/api/object/${this.selectedObjectId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.status > 300) {
+        this.errorMessage = await response.text();
+      } else {
+        const data = await response.text();
+        console.log(data);
+        await this.getObjectList();
+      }
       this.$store.action.hideLoading();
-    }
+    },
   },
   created() {
     this.getObjectList();

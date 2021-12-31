@@ -1,21 +1,21 @@
 <template>
-  <div class="x-modal" id="modalEdit">
+  <div class="x-modal" id="modalAdd">
     <div class="x-modal-dialog">
       <div class="x-modal-content">
         <div class="x-modal-header">
-          <div class="x-modal-title">Thông tin khách hàng</div>
+          <div class="x-modal-title">Thêm nhà cung cấp</div>
           <button class="xi xi-close" @click="close()"></button>
         </div>
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
             <div class="x-row justify-content-center">
               <div class="x-col x-col-12">
-                <label for="inpName" class="x-label">Tên khách hàng</label>
+                <label for="inpName" class="x-label">Tên nhà cung cấp</label>
                 <input
 									id="inpName"
                   type="text"
                   class="x-input x-input-100"
-                  v-model="customerDetail.displayName"
+                  v-model="supplierDetail.displayName"
                   maxlength="100"
                   :title="errorMessage"
                   :class="{ 'x-input-error': errorMessage != '' }"
@@ -25,7 +25,7 @@
 									id="inpAddress"
                   type="text"
                   class="x-input x-input-100"
-                  v-model="customerDetail.address"
+                  v-model="supplierDetail.address"
                   maxlength="200"
                   :title="errorMessage"
                   :class="{ 'x-input-error': errorMessage != '' }"
@@ -35,7 +35,7 @@
 									id="inpPhone"
                   type="text"
                   class="x-input x-input-100"
-                  v-model="customerDetail.phone"
+                  v-model="supplierDetail.phone"
                   maxlength="100"
                   :title="errorMessage"
                   :class="{ 'x-input-error': errorMessage != '' }"
@@ -45,7 +45,7 @@
 									id="inpEmail"
                   type="text"
                   class="x-input x-input-100"
-                  v-model="customerDetail.email"
+                  v-model="supplierDetail.email"
                   maxlength="100"
                   :title="errorMessage"
                   :class="{ 'x-input-error': errorMessage != '' }"
@@ -55,7 +55,7 @@
 									id="inpMoreInfo"
                   type="text"
                   class="x-input x-input-100"
-                  v-model="customerDetail.moreInfo"
+                  v-model="supplierDetail.moreInfo"
                   maxlength="200"
                   :title="errorMessage"
                   :class="{ 'x-input-error': errorMessage != '' }"
@@ -68,14 +68,8 @@
           </div>
         </div>
         <div class="x-modal-footer">
-          <button
-            class="x-btn x-btn-secondary"
-            id="btnEditFooterClose"
-            @click="close()"
-          >
-            Đóng
-          </button>
-          <button class="x-btn x-btn-primary" @click="save()">Sửa</button>
+          <button class="x-btn x-btn-secondary" @click="close()">Hủy</button>
+          <button class="x-btn x-btn-primary" @click="save()">Thêm</button>
         </div>
       </div>
     </div>
@@ -84,11 +78,11 @@
 
 <script>
 export default {
-  name: "CustomerDetail",
-  props: ["show", "selectedCustomerId"],
+  name: "SupplierAdd",
+  props: ["show"],
   data() {
     return {
-      customerDetail: {
+      supplierDetail: {
         displayName: "",
         address: "",
         phone: "",
@@ -104,40 +98,21 @@ export default {
     },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(
-        `http://localhost:3000/api/customer/${this.selectedCustomerId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.customerDetail),
-        }
-      );
+      const response = await fetch(`http://localhost:3000/api/supplier`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.supplierDetail),
+      });
       const data = await response.text();
       if (response.status == 400) {
-        this.$store.action.hideLoading();
         this.errorMessage = data;
+        this.$store.action.hideLoading();
         return;
       }
       this.$store.action.hideLoading();
       this.$emit("save");
-      this.$emit("close");
-      console.log(data);
-    },
-  },
-  watch: {
-    show: async function () {
-      if (this.show) {
-        this.$store.action.showLoading();
-        this.errorMessage = "";
-        const response = await fetch(
-          `http://localhost:3000/api/customer/${this.selectedCustomerId}`
-        );
-        this.customerDetail = await response.json();
-        this.customerDetail.moreInfo = this.customerDetail.moreInfo === "null" ? '' : this.customerDetail.moreInfo;
-        this.$store.action.hideLoading();
-      }
     },
   },
 };
