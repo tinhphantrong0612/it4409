@@ -24,8 +24,8 @@ class IExportInfo {
     }
 
     static async getById(id) {
-        let query = `SELECT exportInfo.amount,
-                            exportInfo.exportPrice,
+        let query = `SELECT exportInfo.Amount,
+                            exportInfo.ExportPrice,
                             object.DisplayName as ObjectName,
                             export.exportDate as ExportDate,
                             customer.DisplayName as CustomerName,
@@ -44,15 +44,15 @@ class IExportInfo {
      * @param {uuid} objectId
      */
     static async getTotalObjectAmoutAndPrice(objectId) {
-        let query = `SELECT exportPrice, amount FROM exportInfo WHERE objectId = '${objectId}'`;
+        let query = `SELECT ExportPrice, Amount FROM exportInfo WHERE objectId = '${objectId}'`;
         let result = {
-            amount: 0,
-            exportMoney: 0
+            Amount: 0,
+            ExportMoney: 0
         }
         let queryResult = await connection.queryDB(query);
         for (const singleExport of queryResult) {
-            result.amount += singleExport.amount;
-            result.exportMoney += singleExport.exportPrice * singleExport.amount;
+            result.Amount += singleExport.Amount;
+            result.ExportMoney += singleExport.ExportPrice * singleExport.Amount;
         }
         return result;
     }
@@ -64,7 +64,7 @@ class IExportInfo {
      * @returns Số dòng được thêm vào
      */
     static async insertSingleExportInfo(exportId, exportInfo) {
-        let query = `INSERT INTO ${config.database.database}.exportInfo (Id, ObjectId, ExportId, Amount, ExportPrice) VALUES ("${uuidv4()}", '${exportInfo.ObjectId}', '${exportId}', ${exportInfo.Amount}, ${exportInfo.ExportPrice})`;
+        let query = `INSERT INTO exportInfo (Id, ObjectId, ExportId, Amount, ExportPrice) VALUES ("${uuidv4()}", '${exportInfo.ObjectId}', '${exportId}', ${exportInfo.Amount}, ${exportInfo.ExportPrice})`;
         return await connection.queryDB(query);
     }
 
@@ -98,7 +98,7 @@ class IExportInfo {
      * @returns Số dòng bị ảnh hưởng
      */
     static async delete(exportInfoId) {
-        let query = `DELETE FROM ${config.database.database}.exportInfo WHERE Id='${exportInfoId}'`;
+        let query = `DELETE FROM exportInfo WHERE Id='${exportInfoId}'`;
         return await connection.queryDB(query);
     }
 
@@ -108,21 +108,23 @@ class IExportInfo {
      * @returns Tổng số object đã xuất kho
      */
     static async getTotalExportAmount(objectId) {
-        let query = `SELECT amount FROM exportInfo WHERE objectId='${objectId}'`;
+        let query = `SELECT Amount FROM exportInfo WHERE objectId='${objectId}'`;
         const result = await connection.queryDB(query);
-        return result.reduce((a, b) => a + b);
+        result.unshift(0);
+        return result.reduce((a, b) => a + b.Amount);
     }
 
     static async getExportAmount(id) {
-        let query = `SELECT amount FROM exportInfo WHERE Id='${id}'`;
+        let query = `SELECT Amount FROM exportInfo WHERE Id='${id}'`;
         const result = await connection.queryDB(query);
-        return result[0];
+        if (result.length == 0) return 0;
+        else return result[0].Amount;
     }
 
     static async getExportId(exportInfoId) {
         let query = `SELECT ExportId FROM ExportInfo WHERE Id='${exportInfoId}'`;
         let result = await connection.queryDB(query);
-        return result[0];
+        return result[0].ExportId;
     }
 
     static async checkLastExportInfoAndDelete(exportId) {

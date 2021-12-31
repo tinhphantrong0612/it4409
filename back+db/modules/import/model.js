@@ -37,6 +37,11 @@ class IImport {
                                     INNER JOIN unit ON object.UnitId=unit.Id
                                 WHERE importInfo.ImportId='${id}'`;
         let [resultImport, resultImportInfo] = await Promise.all([connection.queryDB(queryImport), connection.queryDB(queryImportInfo)]);
+        if (resultImport.length == 0) return {};
+        else if (resultImportInfo.length == 0) {
+            await IImport.delete(id);
+            return {};
+        }
         let finalResult = resultImport[0];
         finalResult.ImportInfoList = resultImportInfo;
         return finalResult;
@@ -49,7 +54,7 @@ class IImport {
      * @returns Số dòng kết quả được thêm vào
      */
     static async insert(importId, data) {
-        let query = `INSERT INTO ${config.database.database}.import (Id, ImportDate, SupplierId) VALUES ("${importId}", '${data.ImportDate}', '${data.SupplierId}')`;
+        let query = `INSERT INTO import (Id, ImportDate, SupplierId) VALUES ("${importId}", '${data.ImportDate}', '${data.SupplierId}')`;
         return await connection.queryDB(query);
     }
 
@@ -60,7 +65,7 @@ class IImport {
      * @returns Số dòng kết quả được thay thế
      */
     static async update(importId, data) {
-        let query = `UPDATE ${config.database.database}.import SET SupplierId='${data.SupplierId}' WHERE Id='${importId}'`;
+        let query = `UPDATE import SET SupplierId='${data.SupplierId}' WHERE Id='${importId}'`;
         return await connection.queryDB(query);
     }
 
@@ -70,7 +75,7 @@ class IImport {
      * @returns Số dòng bị xóa
      */
     static async delete(importId) {
-        let query = `DELETE FROM ${config.database.database}.import WHERE Id='${importId}'`;
+        let query = `DELETE FROM import WHERE Id='${importId}'`;
         return await connection.queryDB(query);
     }
 

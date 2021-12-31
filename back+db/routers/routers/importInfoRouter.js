@@ -6,6 +6,6 @@ importInfoRouter
     .get('/', importInfoController.getAll)
     .get('/:id', importInfoController.getById)
     .put('/:id', importInfoValidate.emptyValidate, importInfoValidate.amountValidate, importInfoController.put)
-    .delete('/:id', importInfoController.delete);
+    .delete('/:id', importInfoValidate.deleteAmountValidate, importInfoController.delete);
 
 module.exports = importInfoRouter;

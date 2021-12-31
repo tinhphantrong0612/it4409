@@ -36,12 +36,12 @@
           <tr
             v-for="theImport in theImportList"
             :key="theImport.Id"
-            @click="selectedImportInfoId = theImport.Id"
+            @click="selectedImportId = theImport.Id"
             @dblclick="
-              selectedImportInfoId = theImport.Id;
+              selectedImportId = theImport.Id;
               theImportDetailShow = true;
             "
-            :class="{ 'x-selected-row': theImport.Id == selectedImportInfoId }"
+            :class="{ 'x-selected-row': theImport.Id == selectedImportId }"
           >
             <td>{{ theImport.SupplierName }}</td>
             <td>{{ toDDMMYYYY(theImport.ImportDate) }}</td>
@@ -51,48 +51,59 @@
     </div>
     <import-add
       v-if="importAddShow"
+      :supplierList="supplierList"
+      :objectList="objectList"
       @close="importAddShow = false"
       @save="
         importAddShow = false;
         getImportList();
       "
     ></import-add>
-    <!-- <theImport-detail
+    <import-detail
       v-show="theImportDetailShow"
       :show="theImportDetailShow"
-      :selectedImportInfoId="selectedImportInfoId"
+      :selectedImportId="selectedImportId"
+      :supplierList="supplierList"
       @close="
         theImportDetailShow = false;
-        selectedImportInfotId = '';
+        selectedImportId = '';
       "
       @save="
         theImportDetailShow = false;
         getImportList();
       "
-    ></theImport-detail>
+      @error="
+        selectedImportId = '';
+        getImportList();
+        theImportDetailShow = false;
+        errorMessage = $event;
+      "
+    ></import-detail>
     <base-inform-popup
       v-show="errorMessage != ''"
       :message="errorMessage"
       @close="errorMessage = ''"
-    ></base-inform-popup> -->
+    ></base-inform-popup>
   </div>
 </template>
 
 <script>
 import ImportAdd from "./ImportAdd.vue";
-// theImport ImportDetail from "./ImportInfoDetail.vue";
-// theImport BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import ImportDetail from "./ImportDetail.vue";
+import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
 
 export default {
   components: { 
-    ImportAdd, 
-    // ImportInfoDetail, 
-    // BaseInformPopup
+    ImportAdd,
+    ImportDetail,
+    BaseInformPopup
     },
   name: "ImportView",
   data() {
     return {
       theImportList: [],
+      supplierList: [],
+      objectList: [],
       importAddShow: false,
       theImportDetailShow: false,
       selectedImportId: "",
@@ -103,14 +114,27 @@ export default {
     async getImportList() {
       this.$store.action.showLoading();
       this.selectedImportId = "";
-      const response = await fetch(`http://localhost:3000/api/import`);
-      const data = await response.json();
-      this.theImportList = data;
+      this.theImportList = await this.$store.action.getListOfThing('import');
       this.$store.action.hideLoading();
+    },
+    async getSupplierList() {
+      this.supplierList = await this.$store.action.getListOfThing('supplier');
+    },
+    async getObjectList() {
+      this.objectList = await this.$store.action.getListOfThing('object');
     },
     checkNull(data) {
       if (data == "null") return "";
       return data;
+    },
+    toHHMMDDMMYYYY(date) {
+      const theDate = new Date(date);
+        const day = theDate.getDate() < 10 ? `0${theDate.getDate()}` : theDate.getDate();
+        const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
+        const year = theDate.getFullYear();
+        const hour = theDate.getHours() < 10 ? `0${theDate.getHours()}` : theDate.getHours();
+        const minute = theDate.getMinutes() < 10 ? `0${theDate.getMinutes()}` : theDate.getMinutes();
+        return `${hour}:${minute} ${day}/${month}/${year}`;
     },
     toDDMMYYYY(date) {
       const theDate = new Date(date);
@@ -122,6 +146,8 @@ export default {
   },
   created() {
     this.getImportList();
+    this.getSupplierList();
+    this.getObjectList();
   },
 };
 </script>

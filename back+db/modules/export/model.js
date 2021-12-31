@@ -30,6 +30,11 @@ class IExport {
                                     INNER JOIN unit ON unit.Id=object.UnitId
                                 WHERE exportInfo.ExportId='${id}'`;
         let [resultExport, resultExportInfo] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryExportInfo)]);
+        if (resultExport.length == 0) return {};
+        else if (resultExportInfo.length == 0) {
+            await IExport.delete(id);
+            return {};
+        }
         let finalResult = resultExport[0];
         finalResult.ExportInfoList = resultExportInfo;
         return finalResult;
@@ -103,11 +108,13 @@ class IExport {
 
     static async isExportAmountValid(objectId, amount) {
         try {
-            let queryExport = `SELECT amount FROM exportInfo WHERE ObjectId='${objectId}'`;
-            let queryImport = `SELECT amount FROM importInfo WHERE ObjectId='${objectId}'`;
+            let queryExport = `SELECT Amount FROM exportInfo WHERE ObjectId='${objectId}'`;
+            let queryImport = `SELECT Amount FROM importInfo WHERE ObjectId='${objectId}'`;
             let [resultExport, resultImport] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryImport)]);
-            let totalExport = resultExport.reduce((a, b) => a + b);
-            let totalImport = resultImport.reduce((a, b) => a + b);
+            resultExport.unshift(0);
+            resultExport.unshift(0);
+            let totalExport = resultExport.reduce((a, b) => a + b.Amount);
+            let totalImport = resultImport.reduce((a, b) => a + b.Amount);
             if (totalExport + amount > totalImport) throw new Error(false);
             else return true;
         } catch (error) {

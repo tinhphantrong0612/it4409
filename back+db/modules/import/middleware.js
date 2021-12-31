@@ -9,7 +9,7 @@ module.exports = {
         } else {
             let isValid = true;
             for (const importInfo of req.body.ImportInfoList) {
-                if (!importInfo.ObjectId || !importInfo.Barcode || !importInfo.ImportPrice || isNaN(importInfo.ImportPrice) || importInfo.ImportPrice < 0 || !importInfo.Amount || isNaN(importInfo.Amount) || importInfo.Amount <= 0) {
+                if (!importInfo.ObjectId || !/^\d+$/.test(importInfo.Barcode) || isNaN(importInfo.ImportPrice) || importInfo.ImportPrice < 0 || isNaN(importInfo.Amount) || importInfo.Amount <= 0) {
                     isValid = false;
                     break;
                 }
@@ -19,9 +19,12 @@ module.exports = {
         }
     },
     supplierValidate: async (req, res, next) => {
-        let isSupplierExist = await IImport.isSupplierExist(req.body.SupplierId);
-        if (isSupplierExist) next();
-        else res.status(400).send("Nhà cung cấp không tồn tại");
+        if (!req.body.SupplierId) res.status(400).send("Thông tin nhà cung cấp không hợp lệ");
+        else {
+            let isSupplierExist = await IImport.isSupplierExist(req.body.SupplierId);
+            if (isSupplierExist) next();
+            else res.status(400).send("Nhà cung cấp không tồn tại");
+        }
     },
     objectValidate: async (req, res, next) => {
         objectIdList = req.body.ImportInfoList.map(obj => obj.ObjectId);

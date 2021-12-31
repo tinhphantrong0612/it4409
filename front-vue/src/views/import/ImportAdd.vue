@@ -1,68 +1,92 @@
 <template>
   <div class="x-modal" id="modalAdd">
-    <div class="x-modal-dialog">
+    <div class="x-modal-dialog x-table-modal">
       <div class="x-modal-content">
         <div class="x-modal-header">
-          <div class="x-modal-title">Thêm khách hàng</div>
+          <div class="x-modal-title">Nhập hàng</div>
           <button class="xi xi-close" @click="close()"></button>
         </div>
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
             <div class="x-row justify-content-center">
               <div class="x-col x-col-12">
-                <label for="inpName" class="x-label">Tên khách hàng</label>
-                <input
-									id="inpName"
-                  type="text"
-                  class="x-input x-input-100"
-                  v-model="theImportDetail.displayName"
-                  maxlength="100"
-                  :title="errorMessage"
-                  :class="{ 'x-input-error': errorMessage != '' }"
-                />
-								<label for="inpAddress" class="x-label">Địa chỉ</label>
-                <input
-									id="inpAddress"
-                  type="text"
-                  class="x-input x-input-100"
-                  v-model="theImportDetail.address"
-                  maxlength="200"
-                  :title="errorMessage"
-                  :class="{ 'x-input-error': errorMessage != '' }"
-                />
-								<label for="inpPhone" class="x-label">Số điện thoại</label>
-                <input
-									id="inpPhone"
-                  type="text"
-                  class="x-input x-input-100"
-                  v-model="theImportDetail.phone"
-                  maxlength="100"
-                  :title="errorMessage"
-                  :class="{ 'x-input-error': errorMessage != '' }"
-                />
-								<label for="inpEmail" class="x-label">Email</label>
-                <input
-									id="inpEmail"
-                  type="text"
-                  class="x-input x-input-100"
-                  v-model="theImportDetail.email"
-                  maxlength="100"
-                  :title="errorMessage"
-                  :class="{ 'x-input-error': errorMessage != '' }"
-                />
-								<label for="inpMoreInfo" class="x-label">Thông tin thêm</label>
-                <input
-									id="inpMoreInfo"
-                  type="text"
-                  class="x-input x-input-100"
-                  v-model="theImportDetail.moreInfo"
-                  maxlength="200"
-                  :title="errorMessage"
-                  :class="{ 'x-input-error': errorMessage != '' }"
-                />
+                <label for="inpName" class="x-label">Nhà cung cấp</label>
+                <select name="" id="" class="x-input" v-model="newImport.SupplierId">
+                  <option
+                    v-for="supplier in supplierList"
+                    :key="supplier.Id"
+                    :value="supplier.Id"
+                  >
+                    {{ supplier.DisplayName }}
+                  </option>
+                </select>
+                <div>
+                  <table class="x-table x-input-table">
+                    <thead>
+                      <tr>
+                        <th>Mặt hàng</th>
+                        <th>Số lượng</th>
+                        <th>Giá nhập</th>
+                        <th>Barcode</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(importInfo, index) in newImport.ImportInfoList"
+                        :key="index"
+                      >
+                        <td>
+                          <select
+                            name=""
+                            id=""
+                            class="x-input"
+                            v-model="importInfo.ObjectId"
+                          >
+                            <option
+                              v-for="obj in objectList"
+                              :value="obj.Id"
+                              :key="obj.Id"
+                            >
+                              {{ obj.DisplayName }}
+                            </option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            min="1"
+                            class="x-input x-input-table"
+                            v-model="importInfo.Amount"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name=""
+                            min="0"
+                            class="x-input x-input-table"
+                            v-model="importInfo.ImportPrice"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name=""
+                            class="x-input x-input-table"
+                            v-model="importInfo.Barcode"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <span class="x-label-error" v-show="errorMessage != ''">{{
                   errorMessage
                 }}</span>
+                <button
+                  class="x-btn x-btn-primary xi xi-add xi-size-150 w-100"
+                  @click="add()"
+                ></button>
               </div>
             </div>
           </div>
@@ -79,15 +103,19 @@
 <script>
 export default {
   name: "ImportAdd",
-  props: ["show"],
+  props: ["show", "supplierList", "objectList"],
   data() {
     return {
-      theImportDetail: {
-        displayName: "",
-        address: "",
-        phone: "",
-        email: "",
-        moreInfo: "",
+      newImport: {
+        SupplierId: "",
+        ImportInfoList: [
+          {
+            ObjectId: "",
+            Amount: 1,
+            ImportPrice: 0,
+            Barcode: "",
+          },
+        ],
       },
       errorMessage: "",
     };
@@ -96,14 +124,37 @@ export default {
     close() {
       this.$emit("close");
     },
+    add() {
+      let importInfoListSize = this.newImport.ImportInfoList.length;
+      let lastImportInfo =
+        this.newImport.ImportInfoList[importInfoListSize - 1];
+      if (importInfoListSize == 5) {
+        this.errorMessage = "Mỗi đơn hàng chỉ có thể nhập tối đa 5 mặt hàng";
+        return;
+      } else if (
+        !lastImportInfo.ObjectId ||
+        isNaN(Number(lastImportInfo.Amount)) ||
+        isNaN(Number(lastImportInfo.ImportPrice)) ||
+        !/^\d+$/.test(lastImportInfo.Barcode)
+      ) {
+        this.errorMessage =
+          "Cần nhập đúng các dòng phía trước, barcode phải có dạng số";
+      } else
+        this.newImport.ImportInfoList.push({
+          ObjectId: this.objectList[0].Id,
+          Amount: 1,
+          ImportPrice: 0,
+          Barcode: "",
+        });
+    },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/theImport`, {
+      const response = await fetch(`http://localhost:3000/api/import`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(this.theImportDetail),
+        body: JSON.stringify(this.pruneImport()),
       });
       const data = await response.text();
       if (response.status == 400) {
@@ -114,6 +165,28 @@ export default {
       this.$store.action.hideLoading();
       this.$emit("save");
     },
+    pruneImport() {
+      let standardizedImport = {};
+      standardizedImport.SupplierId = this.newImport.SupplierId;
+      standardizedImport.ImportInfoList = [];
+      this.newImport.ImportInfoList.forEach((e) => {
+        if (
+          !(
+            !e.ObjectId ||
+            isNaN(Number(e.Amount)) ||
+            isNaN(Number(e.ImportPrice)) ||
+            !/^\d+$/.test(e.Barcode)
+          )
+        ) {
+          standardizedImport.ImportInfoList.push(e);
+        }
+      });
+      return standardizedImport;
+    },
+  },
+  created() {
+    this.newImport.SupplierId = this.supplierList[0]?.Id;
+    this.newImport.ImportInfoList[0].ObjectId = this.objectList[0]?.Id;
   },
 };
 </script>

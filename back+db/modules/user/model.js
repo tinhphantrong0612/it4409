@@ -8,12 +8,12 @@ class User {
     DisplayName;
 
     static async findOneByUsername(username) {
-        let query = `SELECT * FROM ${config.database.database}.user WHERE username = '${username}'`;
+        let query = `SELECT * FROM user WHERE username = '${username}'`;
         return await connection.queryDB(query);
     }
 
     static async addUser(username, password, displayName) {
-        let query = `INSERT INTO ${config.database.database}.user (username, password, displayName) VALUES ("${username}", "${password}", "${displayName}")`;
+        let query = `INSERT INTO user (username, password, displayName) VALUES ("${username}", "${password}", "${displayName}")`;
         return await connection.queryDB(query);
     }
 

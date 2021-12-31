@@ -8,15 +8,15 @@ class IImportInfo {
      * @param {uuid} objectId
      */
     static async getTotalObjectAmoutAndPrice(objectId) {
-        let query = `SELECT importPrice, amount FROM importInfo WHERE objectId = '${objectId}'`;
+        let query = `SELECT ImportPrice, Amount FROM importInfo WHERE objectId = '${objectId}'`;
         let result = {
-            amount: 0,
-            importMoney: 0
+            Amount: 0,
+            ImportMoney: 0
         }
         let queryResult = await connection.queryDB(query);
         for (const singleImport of queryResult) {
-            result.amount += singleImport.amount;
-            result.importMoney += singleImport.importPrice * singleImport.amount;
+            result.Amount += singleImport.Amount;
+            result.ImportMoney += singleImport.ImportPrice * singleImport.Amount;
         }
         return result;
     }
@@ -27,9 +27,10 @@ class IImportInfo {
      * @returns Tổng số object đã nhập kho
      */
     static async getTotalImportAmount(objectId) {
-        let query = `SELECT amount FROM importInfo WHERE objectId='${objectId}'`;
+        let query = `SELECT Amount FROM importInfo WHERE objectId='${objectId}'`;
         const result = await connection.queryDB(query);
-        return result.reduce((a, b) => a + b);
+        result.unshift(0);
+        return result.reduce((a, b) => a + b.Amount);
     }
 
     static async getAll() {
@@ -52,28 +53,19 @@ class IImportInfo {
 
     static async getById(id) {
         let query = `SELECT
-                        importInfo.ObjectId,
+                        object.DisplayName as ObjectName,
                         importInfo.Barcode,
                         importInfo.ImportPrice,
                         importInfo.Amount,
-                        importInfo.Id,
-                        importInfo.ImportId,
+                        unit.DisplayName as UnitName,
                         import.ImportDate as ImportDate,
                         supplier.DisplayName as SupplierName
                     FROM importInfo
                         INNER JOIN import ON importInfo.ImportId=import.Id
-                        INNER JOIN Supplier ON import.SupplierId=Supplier.Id
-                        INNER JOIN Object ON importInfo.ObjectId=Object.Id
-                        INNER JOIN Unit ON Object.UnitId=Unit.Id
+                        INNER JOIN supplier ON import.SupplierId=supplier.Id
+                        INNER JOIN object ON importInfo.ObjectId=object.Id
+                        INNER JOIN unit ON object.UnitId=unit.Id
                     WHERE importInfo.Id='${id}'`;
-        return await connection.queryDB(query);
-    }
-
-    static async insert(importId, importInfo) {
-        let query = `INSERT INTO importInfo 
-                        (ObjectId, Barcode, ImportPrice, Amount, Id, ImportId) 
-                    VALUES
-                        ('${importInfo.ObjectId}', '${importInfo.Barcode}', ${importInfo.ImportPrice}, ${importInfo.Amount}, '${uuidv4()}', '${importId}')`;
         return await connection.queryDB(query);
     }
 
@@ -94,7 +86,7 @@ class IImportInfo {
      * @returns Số dòng được thêm vào
      */
     static async insertSingleImportInfo(importId, importInfo) {
-        let query = `INSERT INTO ${config.database.database}.importInfo (Id, ObjectId, ImportId, Barcode, Amount, ImportPrice) VALUES ("${uuidv4()}", '${importInfo.ObjectId}', '${importId}', '${importInfo.Barcode}', ${importInfo.Amount}, ${importInfo.ImportPrice})`;
+        let query = `INSERT INTO importInfo (Id, ObjectId, ImportId, Barcode, Amount, ImportPrice) VALUES ("${uuidv4()}", '${importInfo.ObjectId}', '${importId}', '${importInfo.Barcode}', ${importInfo.Amount}, ${importInfo.ImportPrice})`;
         return await connection.queryDB(query);
     }
 
@@ -110,15 +102,21 @@ class IImportInfo {
     }
 
     static async getImportAmount(importInfoId) {
-        let query = `SELECT amount FROM importInfo WHERE Id='${importInfoId}'`;
+        let query = `SELECT Amount FROM importInfo WHERE Id='${importInfoId}'`;
         let result = await connection.queryDB(query);
-        return result[0];
+        return result[0].Amount;
     }
 
     static async getImportId(importInfoId) {
         let query = `SELECT ImportId FROM ImportInfo WHERE Id='${importInfoId}'`;
         let result = await connection.queryDB(query);
-        return result[0];
+        return result[0].ImportId;
+    }
+
+    static async getObjectId(importInfoId) {
+        let query = `SELECT ObjectId FROM ImportInfo WHERE Id='${importInfoId}'`;
+        let result = await connection.queryDB(query);
+        return result[0].ObjectId;
     }
 
     static async checkLastImportInfoAndDelete(importId) {
@@ -126,7 +124,7 @@ class IImportInfo {
         let result = await connection.queryDB(query);
         if (result.length < 1) {
             let deleteQuery = `DELETE FROM Import WHERE Id='${importId}'`;
-            await connection.queryDB(deleteQuery);
+            let result = await connection.queryDB(deleteQuery);
         }
     }
 }

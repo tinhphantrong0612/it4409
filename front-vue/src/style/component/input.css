@@ -44,3 +44,11 @@
     right: 0.75rem;
     cursor: pointer;
 }
+
+.x-input-table[type="number"] {
+    width: 100px;
+}
+
+.x-input-table[type="text"] {
+    width: 150px;
+}

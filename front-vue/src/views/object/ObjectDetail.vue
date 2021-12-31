@@ -47,7 +47,7 @@
                     >Đã nhập:</label
                   >
                   <div class="pr-1 x-col x-col-6 text-right">
-                    {{ objectDetail.importAmount }}
+                    {{ objectDetail.ImportAmount }}
                   </div>
                 </div>
                 <div class="x-row">
@@ -55,7 +55,7 @@
                     >Bán ra:
                   </label>
                   <div class="pr-1 x-col x-col-6 text-right">
-                    {{ objectDetail.exportAmount }}
+                    {{ objectDetail.ExportAmount }}
                   </div>
                 </div>
                 <div class="x-row">
@@ -63,7 +63,7 @@
                     >Còn lại:
                   </label>
                   <div class="pr-1 x-col x-col-6 text-right">
-                    {{ objectDetail.importAmount - objectDetail.exportAmount }}
+                    {{ objectDetail.ImportAmount - objectDetail.ExportAmount }}
                   </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
                       >Chi phí mua vào:</label
                     >
                     <div class="x-col x-col-6 pr-1 text-right">
-                      {{ objectDetail.importMoney }}
+                      {{ toVND(objectDetail.ImportMoney) }}
                     </div>
                   </div>
                   <div class="x-row">
@@ -82,7 +82,7 @@
                       >Giá trị đã bán:</label
                     >
                     <div class="x-col x-col-6 pr-1 text-right">
-                      {{ objectDetail.exportMoney }}
+                      {{ toVND(objectDetail.ExportMoney) }}
                     </div>
                   </div>
                   <div class="x-row">
@@ -90,7 +90,7 @@
                       >Thu về:</label
                     >
                     <div class="x-col x-col-6 pr-1 text-right">
-                      {{ objectDetail.importMoney - objectDetail.exportMoney }}
+                      {{ toVND(objectDetail.ImportMoney - objectDetail.ExportMoney) }}
                     </div>
                   </div>
                 </div>
@@ -125,10 +125,10 @@ export default {
       objectDetail: {
         DisplayName: "",
         UnitId: "",
-        importAmount: 0,
-        exportAmount: 0,
-        importMoney: 0,
-        exportMoney: 0,
+        ImportAmount: 0,
+        ExportAmount: 0,
+        ImportMoney: 0,
+        ExportMoney: 0,
       },
       errorMessage: "",
     };
@@ -160,6 +160,9 @@ export default {
       this.$emit("close");
       console.log(data);
     },
+    toVND(money) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(money);
+    }
   },
   watch: {
     show: async function () {

@@ -16,7 +16,8 @@ module.exports = {
     getById: async (req, res) => {
         try {
             const result = await IImport.getById(req.params.id);
-            res.status(200).send(result);
+            if (!result.ImportInfoList) res.status(204).send(result);
+            else res.status(200).send(result);
         } catch (error) {
             console.log(error);
             res.status(500).send("Internal Server Error");

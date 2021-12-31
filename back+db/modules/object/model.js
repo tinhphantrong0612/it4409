@@ -8,32 +8,32 @@ class IObject {
     unitId;
 
     static async getById(id) {
-        let query = `SELECT * FROM ${config.database.database}.object WHERE Id = '${id}'`;
+        let query = `SELECT * FROM object WHERE Id = '${id}'`;
         return await connection.queryDB(query);
     }
 
     static async findByName(name) {
-        let query = `SELECT * FROM ${config.database.database}.object WHERE displayName = '${name}'`;
+        let query = `SELECT * FROM object WHERE displayName = '${name}'`;
         return await connection.queryDB(query);
     }
 
     static async getAll() {
-        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM ${config.database.database}.object INNER JOIN ${config.database.database}.unit ON ${config.database.database}.object.unitId = ${config.database.database}.unit.Id`;
+        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id`;
         return await connection.queryDB(query);
     }
 
     static async insert(name, unitId) {
-        let query = `INSERT INTO ${config.database.database}.object (displayName, unitId, Id) VALUES ("${name}", ${unitId}, '${uuidv4()}')`;
+        let query = `INSERT INTO object (displayName, unitId, Id) VALUES ("${name}", ${unitId}, '${uuidv4()}')`;
         return await connection.queryDB(query);
     }
 
     static async update(id, name, unitId) {
-        let query = `UPDATE ${config.database.database}.object SET displayName='${name}', unitId=${unitId} WHERE Id='${id}'`;
+        let query = `UPDATE object SET displayName='${name}', unitId=${unitId} WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
 
     static async delete(id) {
-        let query = `DELETE FROM ${config.database.database}.object WHERE Id='${id}'`;
+        let query = `DELETE FROM object WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
 
@@ -67,7 +67,7 @@ class IObject {
      * @returns {Promise<boolean>} true - tồn tại / false không tồn tại
      */
     static async isUnitExist(id) {
-        let query = `SELECT * FROM ${config.database.database}.unit WHERE Id = ${id}`;
+        let query = `SELECT * FROM unit WHERE Id = ${id}`;
         const result = await connection.queryDB(query);
         if (result.length == 0) return false;
         else return true;

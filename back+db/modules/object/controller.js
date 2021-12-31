@@ -20,10 +20,10 @@ module.exports = {
                 res.status(204).send("0");
             } else {
                 let trueResult = result[0];
-                trueResult.importAmount = importInfo.amount;
-                trueResult.exportAmount = exportInfo.amount;
-                trueResult.importMoney = importInfo.importMoney;
-                trueResult.exportMoney = exportInfo.exportMoney;
+                trueResult.ImportAmount = importInfo.Amount;
+                trueResult.ExportAmount = exportInfo.Amount;
+                trueResult.ImportMoney = importInfo.ImportMoney;
+                trueResult.ExportMoney = exportInfo.ExportMoney;
                 res.status(200).send(trueResult);
             }
         } catch (error) {

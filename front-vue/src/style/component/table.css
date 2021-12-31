@@ -19,6 +19,7 @@
     position: sticky;
     top: 0px;
     background-color: var(--x-body-bg);
+    z-index: 3;
 }
 
 .x-table thead tr > th:not(:first-child) {
@@ -38,6 +39,11 @@
 .x-table tbody tr:hover > td {
     opacity: 0.75;
     background-color: var(--x-background-on-hover);
+}
+
+.x-table.x-input-table tr:hover > td {
+    opacity: 1;
+    background-color: var(--x-body-bg) !important;
 }
 
 .x-table .x-selected-row {

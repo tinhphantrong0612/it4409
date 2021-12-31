@@ -73,3 +73,11 @@
 .xi.xi-reload {
     background-image: url('../../assets/content/icon/arrow-clockwise.svg');
 }
+
+.xi.xi-add {
+    background-image: url('../../assets/content/icon/plus-circle-dotted.svg');
+}
+
+.xi.xi-edit {
+    background-image: url('../../assets/content/icon/pencil-square.svg');
+}
