@@ -15,6 +15,7 @@ importRouter
         importValidate.supplierValidate,
         importValidate.objectValidate,
         importController.put)
-    .delete('/:id', importController.delete);
+        //Not allow to delete, auto delete when delete last import info in a single import
+    // .delete('/:id', importController.delete);
 
 module.exports = importRouter;

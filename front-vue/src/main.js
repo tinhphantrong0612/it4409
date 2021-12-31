@@ -8,6 +8,7 @@ import ObjectView from './views/object/ObjectView.vue';
 import UnitView from './views/unit/UnitView.vue';
 import CustomerView from './views/customer/CustomerView.vue';
 import SupplierView from './views/supplier/SupplierView.vue';
+import ImportView from './views/import/ImportView.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,10 @@ const routes = [
   {
     path: '/supplier',
     component: SupplierView
+  },
+  {
+    path: '/import',
+    component: ImportView
   },
   {
     path: '/',

@@ -25,7 +25,7 @@ module.exports = {
     },
     objectValidate: async (req, res, next) => {
         objectIdList = req.body.ImportInfoList.map(obj => obj.ObjectId);
-        let result = await IImport.isMultipleCoexist(objectIdList);
+        let result = await IImport.isMultipleObjectsCoexist(objectIdList);
         if (result) next();
         else res.status(400).send("Mặt hàng không tồn tại");
     }

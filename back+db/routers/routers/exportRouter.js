@@ -5,8 +5,17 @@ const exportValidate = require('../../modules/export/middleware');
 exportRouter
     .get('/', exportController.getAll)
     .get('/:id', exportController.getById)
-    .post('/', exportValidate.emptyValidate, exportController.post)
-    .put('/:id', exportValidate.emptyValidate, exportController.put)
-    .delete('/:id', exportController.delete);
+    .post('/', exportValidate.emptyValidate,
+        exportValidate.customerValidate,
+        exportValidate.objectValidate,
+        exportValidate.isAllExportAmountValid,
+        exportController.post)
+    .put('/:id', exportValidate.emptyValidate,
+        exportValidate.customerValidate,
+        exportValidate.objectValidate,
+        exportValidate.isAllExportAmountValid,
+        exportController.put)
+    // Không cho phép xóa, tự động xóa khi exportInfo cuối cùng bị xóa
+    // .delete('/:id', exportController.delete);
 
 module.exports = exportRouter;

@@ -24,6 +24,20 @@ module.exports = {
         else res.status(400).send("Khách hàng không tồn tại");
     },
     objectValidate: async (req, res, next) => {
-
+        objectIdList = req.body.ExportInfoList.map(obj => obj.ObjectId);
+        let result = await IExport.isMultipleObjectsCoexist(objectIdList);
+        if (result) next();
+        else res.status(400).send("Mặt hàng không tồn tại");
+    },
+    isAllExportAmountValid: async (req, res, next) => {
+        let objectList = req.body.ExportInfoList.map(obj => {
+            return {
+                objectId: obj.ObjectId,
+                amount: obj.Amount
+            }
+        });
+        let result = await IExport.isAllExportAmountValid(objectList);
+        if (result) next();
+        else res.status(400).send("Số lượng mặt hàng không đủ để bán ra");
     }
 }

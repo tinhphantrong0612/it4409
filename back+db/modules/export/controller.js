@@ -16,11 +16,7 @@ module.exports = {
     getById: async (req, res) => {
         try {
             const result = await IExport.getById(req.params.id);
-            if (result.length > 0) {
-                res.status(200).send(result[0]);
-            } else {
-                res.status(204).send({});
-            }
+            res.status(200).send(result);
         } catch (error) {
             console.log(error);
             res.status(500).send("Internal Server Error");
@@ -28,9 +24,6 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            // console.log(req.body);
-            // res.send("1");
-            // return;
             const newId = uuidv4();
             const [saveExportResult, saveExportInfoResult] = await Promise.all([IExport.insert(newId, {
                 ExportDate: Utils.toSQLDate(new Date()),

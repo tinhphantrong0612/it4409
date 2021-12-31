@@ -118,6 +118,21 @@ class IExportInfo {
         const result = await connection.queryDB(query);
         return result[0];
     }
+
+    static async getExportId(exportInfoId) {
+        let query = `SELECT ExportId FROM ExportInfo WHERE Id='${exportInfoId}'`;
+        let result = await connection.queryDB(query);
+        return result[0];
+    }
+
+    static async checkLastExportInfoAndDelete(exportId) {
+        let query = `SELECT * FROM ExportInfo WHERE ExportId='${exportId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length < 1) {
+            let deleteQuery = `DELETE FROM Export WHERE Id='${exportId}'`;
+            await connection.queryDB(deleteQuery);
+        }
+    }
 }
 
 module.exports = IExportInfo;

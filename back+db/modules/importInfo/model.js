@@ -45,7 +45,7 @@ class IImportInfo {
                     FROM importInfo
                         INNER JOIN import ON importInfo.ImportId=import.Id
                         INNER JOIN Supplier ON import.SupplierId=Supplier.Id
-                        INNER JOIN Object ON import.ObjectId=Object.Id
+                        INNER JOIN Object ON importId.ObjectId=Object.Id
                         INNER JOIN Unit ON Object.UnitId=Unit.Id`;
         return await connection.queryDB(query);
     }
@@ -63,13 +63,13 @@ class IImportInfo {
                     FROM importInfo
                         INNER JOIN import ON importInfo.ImportId=import.Id
                         INNER JOIN Supplier ON import.SupplierId=Supplier.Id
-                        INNER JOIN Object ON import.ObjectId=Object.Id
+                        INNER JOIN Object ON importInfo.ObjectId=Object.Id
                         INNER JOIN Unit ON Object.UnitId=Unit.Id
                     WHERE importInfo.Id='${id}'`;
         return await connection.queryDB(query);
     }
 
-    static async post(importId, importInfo) {
+    static async insert(importId, importInfo) {
         let query = `INSERT INTO importInfo 
                         (ObjectId, Barcode, ImportPrice, Amount, Id, ImportId) 
                     VALUES
@@ -77,7 +77,7 @@ class IImportInfo {
         return await connection.queryDB(query);
     }
 
-    static async put(id, importInfo) {
+    static async update(id, importInfo) {
         let query = `UPDATE importInfo SET ObjectId='${importInfo.ObjectId}', Barcode='${importInfo.Barcode}', ImportPrice='${importInfo.ImportPrice}', Amount='${importInfo.Amount}' WHERE Id='${id}'`;
         return await connection.queryDB(query);
     }
@@ -107,6 +107,27 @@ class IImportInfo {
     static async insertImportInfoList(importId, importInfoList) {
         const promises = importInfoList.map(importInfo => IImportInfo.insertSingleImportInfo(importId, importInfo))
         return await Promise.allSettled(promises);
+    }
+
+    static async getImportAmount(importInfoId) {
+        let query = `SELECT amount FROM importInfo WHERE Id='${importInfoId}'`;
+        let result = await connection.queryDB(query);
+        return result[0];
+    }
+
+    static async getImportId(importInfoId) {
+        let query = `SELECT ImportId FROM ImportInfo WHERE Id='${importInfoId}'`;
+        let result = await connection.queryDB(query);
+        return result[0];
+    }
+
+    static async checkLastImportInfoAndDelete(importId) {
+        let query = `SELECT * FROM ImportInfo WHERE ImportId='${importId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length < 1) {
+            let deleteQuery = `DELETE FROM Import WHERE Id='${importId}'`;
+            await connection.queryDB(deleteQuery);
+        }
     }
 }
 

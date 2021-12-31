@@ -7,6 +7,8 @@ const customerRouter = require('../routers/customerRouter');
 const supplierRouter = require('../routers/supplierRouter');
 const exportRouter = require('../routers/exportRouter');
 const importRouter = require('../routers/importRouter');
+const importInfoRouter = require('../routers/importInfoRouter');
+const exportInfoRouter = require('../routers/exportInfoRouter');
 
 api.use('/unit', unitRouter)
     .use('/object', objectRouter)
@@ -14,5 +16,7 @@ api.use('/unit', unitRouter)
     .use('/supplier', supplierRouter)
     .use('/export', exportRouter)
     .use('/import', importRouter)
+    .use('/importInfo', importInfoRouter)
+    .use('/exportInfo', exportInfoRouter)
 
 module.exports = api;

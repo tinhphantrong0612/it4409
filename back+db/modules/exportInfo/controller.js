@@ -38,11 +38,13 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            const result = await IExportInfo.delete(req.params.id);
-            if (result.affectedRows < 1) {
-                res.status(200).send(result.affectedRows);
+            let exportId = await IExportInfo.getExportId(req.params.id);
+            let deleteResult = await IExportInfo.delete(req.params.id);
+            await IExportInfo.checkLastExportInfoAndDelete(exportId);
+            if (deleteResult.affectedRows < 1) {
+                res.status(200).send("0");
             } else {
-                res.status(201).send(result.affectedRows);
+                res.status(201).send("1");
             }
         } catch (error) {
             console.log(error);

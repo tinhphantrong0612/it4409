@@ -9,7 +9,12 @@ class IImport {
      * Get all import record
      */
     static async getAll() {
-        const query = `SELECT * FROM ${config.database.database}.import`;
+        const query = `SELECT import.Id,
+                                import.ImportDate,
+                                import.SupplierId,
+                                supplier.DisplayName as SupplierName
+                        FROM import
+                            INNER JOIN supplier ON import.SupplierId = supplier.Id`;
         return await connection.queryDB(query);
     }
 
@@ -19,8 +24,22 @@ class IImport {
      * @returns 
      */
     static async getById(id) {
-        const query = `SELECT import.Id, import.ImportDate, import.SupplierId,supplier.DisplayName as SupplierName FROM import INNER JOIN supplier ON import.SupplierId = supplier.Id WHERE import.Id = '${id}'`;
-        return await connection.queryDB(query);
+        const queryImport = `SELECT import.Id, import.ImportDate, import.SupplierId FROM import WHERE import.Id = '${id}'`;
+        const queryImportInfo = `SELECT
+                                    importInfo.Barcode,
+                                    importInfo.ImportPrice,
+                                    importInfo.Amount,
+                                    importInfo.Id,
+                                    unit.DisplayName as UnitName,
+                                    object.DisplayName as ObjectName
+                                FROM importInfo
+                                    INNER JOIN object ON importInfo.ObjectId=object.Id
+                                    INNER JOIN unit ON object.UnitId=unit.Id
+                                WHERE importInfo.ImportId='${id}'`;
+        let [resultImport, resultImportInfo] = await Promise.all([connection.queryDB(queryImport), connection.queryDB(queryImportInfo)]);
+        let finalResult = resultImport[0];
+        finalResult.ImportInfoList = resultImportInfo;
+        return finalResult;
     }
 
     /**
@@ -69,7 +88,7 @@ class IImport {
         else return true;
     }
 
-    static async isMultipleCoexist(objectIdList) {
+    static async isMultipleObjectsCoexist(objectIdList) {
         try {
             let promises = objectIdList.map(objectId => IImport.isObjectExist(objectId));
             let results = await Promise.all(promises);
