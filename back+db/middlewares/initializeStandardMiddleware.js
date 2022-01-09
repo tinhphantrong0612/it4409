@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const globalMiddleware = require('./globalMiddleware');
 // const sessionStore = require('./back+db/models/sessionConnection')
 
 /**
@@ -31,10 +32,11 @@ module.exports = function (app) {
          * json body
          */
         .use(express.json())
-        /**
-         * Serve css, content, js
-         */
-        .use('/css', express.static('front/css'))
-        .use('/content', express.static('front/content'))
-        .use('/js', express.static('front/js'));
+        .use(globalMiddleware.trimBody)
+        // /**
+        //  * Serve css, content, js
+        //  */
+        // .use('/css', express.static('front/css'))
+        // .use('/content', express.static('front/content'))
+        // .use('/js', express.static('front/js'));
 }

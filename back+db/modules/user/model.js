@@ -1,56 +1,57 @@
 const connection = require('../databaseConnection');
-const config = require('../../config');
+const role = require('../../enum/role');
 
 class User {
     Id;
     Username;
     Password;
     DisplayName;
+    Role;
+
+    constructor(Id, Username, Password, DisplayName, Role) {
+        this.Id = Id;
+        this.Username = Username;
+        this.Password = Password;
+        this.DisplayName = DisplayName;
+        this.Role = Role;
+    }
+    
+    /**
+     * Tìm kiếm thông tin người dùng trong cơ sở dữ liệu từ Id
+     * @param {Id} id Id người dùng cần lấy thông tin
+     * @returns Trả về thông tin người dùng hoặc null nếu không tìm thấy
+     */
+    static async getOneById(id) {
+        let query = `SELECT Username, Password, DisplayName, Role, Id FROM User WHERE Id=${id}`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return null;
+        else return result[0];
+    }
 
     static async findOneByUsername(username) {
-        let query = `SELECT * FROM user WHERE username = '${username}'`;
-        return await connection.queryDB(query);
+        let query = `SELECT Username, Password, DisplayName, Role, Id FROM user WHERE username = '${username}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return null;
+        else return result[0];
     }
 
     static async addUser(username, password, displayName) {
-        let query = `INSERT INTO user (username, password, displayName) VALUES ("${username}", "${password}", "${displayName}")`;
+        let query = `INSERT INTO user (Username, Password, DisplayName, Role) VALUES ("${username}", "${password}", "${displayName}", ${role.user})`;
         return await connection.queryDB(query);
     }
 
-    static async login(username, password) {
-        try {
-            let user = await User.findOneByUsername(username);
-            if (!user || user.Password !== password) {
-                return {
-                    status: 400,
-                    error: "Tên đăng nhập hoặc mật khẩu không chính xác"
-                }
-            } else {
-                return {
-                    status: 200,
-                    user
-                }
-            }
-        } catch (error) {
-            console.log(error);
-            return {
-                success: 500,
-                error: "Internal Server Error"
-            }
-        }
-    }
-
-    static async register(username, password, displayName) {
-        try {
-            let result = await User.addUser(username, password, displayName);
-            return {
-                status: 200
-            }
-        } catch (error) {
-            return {
-                status: 400,
-                error: error
-            }
+    /**
+     * Kiểm tra thông tin đăng nhập của người dùng
+     * @param {String} username Tên đăng nhập
+     * @param {String} password Mật khẩu
+     * @returns {Promise<User>} Thông tin người dùng đăng nhập thành công, hoặc null nếu thất bại
+     */
+    static async authenticate(username, password) {
+        let user = await User.findOneByUsername(username);
+        if (user == null) return null;
+        else {
+            if (user.password != password) return null;
+            else return user;
         }
     }
 }

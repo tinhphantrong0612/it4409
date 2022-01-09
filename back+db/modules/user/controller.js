@@ -1,21 +1,51 @@
 const path = require('path');
+const { user } = require('../../enum/role');
 const User = require('./model');
 
 module.exports = {
-    get: async (req, res) => {
-        if (req.session.Id) res.redirect('/');
-        else {
-            res.sendFile(path.resolve(__dirname, '../../../front/login.html'));
+    /**
+     * Lấy thông tin người dùng qua Id
+     * @param {Request} req Request từ người dùng
+     * @param {Response} res Response của server
+     */
+    getById: async (req, res) => {
+        let user = await User.getOneById(req.params.id);
+        if (user == null) res.stutus(400).send("Không tìm thấy người dùng yêu cầu");
+        else res.status(200).send(user);
+    },
+    /**
+     * Kiểm tra thông tin đăng nhập của người dùng
+     * @param {Request} req Request từ người dùng
+     * @param {Response} res Response của server
+     */
+    login: async (req, res) => {
+        let user = await User.authenticate(req.body.username, req.body.password);
+        if (user !== null) {
+            req.session.Id = user.Id;
+            req.session.Role = user.Role;
+            res.status(200).send(user.Role);
+        } else {
+            res.status(400).send("Thông tin đăng nhập không chính xác");
         }
     },
-    login: async (req, res) => {
-        if (req.body && req.body.username && req.body.password) {
-            let result = await User.login(req.body.username, req.body.password);
-            if (result.status === 200) {
-                req.session.Id = result.user.Id
+    /**
+     * Đăng ký người dùng mới
+     * @param {Request} req Request từ client
+     * @param {Response} res Phản hồi của Server
+     */
+    register: async (req, res) => {
+        // Kiểm tra người dùng đã tồn tại
+        let user = await User.findOneByUsername(req.body.username);
+        if (user == null) { // Nếu chưa
+            // Thêm người dùng
+            let result = await User.addUser(req.body.username, req.body.password, req.body.displayName);
+            if (result.affectedRows < 1) { // Thêm thất bại
+                res.status(200).send("Có lỗi xảy ra, không thể thêm người dùng");
+            } else {  // Thêm thành công
+                res.status(201).send("Đăng ký thành công");
             }
-            res.status(result.status);
-            res.send(result);
+        } else { // Người dùng đã tồn tại
+            res.status(400).send("Người dùng đã tồn tại");
         }
     }
 }
