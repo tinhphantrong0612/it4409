@@ -22,10 +22,9 @@ storageRouter
         storageValidate.duplicateValidate, // Not duplicated name
         storageController.insert
     )
-    .put('/',
+    .put('/:id',
         userValidate.adminValidate, // Must be admin
         storageValidate.emptyValidate, // Not empty
-        storageValidate.updateEmptyValidate, // Not empty update ver
         storageValidate.updateDuplicateValidate, // Not duplicate update ver
         storageController.update
     ).delete('/:id',

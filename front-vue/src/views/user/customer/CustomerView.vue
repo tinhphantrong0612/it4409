@@ -91,7 +91,7 @@
 <script>
 import CustomerAdd from "./CustomerAdd.vue";
 import CustomerDetail from "./CustomerDetail.vue";
-import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 
 export default {
   components: { CustomerAdd, CustomerDetail, BaseInformPopup },

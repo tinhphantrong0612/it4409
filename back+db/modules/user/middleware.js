@@ -1,6 +1,9 @@
+const role = require('../../enum/role')
+
 module.exports = {
     emptyValidate: (req, res, next) => {
-        if (!req.body || !req.body.username || !req.body.username.trim() || !req.body.password || !req.body.password.trim()) {
+        console.log(req.body);
+        if (!req.body || !req.body.username || !req.body.password) {
             res.status(400).send("Tên đăng nhập và mật khẩu không hợp lệ");
         } else next();
     },
@@ -16,7 +19,7 @@ module.exports = {
      * @param {Function} next Next function in middleware chain
      */
     loggedInValidate: (req, res, next) => {
-        if (!req.session.Id || !req.session.Role) res.status(400).send("Người dùng chưa xác thực danh tính, vui lòng đăng nhập trước khi thực hiện yêu cầu");
+        if (!req.session.Id || req.session.Role === undefined || req.session.Role === null) res.status(401).send("Người dùng chưa xác thực danh tính, vui lòng đăng nhập trước khi thực hiện yêu cầu");
         else next();
     },
     
@@ -27,7 +30,7 @@ module.exports = {
      * @param {Function} next Next function in middleware chain
      */
     adminValidate: (req, res, next) => {
-        if (!req.session.Id || req.session.Role !== role.admin) res.status(400).send("Cần đăng nhập với vai trò quản trị viên.");
+        if (!req.session.Id || req.session.Role !== role.admin) res.status(401).send("Cần đăng nhập với vai trò quản trị viên.");
         else next();
     }
 }

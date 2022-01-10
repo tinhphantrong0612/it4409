@@ -3,7 +3,7 @@ module.exports = {
         if (req.body) {
             let keyArr = Object.keys(req.body);
             for (const key of keyArr) {
-                req.body[key] = req.body[key].trim();
+                if (typeof(req.body[key]) == "string") req.body[key] = req.body[key].trim();
             }
         }
         next();

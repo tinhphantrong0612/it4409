@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const globalMiddleware = require('./globalMiddleware');
+const cors = require('cors');
 // const sessionStore = require('./back+db/models/sessionConnection')
 
 /**
@@ -14,7 +15,11 @@ const globalMiddleware = require('./globalMiddleware');
 module.exports = function (app) {
     // Middleware session, thông tin phiên làm việc của người dùng được lưu trên server (Có thể sử dụng database)
     // xác định bởi cookie từ request, truy cập bằng req.session
-    app.use(session({
+    app.use(cors({
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        origin: 'http://localhost:8080',
+        credentials: true
+    })).use(session({
         resave: false,
         saveUninitialized: false,
         key: 'cookey', // Tên cookie bên phía client
@@ -22,21 +27,8 @@ module.exports = function (app) {
         cookie: {
             maxAge: 86400000 // Thời hạn của cookie
         }
-        // store: sessionStore // Sử dụng database
     }))
-        /**
-         * urlencoded
-         */
         .use(express.urlencoded({ extended: true }))
-        /**
-         * json body
-         */
         .use(express.json())
         .use(globalMiddleware.trimBody)
-        // /**
-        //  * Serve css, content, js
-        //  */
-        // .use('/css', express.static('front/css'))
-        // .use('/content', express.static('front/content'))
-        // .use('/js', express.static('front/js'));
 }

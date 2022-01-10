@@ -5,7 +5,7 @@ const IExportInfo = require('../exportInfo/model');
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const result = await IObject.getAll();
+            const result = await IObject.getAll(req.session.storageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);
@@ -14,7 +14,7 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const [result, importInfo, exportInfo] = await Promise.all([IObject.getById(req.params.id), IImportInfo.getTotalObjectAmoutAndPrice(req.params.id), IExportInfo.getTotalObjectAmoutAndPrice(req.params.id)]);           
+            const [result, importInfo, exportInfo] = await Promise.all([IObject.getById(req.params.id, req.session.storageId), IImportInfo.getTotalObjectImportAmoutAndPrice(req.params.id, req.session.storageId), IExportInfo.getTotalObjectExportAmoutAndPrice(req.params.id, req.session.storageId)]);           
             if (result.length == 0) {
                 console.log("Get IObject: No content");
                 res.status(204).send("0");
@@ -33,7 +33,7 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const result = await IObject.insert(req.body.DisplayName.toUpperCase(), req.body.UnitId);
+            const result = await IObject.insert(req.body.DisplayName.toUpperCase(), req.body.UnitId, req.session.storageId);
             if (result.affectedRows) {
                 res.status(201).send("1");
             } else {
@@ -47,7 +47,7 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const result = await IObject.update(req.params.id, req.body.DisplayName.toUpperCase(), req.body.UnitId);
+            const result = await IObject.update(req.params.id, req.body.DisplayName.toUpperCase(), req.body.UnitId, req.session.storageId);
             if (result.changedRows) {
                 res.status(201).send("1");
             } else {
@@ -61,7 +61,7 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            const result = await IObject.delete(req.params.id);
+            const result = await IObject.delete(req.params.id, req.session.storageId);
             if (result.affectedRows) {
                 res.status(201).send("1");
             } else {

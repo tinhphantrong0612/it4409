@@ -21,14 +21,14 @@ module.exports = {
     supplierValidate: async (req, res, next) => {
         if (!req.body.SupplierId) res.status(400).send("Thông tin nhà cung cấp không hợp lệ");
         else {
-            let isSupplierExist = await IImport.isSupplierExist(req.body.SupplierId);
+            let isSupplierExist = await IImport.isSupplierExist(req.body.SupplierId, req.session.storageId);
             if (isSupplierExist) next();
             else res.status(400).send("Nhà cung cấp không tồn tại");
         }
     },
     objectValidate: async (req, res, next) => {
         objectIdList = req.body.ImportInfoList.map(obj => obj.ObjectId);
-        let result = await IImport.isMultipleObjectsCoexist(objectIdList);
+        let result = await IImport.isMultipleObjectsCoexist(objectIdList, req.session.storageId);
         if (result) next();
         else res.status(400).send("Mặt hàng không tồn tại");
     }

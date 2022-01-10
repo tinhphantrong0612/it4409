@@ -6,13 +6,13 @@ module.exports = {
         else next();
     },
     duplicateValidate: async (req, res, next) => {
-        const duplicateList = await Unit.findByName(req.body.DisplayName.toUpperCase());
+        const duplicateList = await Unit.findByName(req.body.DisplayName.toUpperCase(), req.session.storageId);
         if (duplicateList.length !== 0) {
             res.status(400).send("Lặp đơn vị");
         } else next();
     },
     usedValidate: async (req, res, next) => {
-        const isUsed = await Unit.isUnitIdUsed(req.params.id);
+        const isUsed = await Unit.isUnitIdUsed(req.params.id, req.session.storageId);
         if (isUsed) res.status(400).send("Một số mặt hàng đang sử dụng đơn vị này");
         else next();
     }

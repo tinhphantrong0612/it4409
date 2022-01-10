@@ -62,7 +62,7 @@ module.exports = {
     },
     update: async (req, res) => {
         try {
-            let result = await IStorage.update(req.body.DisplayName.trim(), req.body.Address.trim(), req.body.StorageId);
+            let result = await IStorage.update(req.body.DisplayName, req.body.Address, req.params.id);
             if (result.affectedRows < 1) {
                 res.status(200).send("Không thể sửa thông tin kho hàng");
             } else {

@@ -3,7 +3,7 @@ const IExportInfo = require('./model')
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const result = await IExportInfo.getAll();
+            const result = await IExportInfo.getAll(req.session.storageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);
@@ -12,7 +12,7 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const result = await IExportInfo.getById(req.params.id);
+            const result = await IExportInfo.getById(req.params.id, req.session.storageId);
             if (result.length == 0) {
                 res.status(204).send({});
             } else {
@@ -25,7 +25,7 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const result = await IExportInfo.update(req.params.id, req.body);
+            const result = await IExportInfo.update(req.params.id, req.body,req.session.storageId);
             if (result.affectedRows < 1) {
                 res.status(200).send(result.affectedRows);
             } else {
@@ -38,9 +38,9 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            let exportId = await IExportInfo.getExportId(req.params.id);
-            let deleteResult = await IExportInfo.delete(req.params.id);
-            await IExportInfo.checkLastExportInfoAndDelete(exportId);
+            let exportId = await IExportInfo.getExportId(req.params.id, req.session.storageId);
+            let deleteResult = await IExportInfo.delete(req.params.id, req.session.storageId);
+            await IExportInfo.checkLastExportInfoAndDelete(exportId, req.session.storageId);
             if (deleteResult.affectedRows < 1) {
                 res.status(200).send("0");
             } else {

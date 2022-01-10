@@ -88,7 +88,7 @@
 <script>
 import ObjectDetail from "./ObjectDetail.vue";
 import ObjectAdd from "./ObjectAdd.vue";
-import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 
 export default {
   name: "ObjectView",

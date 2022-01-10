@@ -50,7 +50,7 @@ class User {
         let user = await User.findOneByUsername(username);
         if (user == null) return null;
         else {
-            if (user.password != password) return null;
+            if (user.Password != password) return null;
             else return user;
         }
     }

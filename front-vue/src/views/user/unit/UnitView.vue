@@ -75,7 +75,7 @@
 <script>
 import UnitAdd from "./UnitAdd.vue";
 import UnitDetail from "./UnitDetail.vue";
-import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 
 export default {
   name: "UnitView",

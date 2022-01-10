@@ -1,9 +1,9 @@
 <template>
   <div class="x-content">
     <div class="x-headbar">
-      <div class="x-headbar-title">Danh sách hàng xuất</div>
-      <button class="x-btn x-btn-primary" @click="ExportAddShow = true">
-        Thêm đơn xuất hàng
+      <div class="x-headbar-title">Danh sách hàng nhập</div>
+      <button class="x-btn x-btn-primary" @click="importAddShow = true">
+        Thêm đơn nhập hàng
       </button>
     </div>
     <div class="x-toolbar justify-content-between">
@@ -12,7 +12,7 @@
           <input
             type="search"
             class="x-input x-input-search"
-            placeholder="Nhập tên khách hàng"
+            placeholder="Nhập tên nhà cung cấp"
           />
           <div class="xi xi-search x-input-search-icon xi-size-100"></div>
         </div>
@@ -20,7 +20,7 @@
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getExportList()"
+          @click="getImportList()"
         ></button>
       </div>
     </div>
@@ -28,57 +28,57 @@
       <table class="x-table">
         <thead>
           <tr>
-            <th>Tên khách hàng</th>
-            <th>Ngày xuất hàng</th>
+            <th>Tên nhà cung cấp</th>
+            <th>Ngày nhập hàng</th>
           </tr>
         </thead>
         <tbody id="tableBody">
           <tr
-            v-for="theExport in theExportList"
-            :key="theExport.Id"
-            @click="selectedExportId = theExport.Id"
+            v-for="theImport in theImportList"
+            :key="theImport.Id"
+            @click="selectedImportId = theImport.Id"
             @dblclick="
-              selectedExportId = theExport.Id;
-              theExportDetailShow = true;
+              selectedImportId = theImport.Id;
+              theImportDetailShow = true;
             "
-            :class="{ 'x-selected-row': theExport.Id == selectedExportId }"
+            :class="{ 'x-selected-row': theImport.Id == selectedImportId }"
           >
-            <td>{{ theExport.CustomerName }}</td>
-            <td>{{ toDDMMYYYY(theExport.ExportDate) }}</td>
+            <td>{{ theImport.SupplierName }}</td>
+            <td>{{ toDDMMYYYY(theImport.ImportDate) }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <export-add
-      v-if="ExportAddShow"
-      :customerList="customerList"
+    <import-add
+      v-if="importAddShow"
+      :supplierList="supplierList"
       :objectList="objectList"
-      @close="ExportAddShow = false"
+      @close="importAddShow = false"
       @save="
-        ExportAddShow = false;
-        getExportList();
+        importAddShow = false;
+        getImportList();
       "
-    ></export-add>
-    <export-detail
-      v-show="theExportDetailShow"
-      :show="theExportDetailShow"
-      :selectedExportId="selectedExportId"
-      :customerList="customerList"
+    ></import-add>
+    <import-detail
+      v-show="theImportDetailShow"
+      :show="theImportDetailShow"
+      :selectedImportId="selectedImportId"
+      :supplierList="supplierList"
       @close="
-        theExportDetailShow = false;
-        selectedExportId = '';
+        theImportDetailShow = false;
+        selectedImportId = '';
       "
       @save="
-        theExportDetailShow = false;
-        getExportList();
+        theImportDetailShow = false;
+        getImportList();
       "
       @error="
-        selectedExportId = '';
-        getExportList();
-        theExportDetailShow = false;
+        selectedImportId = '';
+        getImportList();
+        theImportDetailShow = false;
         errorMessage = $event;
       "
-    ></export-detail>
+    ></import-detail>
     <base-inform-popup
       v-show="errorMessage != ''"
       :message="errorMessage"
@@ -88,37 +88,37 @@
 </template>
 
 <script>
-import ExportAdd from './ExportAdd.vue';
-import ExportDetail from "./ExportDetail.vue";
-import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import ImportAdd from "./ImportAdd.vue";
+import ImportDetail from "./ImportDetail.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 
 export default {
   components: { 
-    ExportAdd,
-    ExportDetail,
+    ImportAdd,
+    ImportDetail,
     BaseInformPopup
     },
-  name: "ExportView",
+  name: "ImportView",
   data() {
     return {
-      theExportList: [],
-      customerList: [],
+      theImportList: [],
+      supplierList: [],
       objectList: [],
-      ExportAddShow: false,
-      theExportDetailShow: false,
-      selectedExportId: "",
+      importAddShow: false,
+      theImportDetailShow: false,
+      selectedImportId: "",
       errorMessage: "",
     };
   },
   methods: {
-    async getExportList() {
+    async getImportList() {
       this.$store.action.showLoading();
-      this.selectedExportId = "";
-      this.theExportList = await this.$store.action.getListOfThing('export');
+      this.selectedImportId = "";
+      this.theImportList = await this.$store.action.getListOfThing('import');
       this.$store.action.hideLoading();
     },
-    async getCustomerList() {
-      this.customerList = await this.$store.action.getListOfThing('customer');
+    async getSupplierList() {
+      this.supplierList = await this.$store.action.getListOfThing('supplier');
     },
     async getObjectList() {
       this.objectList = await this.$store.action.getListOfThing('object');
@@ -145,8 +145,8 @@ export default {
     }
   },
   created() {
-    this.getExportList();
-    this.getCustomerList();
+    this.getImportList();
+    this.getSupplierList();
     this.getObjectList();
   },
 };

@@ -34,7 +34,7 @@ class IStorage {
         // Get storage info
         let queryStorageInfo = `SELECT * FROM Storage WHERE Id='${id}'`;
         // Get list users associated with storage
-        let queryUsers = `SELECT User.Username, User.DisplayName, User.Id FROM User INNER JOIN StorageUser ON User.Id=StorageUser.UserId WHERE Storage.StorageId='${id}'`;
+        let queryUsers = `SELECT User.Username, User.DisplayName, User.Id FROM User INNER JOIN StorageUser ON User.Id=StorageUser.UserId WHERE StorageUser.StorageId='${id}'`;
         // Get number of object in storage  
         let queryCountObject = `SELECT Count(Id) as ObjectAmount FROM Object WHERE StorageId='${id}'`;
         // Get number of import in storage

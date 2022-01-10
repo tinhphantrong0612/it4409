@@ -91,7 +91,7 @@
 <script>
 import SupplierAdd from "./SupplierAdd.vue";
 import SupplierDetail from "./SupplierDetail.vue";
-import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 
 export default {
   components: { SupplierAdd, SupplierDetail, BaseInformPopup },

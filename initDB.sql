@@ -8,7 +8,7 @@ CREATE TABLE `it4409`.`storage` (
   `DisplayName` VARCHAR(50) NOT NULL,
   `Address` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`Id`)
-)
+);
 
 -- -----------------------------------------------------
 -- Table `it4409`.`unit`
@@ -72,7 +72,7 @@ CREATE TABLE `it4409`.`exportinfo` (
   `Amount` INT NOT NULL,
   `ExportPrice` int NOT NULL,
   `StorageId` VARCHAR(36) NOT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`Id`),
   FOREIGN KEY (`StorageId`) REFERENCES `it4409`.`storage` (`Id`),
   FOREIGN KEY (`ObjectId`) REFERENCES `it4409`.`object` (`Id`),
   FOREIGN KEY (`ExportId`) REFERENCES `it4409`.`export` (`Id`)
@@ -131,6 +131,7 @@ CREATE TABLE `it4409`.`user` (
   `DisplayName` VARCHAR(50) NOT NULL,
   `Username` VARCHAR(50) NOT NULL,
   `Password` VARCHAR(200) NOT NULL,
+  `Role` INT NOT NULL,
   PRIMARY KEY (`Id`)
 );
 
@@ -141,7 +142,7 @@ CREATE TABLE `it4409`.`storageuser` (
   PRIMARY KEY (`Id`),
   FOREIGN KEY (`StorageId`) REFERENCES `it4409`.`storage` (`Id`),
   FOREIGN KEY (`UserId`) REFERENCES `it4409`.`user` (`Id`)
-)
+);
 
 INSERT INTO `it4409`.`user` (`DisplayName`, `Username`, `Password`, `Role`) VALUES ('Phan Trọng Tình', 'tinh', '1', 0);
 INSERT INTO `it4409`.`user` (`DisplayName`, `Username`, `Password`, `Role`) VALUES ('Bùi Hoàng Long', 'long', '1', 0);

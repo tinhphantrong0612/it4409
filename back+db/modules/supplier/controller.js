@@ -3,7 +3,7 @@ const Supplier = require('./model');
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const result = await Supplier.getAll();
+            const result = await Supplier.getAll(req.session.storageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);
@@ -12,7 +12,7 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const result = await Supplier.getById(req.params.id);
+            const result = await Supplier.getById(req.params.id, req.session.storageId);
             if (result.length == 0) {
                 console.log("Get supplier: No content")
                 res.status(204).send({});
@@ -26,7 +26,7 @@ module.exports = {
     },
     post: async (req, res) => {
         try {
-            const result = await Supplier.post(req.body.displayName, req.body.address, req.body.phone, req.body.email, req.body.moreInfo);
+            const result = await Supplier.post(req.body.displayName, req.body.address, req.body.phone, req.body.email, req.session.storageId, req.body.moreInfo);
             if (result.affectedRows) {
                 res.status(201).send("1");
             } else {
@@ -40,7 +40,7 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const result = await Supplier.put(req.params.id, req.body.displayName, req.body.address, req.body.phone, req.body.email, req.body.moreInfo);
+            const result = await Supplier.put(req.params.id, req.body.displayName, req.body.address, req.body.phone, req.body.email, req.session.storageId, req.body.moreInfo);
             if (result.changedRows) {
                 res.status(201).send("1");
             } else {
@@ -54,7 +54,7 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            const result = await Supplier.delete(req.params.id);
+            const result = await Supplier.delete(req.params.id, req.session.storageId);
             if (result.affectedRows) {
                 res.status(201).send("1");
             } else {

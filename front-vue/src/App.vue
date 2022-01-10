@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <the-header></the-header>
-    <the-navbar></the-navbar>
-    <the-content></the-content>
+    <router-view></router-view>
     <div class="x-spinner" id="spinner" v-show="storedState.loading">
       <div class="x-spinner-page-loading"></div>
     </div>
@@ -10,16 +8,8 @@
 </template>
 
 <script>
-import TheHeader from "./components/layout/TheHeader.vue";
-import TheNavbar from "./components/layout/TheNavbar.vue";
-import TheContent from "./components/layout/TheContent.vue";
 export default {
   name: "App",
-  components: {
-    TheHeader,
-    TheNavbar,
-    TheContent,
-  },
   data() {
     return {
       storedState: this.$store.state

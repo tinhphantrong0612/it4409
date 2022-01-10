@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: "TheContent",
+  name: "TheAdminContent",
 };
 </script>

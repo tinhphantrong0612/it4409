@@ -23,7 +23,7 @@ module.exports = {
         if (user !== null) {
             req.session.Id = user.Id;
             req.session.Role = user.Role;
-            res.status(200).send(user.Role);
+            res.status(200).send(`${user.Role}`);
         } else {
             res.status(400).send("Thông tin đăng nhập không chính xác");
         }

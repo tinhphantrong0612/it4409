@@ -1,6 +1,8 @@
 const express = require('express');
 const api = express.Router();
-const authorizeMiddleware = require('../../middlewares/authorizeMiddleware');
+
+const storageValidate = require('../../modules/storage/middleware');
+
 const unitRouter = require('../routers/unitRouter');
 const objectRouter = require('../routers/objectRouter');
 const customerRouter = require('../routers/customerRouter');
@@ -9,14 +11,16 @@ const exportRouter = require('../routers/exportRouter');
 const importRouter = require('../routers/importRouter');
 const importInfoRouter = require('../routers/importInfoRouter');
 const exportInfoRouter = require('../routers/exportInfoRouter');
+const storageRouter = require('../routers/storageRouter');
 
-api.use('/unit', unitRouter)
-    .use('/object', objectRouter)
-    .use('/customer', customerRouter)
-    .use('/supplier', supplierRouter)
-    .use('/export', exportRouter)
-    .use('/import', importRouter)
-    .use('/importInfo', importInfoRouter)
-    .use('/exportInfo', exportInfoRouter)
+api.use('/unit', storageValidate.chosenStorageValidate, unitRouter)
+    .use('/object', storageValidate.chosenStorageValidate, objectRouter)
+    .use('/customer', storageValidate.chosenStorageValidate, customerRouter)
+    .use('/supplier', storageValidate.chosenStorageValidate, supplierRouter)
+    .use('/export', storageValidate.chosenStorageValidate, exportRouter)
+    .use('/import', storageValidate.chosenStorageValidate, importRouter)
+    .use('/importInfo', storageValidate.chosenStorageValidate, importInfoRouter)
+    .use('/exportInfo', storageValidate.chosenStorageValidate, exportInfoRouter)
+    .use('/storage', storageRouter);
 
 module.exports = api;

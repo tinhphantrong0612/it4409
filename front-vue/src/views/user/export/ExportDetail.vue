@@ -105,7 +105,7 @@
 
 <script>
 import ExportInfoDetail from "./ExportInfoDetail.vue";
-import BaseInformPopup from "../../components/components/BaseInformPopup.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 
 export default {
   name: "ExportDetail",

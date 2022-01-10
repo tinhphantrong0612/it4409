@@ -8,7 +8,7 @@ class IExportInfo {
      * Trả về danh sách Export Info + ExportDate + CustomerName
      * @returns {List<IExportInfo>}
      */
-    static async getAll() {
+    static async getAll(storageId) {
         let query = `SELECT exportInfo.amount,
                             exportInfo.exportPrice,
                             object.DisplayName as ObjectName,
@@ -19,11 +19,12 @@ class IExportInfo {
                         INNER JOIN object ON object.Id=exportInfo.ObjectId
                         INNER JOIN export ON exportInfo.exportId=export.Id
                         INNER JOIN customer ON export.CustomerId=customer.Id
-                        INNER JOIN unit ON unit.Id=object.unitId`;
+                        INNER JOIN unit ON unit.Id=object.unitId
+                    WHERE object.StorageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 
-    static async getById(id) {
+    static async getById(id, storageId) {
         let query = `SELECT exportInfo.Amount,
                             exportInfo.ExportPrice,
                             object.DisplayName as ObjectName,
@@ -35,7 +36,7 @@ class IExportInfo {
                         INNER JOIN export ON exportInfo.exportId=export.Id
                         INNER JOIN customer ON export.CustomerId=customer.Id
                         INNER JOIN unit ON unit.Id=object.unitId
-                    WHERE exportInfo.Id='${id}'`;
+                    WHERE exportInfo.Id='${id}' AND exportInfo.StorageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 
@@ -43,8 +44,8 @@ class IExportInfo {
      * Get total amout of object and price
      * @param {uuid} objectId
      */
-    static async getTotalObjectAmoutAndPrice(objectId) {
-        let query = `SELECT ExportPrice, Amount FROM exportInfo WHERE objectId = '${objectId}'`;
+    static async getTotalObjectExportAmoutAndPrice(objectId, storageId) {
+        let query = `SELECT ExportPrice, Amount FROM exportInfo WHERE objectId = '${objectId}' AND storageId='${storageId}'`;
         let result = {
             Amount: 0,
             ExportMoney: 0
@@ -63,8 +64,8 @@ class IExportInfo {
      * @param {IExportInfo} exportInfo Thông tin hàng xuất
      * @returns Số dòng được thêm vào
      */
-    static async insertSingleExportInfo(exportId, exportInfo) {
-        let query = `INSERT INTO exportInfo (Id, ObjectId, ExportId, Amount, ExportPrice) VALUES ("${uuidv4()}", '${exportInfo.ObjectId}', '${exportId}', ${exportInfo.Amount}, ${exportInfo.ExportPrice})`;
+    static async insertSingleExportInfo(exportId, exportInfo, storageId) {
+        let query = `INSERT INTO exportInfo (Id, ObjectId, ExportId, Amount, ExportPrice, storageId) VALUES ("${uuidv4()}", '${exportInfo.ObjectId}', '${exportId}', ${exportInfo.Amount}, ${exportInfo.ExportPrice}, '${storageId}')`;
         return await connection.queryDB(query);
     }
 
@@ -74,8 +75,8 @@ class IExportInfo {
      * @param {List<IExportInfo>} exportInfoList Danh sách thông tin hàng xuất
      * @returns Mảng kết quả thực hiện thêm
      */
-    static async insertExportInfoList(exportId, exportInfoList) {
-        const promises = exportInfoList.map(exportInfo => IExportInfo.insertSingleExportInfo(exportId, exportInfo))
+    static async insertExportInfoList(exportId, exportInfoList, storageId) {
+        const promises = exportInfoList.map(exportInfo => IExportInfo.insertSingleExportInfo(exportId, exportInfo, storageId))
         return await Promise.allSettled(promises);
     }
 
@@ -85,10 +86,10 @@ class IExportInfo {
      * @param {IExportInfo} exportInfo Thông tin xuất hàng
      * @returns Số dòng bị ảnh hưởng
      */
-    static async update(exportInfoId, exportInfo) {
+    static async update(exportInfoId, exportInfo, storageId) {
         let query = `UPDATE exportInfo
                         SET Amount = ${exportInfo.Amount}, ExportPrice = ${exportInfo.ExportPrice}
-                        WHERE Id='${exportInfoId}'`;
+                        WHERE Id='${exportInfoId}' AND storageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 
@@ -97,8 +98,8 @@ class IExportInfo {
      * @param {uuid} exportInfoId Mã xuất hàng
      * @returns Số dòng bị ảnh hưởng
      */
-    static async delete(exportInfoId) {
-        let query = `DELETE FROM exportInfo WHERE Id='${exportInfoId}'`;
+    static async delete(exportInfoId, storageId) {
+        let query = `DELETE FROM exportInfo WHERE Id='${exportInfoId}' AND StorageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 
@@ -107,31 +108,31 @@ class IExportInfo {
      * @param {uuid} objectId Id của object xuất ra
      * @returns Tổng số object đã xuất kho
      */
-    static async getTotalExportAmount(objectId) {
-        let query = `SELECT Amount FROM exportInfo WHERE objectId='${objectId}'`;
+    static async getTotalExportAmount(objectId, storageId) {
+        let query = `SELECT Amount FROM exportInfo WHERE objectId='${objectId}' AND storageId='${storageId}'`;
         const result = await connection.queryDB(query);
         result.unshift(0);
         return result.reduce((a, b) => a + b.Amount);
     }
 
-    static async getExportAmount(id) {
-        let query = `SELECT Amount FROM exportInfo WHERE Id='${id}'`;
+    static async getExportAmount(id, storageId) {
+        let query = `SELECT Amount FROM exportInfo WHERE Id='${id}' AND StorageId='${storageId}'`;
         const result = await connection.queryDB(query);
         if (result.length == 0) return 0;
         else return result[0].Amount;
     }
 
-    static async getExportId(exportInfoId) {
-        let query = `SELECT ExportId FROM ExportInfo WHERE Id='${exportInfoId}'`;
+    static async getExportId(exportInfoId, storageId) {
+        let query = `SELECT ExportId FROM ExportInfo WHERE Id='${exportInfoId}' AND storageId='${storageId}'`;
         let result = await connection.queryDB(query);
         return result[0].ExportId;
     }
 
-    static async checkLastExportInfoAndDelete(exportId) {
-        let query = `SELECT * FROM ExportInfo WHERE ExportId='${exportId}'`;
+    static async checkLastExportInfoAndDelete(exportId, storageId) {
+        let query = `SELECT * FROM ExportInfo WHERE ExportId='${exportId}' AND storageId='${storageId}'`;
         let result = await connection.queryDB(query);
         if (result.length < 1) {
-            let deleteQuery = `DELETE FROM Export WHERE Id='${exportId}'`;
+            let deleteQuery = `DELETE FROM Export WHERE Id='${exportId}' AND storageId='${storageId}'`;
             await connection.queryDB(deleteQuery);
         }
     }
