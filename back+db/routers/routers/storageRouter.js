@@ -31,6 +31,14 @@ storageRouter
         userValidate.adminValidate, // Must be admin
         storageValidate.emptyStorageValidate, // Storage is completely empty
         storageController.delete
-    );
+    ).get('/nonuser/:id',
+        userValidate.adminValidate,
+        storageController.getNonStorageManager
+    ).post('/user/:id',
+        userValidate.adminValidate,
+        storageValidate.addUserEmptyValidate,
+        storageValidate.storageExistForAdminValidate,
+        storageController.addUserIntoStorage
+    )
 
 module.exports = storageRouter;

@@ -3,6 +3,14 @@ const userController = require('../../modules/user/controller');
 const userValidate = require('../../modules/user/middleware');
 
 userRouter
+    .get('/login', (req, res) => {
+        if (req.session.Id && req.session.Role) {
+            res.status(200).send(`${req.session.Role}`);
+        } else {
+            res.status(400).send("Người dùng chưa đăng nhập")
+        }
+    })
+    .get('/logout', userController.logout)
     .get('/:id',
         userValidate.adminValidate, // Only admin allow
         userController.getById)
@@ -13,12 +21,6 @@ userRouter
         userValidate.emptyValidate, // Check empty body
         userValidate.registerEmptyValidate, // Check register info
         userController.register)
-    .get('/login', (req, res) => {
-        if (req.session.Id && req.session.Role) {
-            res.status(200).send(`${req.session.Role}`);
-        } else {
-            res.status(400).send("Người dùng chưa đăng nhập")
-        }
-    })
+    .post('/storageid', userValidate.loggedInValidate, userController.setStorageId);
 
 module.exports = userRouter;

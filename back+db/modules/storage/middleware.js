@@ -7,7 +7,7 @@ module.exports = {
         } else next();
     },
     chosenStorageValidate: (req, res, next) => {
-        if (!req.session.storageId) res.status(400).send("Vui lòng chọn kho trước");
+        if (!req.session.StorageId) res.status(400).send("Vui lòng chọn kho trước");
         else next();
     },
     duplicateValidate: async (req, res, next) => {
@@ -36,5 +36,19 @@ module.exports = {
             console.log(error);
             res.status(400).send(error);
         }
+    },
+    addUserEmptyValidate: (req, res, next) => {
+        if (!req.body || !req.body.userId) res.status(400).send("Id người dùng không hợp lệ");
+        else next();
+    },
+    storageExistForUserValidate: async (req, res, next) => {
+        let isExist = await IStorage.isStorageExist(req.session.StorageId);
+        if (isExist) next();
+        else res.status(400).send("Kho không tồn tại");
+    },
+    storageExistForAdminValidate: async (req, res, next) => {
+        let isExist = await IStorage.isStorageExist(req.params.id);
+        if (isExist) next();
+        else res.status(400).send("Kho hàng không tồn tại");
     }
 }

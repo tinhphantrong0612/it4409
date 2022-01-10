@@ -30,3 +30,8 @@
     font-size: 10px;
     color: var(--x-danger);
 }
+
+.x-label-success {
+    font-size: 10px;
+    color: var(--x-success);
+}

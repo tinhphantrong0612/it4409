@@ -1,5 +1,6 @@
 const connection = require("../databaseConnection");
 const { v4: uuidv4 } = require('uuid');
+const role = require('../../enum/role');
 
 class IStorage {
     Id;
@@ -121,6 +122,28 @@ class IStorage {
             let result = await connection.queryDB(query);
             if (result.length != 0) throw new Error(`Kho vẫn còn ${thing.displayName}`);
         }
+    }
+
+    /**
+     * Get list of user not associated with storage
+     * @param {uuid} storageId Storage Id
+     * @returns {Promise<List<User>>} List of user not associated with storage
+     */
+     static async getNonStorageManager(storageId) {
+        let query = `SELECT User.Id, User.Username, User.DisplayName, User.Role FROM User WHERE NOT User.Role=${role.admin} AND Id NOT IN (SELECT User.Id FROM User INNER JOIN StorageUser ON StorageUser.StorageId='${storageId}')`;
+        return await connection.queryDB(query);
+    }
+
+    static async addUserIntoStorage(userId, storageId) {
+        let query = `INSERT INTO StorageUser (UserId, StorageId) VALUES (${userId}, '${storageId}')`;
+        return await connection.queryDB(query);
+    }
+
+    static async isStorageExist(storageId) {
+        let query = `SELECT Id FROM Storage WHERE Id='${storageId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
     }
 }
 

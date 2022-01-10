@@ -2,13 +2,12 @@ const role = require('../../enum/role')
 
 module.exports = {
     emptyValidate: (req, res, next) => {
-        console.log(req.body);
         if (!req.body || !req.body.username || !req.body.password) {
             res.status(400).send("Tên đăng nhập và mật khẩu không hợp lệ");
         } else next();
     },
     registerEmptyValidate: (req, res, next) => {
-        if (!req.body.displayName || !req.body.displayName.trim()) {
+        if (!req.body.displayName) {
             res.status(400).send("Tên người dùng không được phép bỏ trống");
         } else next();
     },

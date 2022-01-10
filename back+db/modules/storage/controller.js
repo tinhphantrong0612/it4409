@@ -85,5 +85,25 @@ module.exports = {
             console.log(error);
             res.status(500).send("Internal Server Error");
         }
+    },
+    getNonStorageManager: async (req, res) => {
+        try {
+            let result = await IStorage.getNonStorageManager(req.params.id);
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
+    addUserIntoStorage: async (req, res) => {
+        try {
+            let result = await IStorage.addUserIntoStorage(req.body.userId, req.params.id);
+            if (result.affectedRows < 1) {
+                res.status(200).send("Thêm không thành công");
+            } else res.status(201).send("Thêm thành công");
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
     }
 }

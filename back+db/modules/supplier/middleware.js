@@ -9,13 +9,13 @@ module.exports = {
         else next();
     },
     duplicateValidate: async (req, res, next) => {
-        const duplicateList = await Supplier.findByInfo(req.body.displayName, req.body.address, req.body.phone, req.body.email, req.session.storageId);
+        const duplicateList = await Supplier.findByInfo(req.body.displayName, req.body.address, req.body.phone, req.body.email, req.session.StorageId);
         if (duplicateList.length !== 0) {
             res.status(400).send("Lặp đơn vị");
         } else next();
     },
     usedValidate: async (req, res, next) => {
-        const isUsed = await Supplier.isSupplierIdUsed(req.params.id, req.session.storageId);
+        const isUsed = await Supplier.isSupplierIdUsed(req.params.id, req.session.StorageId);
         if (isUsed) res.status(400).send("Một số đơn nhập hàng đang sử dụng thông tin này");
         else next();
     }

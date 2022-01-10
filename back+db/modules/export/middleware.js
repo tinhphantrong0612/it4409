@@ -19,13 +19,13 @@ module.exports = {
         }
     },
     customerValidate: async (req, res, next) => {
-        let isCustomerExist = await IExport.isCustomerExist(req.body.CustomerId, req.session.storageId);
+        let isCustomerExist = await IExport.isCustomerExist(req.body.CustomerId, req.session.StorageId);
         if (isCustomerExist) next();
         else res.status(400).send("Khách hàng không tồn tại");
     },
     objectValidate: async (req, res, next) => {
         objectIdList = req.body.ExportInfoList.map(obj => obj.ObjectId);
-        let result = await IExport.isMultipleObjectsCoexist(objectIdList, req.session.storageId);
+        let result = await IExport.isMultipleObjectsCoexist(objectIdList, req.session.StorageId);
         if (result) next();
         else res.status(400).send("Mặt hàng không tồn tại");
     },
@@ -36,7 +36,7 @@ module.exports = {
                 amount: obj.Amount
             }
         });
-        let result = await IExport.isAllExportAmountValid(objectList, req.session.storageId);
+        let result = await IExport.isAllExportAmountValid(objectList, req.session.StorageId);
         if (result) next();
         else res.status(400).send("Số lượng mặt hàng không đủ để bán ra");
     }

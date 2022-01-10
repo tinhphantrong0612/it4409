@@ -47,5 +47,21 @@ module.exports = {
         } else { // Người dùng đã tồn tại
             res.status(400).send("Người dùng đã tồn tại");
         }
+    },
+
+    logout: async (req, res) => {
+        // delete user session
+        delete req.session.Id;
+        delete req.session.StorageId;
+        delete req.session.Role;
+        res.status(200).send("Ok");
+    },
+    setStorageId: (req, res) => {
+        if (!req.body || !req.body.storageId) {
+            res.status(400).send("Thiếu thông tin");
+        } else {
+            req.session.StorageId = req.body.storageId;
+            res.status(200).send("Thành công");
+        }
     }
 }

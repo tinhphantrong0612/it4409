@@ -77,7 +77,12 @@
                 </tbody>
               </table>
             </div>
-            <button class="x-btn w-100 x-btn-primary">Add</button>
+            <button
+              class="x-btn w-100 x-btn-primary"
+              @click="storageAddUserShow = true"
+            >
+              Add
+            </button>
           </div>
           <span class="x-label-error" v-show="errorMessage != ''">{{
             errorMessage
@@ -95,13 +100,26 @@
         </div>
       </div>
     </div>
+    <storage-add-user
+      v-if="storageAddUserShow"
+      :selectedStorageId="selectedStorageId"
+      @close="
+        storageAddUserShow = false;
+        getStorageDetails();
+      "
+    ></storage-add-user>
   </div>
 </template>
 
 <script>
+import StorageAddUser from "./StorageAddUser.vue";
+
 export default {
   name: "StorageDetail",
-  props: ["show", "selectedStorageId", "unitList"],
+  props: ["show", "selectedStorageId"],
+  components: {
+    StorageAddUser,
+  },
   data() {
     return {
       storageDetail: {
@@ -113,6 +131,7 @@ export default {
         ObjectCount: 0,
       },
       errorMessage: "",
+      storageAddUserShow: false,
     };
   },
   methods: {
@@ -143,26 +162,23 @@ export default {
       this.$emit("close");
       console.log(data);
     },
-    toVND(money) {
-      return new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(money);
+    async getStorageDetails() {
+      this.$store.action.showLoading();
+      this.errorMessage = "";
+      const response = await fetch(
+        `http://localhost:3000/api/storage/${this.selectedStorageId}`,
+        {
+          credentials: "include",
+        }
+      );
+      this.storageDetail = await response.json();
+      this.$store.action.hideLoading();
     },
   },
   watch: {
     show: async function () {
       if (this.show) {
-        this.$store.action.showLoading();
-        this.errorMessage = "";
-        const response = await fetch(
-          `http://localhost:3000/api/storage/${this.selectedStorageId}`,
-          {
-            credentials: "include",
-          }
-        );
-        this.storageDetail = await response.json();
-        this.$store.action.hideLoading();
+        await this.getStorageDetails();
       }
     },
   },

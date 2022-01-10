@@ -13,14 +13,32 @@ import ExportView from './views/user/export/ExportView.vue';
 
 import StorageView from './views/admin/storage/StorageView.vue';
 
-import LoginView from './views/login/LoginView.vue';
+import AuthorizeIndexView from './views/authorize/AuthorizeIndexView.vue';
+import LoginView from './views/authorize/LoginView.vue';
+import RegisterView from './views/authorize/RegisterView.vue';
+
 import UserIndexView from './views/user/UserIndexView.vue';
 import AdminIndexView from './views/admin/AdminIndexView.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/authorize', component: LoginView },
+  {
+    path: '/authorize', component: AuthorizeIndexView, children: [
+      {
+        path: '/login',
+        component: LoginView
+      },
+      {
+        path: '/register',
+        component: RegisterView
+      },
+      {
+        path: '/',
+        redirect: '/login'
+      }
+    ]
+  },
   {
     path: '/admin',
     component: AdminIndexView,
@@ -62,10 +80,6 @@ const routes = [
       {
         path: '/export',
         component: ExportView
-      },
-      {
-        path: '/',
-        redirect: '/object'
       }
     ]
   },

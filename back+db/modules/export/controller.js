@@ -6,7 +6,7 @@ const IExportInfo = require('../exportInfo/model');
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const result = await IExport.getAll(req.session.storageId);
+            const result = await IExport.getAll(req.session.StorageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);
@@ -15,7 +15,7 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const result = await IExport.getById(req.params.id, req.session.storageId);
+            const result = await IExport.getById(req.params.id, req.session.StorageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);
@@ -25,10 +25,10 @@ module.exports = {
     post: async (req, res) => {
         try {
             const newId = uuidv4();
-            const [saveExportResult, saveExportInfoResult] = await Promise.all([IExport.insert(newId, req.session.storageId, {
+            const [saveExportResult, saveExportInfoResult] = await Promise.all([IExport.insert(newId, req.session.StorageId, {
                 ExportDate: Utils.toSQLDate(new Date()),
                 CustomerId: req.body.CustomerId
-            }), IExportInfo.insertExportInfoList(newId, req.body.ExportInfoList, req.session.storageId)]);
+            }), IExportInfo.insertExportInfoList(newId, req.body.ExportInfoList, req.session.StorageId)]);
             if (saveExportResult.affectedRows < 1) {
                 res.status(200).send("0");
             } else {
@@ -41,7 +41,7 @@ module.exports = {
     },
     put: async (req, res) => {
         try {
-            const result = await IExport.update(req.params.id, req.session.storageId, req.body);
+            const result = await IExport.update(req.params.id, req.session.StorageId, req.body);
             if (result.affectedRows < 1) {
                 res.status(200).send("0");
             } else {
@@ -54,7 +54,7 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            const result = await IExport.delete(req.params.id, req.session.storageId);
+            const result = await IExport.delete(req.params.id, req.session.StorageId);
             if (result.affectedRows < 1) {
                 res.status(200).send("0");
             } else {
