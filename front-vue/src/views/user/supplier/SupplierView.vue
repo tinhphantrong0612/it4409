@@ -109,7 +109,9 @@ export default {
     async getSupplierList() {
       this.$store.action.showLoading();
       this.selectedSupplierId = "";
-      const response = await fetch(`http://localhost:3000/api/supplier`);
+      const response = await fetch(`http://localhost:3000/api/supplier`, {
+        credentials: 'include',
+      });
       const data = await response.json();
       this.supplierList = data;
       this.$store.action.hideLoading();
@@ -121,6 +123,7 @@ export default {
         `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,
         {
           method: "DELETE",
+          credentials: 'include',
         }
       );
       if (response.status > 300) {

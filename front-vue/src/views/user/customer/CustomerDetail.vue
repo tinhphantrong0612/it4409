@@ -111,6 +111,7 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: 'include',
           body: JSON.stringify(this.customerDetail),
         }
       );
@@ -132,7 +133,9 @@ export default {
         this.$store.action.showLoading();
         this.errorMessage = "";
         const response = await fetch(
-          `http://localhost:3000/api/customer/${this.selectedCustomerId}`
+          `http://localhost:3000/api/customer/${this.selectedCustomerId}`, {
+            credentials: 'include'
+          }
         );
         this.customerDetail = await response.json();
         this.customerDetail.moreInfo = this.customerDetail.moreInfo === "null" ? '' : this.customerDetail.moreInfo;

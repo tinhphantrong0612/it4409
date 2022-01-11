@@ -143,6 +143,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(this.pruneExport()),
       });
       const data = await response.text();

@@ -146,6 +146,7 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: 'include',
           body: JSON.stringify(this.objectDetail),
         }
       );
@@ -170,7 +171,8 @@ export default {
         this.$store.action.showLoading();
         this.errorMessage = "";
         const response = await fetch(
-          `http://localhost:3000/api/object/${this.selectedObjectId}`
+          `http://localhost:3000/api/object/${this.selectedObjectId}`,
+          {credentials: 'include',}
         );
         this.objectDetail = await response.json();
         this.$store.action.hideLoading();

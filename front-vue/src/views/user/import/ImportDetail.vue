@@ -149,7 +149,7 @@ export default {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-          },
+          },credentials: 'include',
           body: JSON.stringify(this.theImport),
         }
       );
@@ -163,7 +163,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/import/${this.selectedImportId}`
+        `http://localhost:3000/api/import/${this.selectedImportId}`, {credentials: 'include',}
       );
       if (response.status == 500) {
         this.$emit("error", "Lỗi Server");
@@ -183,6 +183,7 @@ export default {
         `http://localhost:3000/api/importInfo/${importInfoId}`,
         {
           method: "DELETE",
+          credentials: 'include',
         }
       );
       if (response.status == 400) {

@@ -5,12 +5,12 @@
     <the-user-content></the-user-content>
     <div class="x-spinner" v-show="storageId == ''">
       <div class="storage-select-container">
-        <select v-if="storageList.length != 0"
+        <select
+          v-if="storageList.length != 0"
           name=""
           id=""
-          class="x-input storage-select"
+          class="x-input x-combobox w-100 storage-select"
           v-model="storageId"
-          @input="setStorageId()"
         >
           <option
             :value="storage.Id"
@@ -21,12 +21,19 @@
           </option>
         </select>
         <div v-if="storageList.length == 0">
-          <div>Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ quản trị viên</div>
-          <button class="x-btn x-btn-primary" @click="logout()">Đăng xuất</button>
+          <div>
+            Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ quản
+            trị viên
+          </div>
         </div>
         <span class="x-label-error" v-show="errorMessage != ''">{{
-            errorMessage
-          }}</span>
+          errorMessage
+        }}</span>
+        <div>
+          <button class="x-btn x-btn-danger" @click="logout()">
+            Đăng xuất
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -51,8 +58,15 @@ export default {
       storageId: "",
       storedState: store.state,
       storageList: [],
-      errorMessage: ""
+      errorMessage: "",
     };
+  },
+  watch: {
+    storageId: function() {
+      if (this.storageId != '') {
+        this.setStorageId();
+      }
+    }
   },
   methods: {
     async getUserStorageList() {
@@ -72,33 +86,38 @@ export default {
     async logout() {
       this.$store.action.showLoading();
       let response = await fetch(`http://localhost:3000/user/logout`, {
-        credentials: 'include'
-      })
+        credentials: "include",
+      });
       let data = await response.text();
       console.log(data);
       this.$store.action.hideLoading();
-      this.$router.push('/authorize');
+      this.$router.push("/authorize");
     },
     async setStorageId() {
       this.$store.action.showLoading();
-      let response = await fetch(`http://localhost:3000/user/storageid`, {
-        credentials: 'include',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({
-          storageId: this.storageId
-        })
-      })
-      if (response.status == 400) {
-        await this.getUserStorageList();
-        this.errorMessage = await response.text();
+      if (this.storageId == "") {
+        this.errorMessage = "Chưa chọn nhà kho";
+        this.$store.action.showLoading();
       } else {
-        this.$store.action.hideLoading();
-        this.$router.push('/object');
+        let response = await fetch(`http://localhost:3000/user/storageid`, {
+          credentials: "include",
+          headers: {
+            "Content-type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            storageId: this.storageId,
+          }),
+        });
+        if (response.status == 400) {
+          await this.getUserStorageList();
+          this.errorMessage = await response.text();
+        } else {
+          this.$store.action.hideLoading();
+          this.$router.push("/object");
+        }
       }
-    }
+    },
   },
   created() {
     this.getUserStorageList();

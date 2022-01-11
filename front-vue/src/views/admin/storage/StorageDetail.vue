@@ -70,7 +70,7 @@
                     <td>
                       <button
                         class="x-btn x-btn-danger xi xi-close xi-size-150"
-                        @click="remove(User.Id)"
+                        @click="remove(user.Id)"
                       ></button>
                     </td>
                   </tr>
@@ -86,6 +86,9 @@
           </div>
           <span class="x-label-error" v-show="errorMessage != ''">{{
             errorMessage
+          }}</span>
+          <span class="x-label-success" v-show="successMessage != ''">{{
+            successMessage
           }}</span>
         </div>
         <div class="x-modal-footer">
@@ -131,11 +134,14 @@ export default {
         ObjectCount: 0,
       },
       errorMessage: "",
+      successMessage: "",
       storageAddUserShow: false,
     };
   },
   methods: {
     close() {
+      this.errorMessage = "";
+      this.successMessage = "";
       this.$emit("close");
     },
     async save() {
@@ -174,6 +180,25 @@ export default {
       this.storageDetail = await response.json();
       this.$store.action.hideLoading();
     },
+    async remove(userId) {
+      this.$store.action.showLoading();
+      this.errorMessage = "";
+      const response = await fetch(
+        `http://localhost:3000/api/storage/${this.selectedStorageId}/user/${userId}`,
+        {
+          credentials: "include",
+          method: "DELETE"
+        }
+      );
+      if (response.status >= 400) {
+        await this.getStorageDetails();
+        this.errorMessage = await response.text();
+      } else {
+        await this.getStorageDetails();
+        this.successMessage = await response.text();
+      }
+      this.$store.action.hideLoading();
+    }
   },
   watch: {
     show: async function () {

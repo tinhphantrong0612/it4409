@@ -81,7 +81,7 @@ module.exports = {
             } else {
                 res.status(201).send("Xóa thành công");
             }
-        } catch(error) {
+        } catch (error) {
             console.log(error);
             res.status(500).send("Internal Server Error");
         }
@@ -97,10 +97,21 @@ module.exports = {
     },
     addUserIntoStorage: async (req, res) => {
         try {
-            let result = await IStorage.addUserIntoStorage(req.body.userId, req.params.id);
+            let result = await IStorage.addUserIntoStorage(req.params.userId, req.params.storageId);
             if (result.affectedRows < 1) {
                 res.status(200).send("Thêm không thành công");
             } else res.status(201).send("Thêm thành công");
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
+    removeUserFromStorage: async (req, res) => {
+        try {
+            let result = await IStorage.removeUserFromStorage(req.params.userId, req.params.storageId);
+            if (result.affectedRows < 1) {
+                res.status(200).send("Xóa không thành công");
+            } else res.status(201).send("Xóa thành công");
         } catch (error) {
             console.log(error);
             res.status(500).send("Internal Server Error");

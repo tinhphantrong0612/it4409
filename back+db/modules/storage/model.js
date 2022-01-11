@@ -139,10 +139,24 @@ class IStorage {
         return await connection.queryDB(query);
     }
 
+    static async removeUserFromStorage(userId, storageId) {
+        let query = `DELETE FROM StorageUser WHERE UserId=${userId} AND StorageId='${storageId}'`;
+        return await connection.queryDB(query);
+    }
+
     static async isStorageExist(storageId) {
         let query = `SELECT Id FROM Storage WHERE Id='${storageId}'`;
         let result = await connection.queryDB(query);
         if (result.length == 0) return false;
+        else return true;
+    }
+
+    static async isUserValid(userId, storageId) {
+        let queryUserExist = `SELECT Id FROM User WHERE Id=${userId}`;
+        let queryUserInStorage = `SELECT UserId From StorageUser WHERE UserId=${userId} AND StorageId='${storageId}'`;
+        let [resultExist, resultInStorage] = await Promise.all([connection.queryDB(queryUserExist), connection.queryDB(queryUserInStorage)]);
+        if (resultExist.length == 0) return false;
+        else if (resultInStorage.length != 0) return false;
         else return true;
     }
 }

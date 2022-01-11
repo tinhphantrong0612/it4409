@@ -23,7 +23,7 @@ class Customer {
     }
 
     static async getAll(storageId) {
-        let query = `SELECT * FROM customer AND StorageId='${storageId}'`;
+        let query = `SELECT * FROM customer WHERE StorageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 

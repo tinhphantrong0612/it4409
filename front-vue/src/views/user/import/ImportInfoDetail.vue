@@ -85,6 +85,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(this.importInfo),
       });
       if (response.status == 400) {
@@ -98,7 +99,9 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/importInfo/${this.selectedImportInfoId}`
+        `http://localhost:3000/api/importInfo/${this.selectedImportInfoId}`, {
+          credentials: 'include',
+        }
       );
       if (response.status == 400) {
         this.errorMessage = await response.text();

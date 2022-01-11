@@ -141,6 +141,7 @@ export default {
       const response = await fetch(
         `http://localhost:3000/api/export/${this.selectedExportId}`,
         {
+          credentials: 'include',
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -158,7 +159,10 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/export/${this.selectedExportId}`
+        `http://localhost:3000/api/export/${this.selectedExportId}`,
+        {
+          credentials: 'include'
+        }
       );
       if (response.status == 500) {
         this.$emit("error", "Lỗi Server");
@@ -177,6 +181,7 @@ export default {
       const response = await fetch(
         `http://localhost:3000/api/exportInfo/${ExportInfoId}`,
         {
+          credentials: 'include',
           method: "DELETE",
         }
       );

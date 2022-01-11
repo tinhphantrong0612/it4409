@@ -116,13 +116,17 @@ export default {
     async getObjectList() {
       this.$store.action.showLoading();
       this.selectedObjectId = "";
-      const response = await fetch(`http://localhost:3000/api/object`);
+      const response = await fetch(`http://localhost:3000/api/object`, {
+        credentials: 'include',
+      });
       const data = await response.json();
       this.objectList = data;
       this.$store.action.hideLoading();
     },
     async getUnitList() {
-      const response = await fetch(`http://localhost:3000/api/unit`);
+      const response = await fetch(`http://localhost:3000/api/unit`, {
+        credentials: 'include',
+      });
       const data = await response.json();
       this.unitList = data;
     },
@@ -132,6 +136,7 @@ export default {
       const response = await fetch(
         `http://localhost:3000/api/object/${this.selectedObjectId}`,
         {
+          credentials: 'include',
           method: "DELETE",
         }
       );

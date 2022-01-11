@@ -109,7 +109,9 @@ export default {
     async getCustomerList() {
       this.$store.action.showLoading();
       this.selectedCustomerId = "";
-      const response = await fetch(`http://localhost:3000/api/customer`);
+      const response = await fetch(`http://localhost:3000/api/customer`, {
+        credentials: 'include'
+      });
       const data = await response.json();
       this.customerList = data;
       this.$store.action.hideLoading();
@@ -120,6 +122,7 @@ export default {
       const response = await fetch(
         `http://localhost:3000/api/customer/${this.selectedCustomerId}`,
         {
+          credentials: 'include',
           method: "DELETE",
         }
       );

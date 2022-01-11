@@ -11,7 +11,7 @@ class Unit {
     }
 
     static async findByName(name, storageId) {
-        let query = `SELECT * FROM unit WHERE displayName = '${name} AND storageId='${storageId}''`;
+        let query = `SELECT * FROM unit WHERE displayName = '${name}' AND storageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 

@@ -23,7 +23,7 @@ class Supplier {
     }
 
     static async getAll(storageId) {
-        let query = `SELECT * FROM supplier AND storageId='${storageId}'`;
+        let query = `SELECT * FROM supplier WHERE storageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 

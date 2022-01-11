@@ -28,7 +28,7 @@ module.exports = {
      * @param {Response} res Response to client
      * @param {Function} next Next middleware function
      */
-    emptyStorageValidate: async(req, res, next) => {
+    emptyStorageValidate: async (req, res, next) => {
         try {
             await IStorage.checkEmptyStorage(req.params.id);
             next();
@@ -37,9 +37,10 @@ module.exports = {
             res.status(400).send(error);
         }
     },
-    addUserEmptyValidate: (req, res, next) => {
-        if (!req.body || !req.body.userId) res.status(400).send("Id người dùng không hợp lệ");
-        else next();
+    userValidate: async (req, res, next) => {
+        let result = await IStorage.isUserValid(req.params.userId, req.params.storageId);
+        if (result === true) next();
+        else res.status(400).send("Người dùng đã là quản lý kho");
     },
     storageExistForUserValidate: async (req, res, next) => {
         let isExist = await IStorage.isStorageExist(req.session.StorageId);
@@ -47,7 +48,7 @@ module.exports = {
         else res.status(400).send("Kho không tồn tại");
     },
     storageExistForAdminValidate: async (req, res, next) => {
-        let isExist = await IStorage.isStorageExist(req.params.id);
+        let isExist = await IStorage.isStorageExist(req.params.storageId);
         if (isExist) next();
         else res.status(400).send("Kho hàng không tồn tại");
     }

@@ -79,6 +79,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(this.exportInfo),
       });
       if (response.status == 400) {
@@ -92,7 +93,8 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/exportInfo/${this.selectedExportInfoId}`
+        `http://localhost:3000/api/exportInfo/${this.selectedExportInfoId}`,
+        {credentials: 'include'}
       );
       if (response.status == 400) {
         this.errorMessage = await response.text();

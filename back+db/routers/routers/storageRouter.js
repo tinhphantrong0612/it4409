@@ -27,6 +27,10 @@ storageRouter
         storageValidate.emptyValidate, // Not empty
         storageValidate.updateDuplicateValidate, // Not duplicate update ver
         storageController.update
+    ).delete('/:storageId/user/:userId',
+        userValidate.adminValidate,
+        storageValidate.storageExistForAdminValidate,
+        storageController.removeUserFromStorage
     ).delete('/:id',
         userValidate.adminValidate, // Must be admin
         storageValidate.emptyStorageValidate, // Storage is completely empty
@@ -34,10 +38,10 @@ storageRouter
     ).get('/nonuser/:id',
         userValidate.adminValidate,
         storageController.getNonStorageManager
-    ).post('/user/:id',
+    ).post('/:storageId/user/:userId',
         userValidate.adminValidate,
-        storageValidate.addUserEmptyValidate,
         storageValidate.storageExistForAdminValidate,
+        storageValidate.userValidate,
         storageController.addUserIntoStorage
     )
 

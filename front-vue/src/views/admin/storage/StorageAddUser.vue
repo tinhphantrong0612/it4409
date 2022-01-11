@@ -8,14 +8,17 @@
         </div>
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
-            <div
-              class="x-btn x-btn-secondary w-100 m-1"
-              v-for="user in userList"
-              @click="addUserIntoStorage(user.Id)"
-              :key="user.Id"
-            >
-              {{ user.DisplayName }}
+            <div v-if="userList.length > 0">
+              <div
+                class="x-btn x-btn-secondary w-100 m-1"
+                v-for="user in userList"
+                @click="addUserIntoStorage(user.Id)"
+                :key="user.Id"
+              >
+                {{ user.DisplayName }}
+              </div>
             </div>
+            <div v-if="userList.length == 0">Danh sách người dùng không thuộc nhà kho này rỗng</div>
           </div>
           <span class="x-label-error" v-show="errorMessage != ''">{{
             errorMessage
@@ -64,19 +67,15 @@ export default {
       this.$store.action.hideLoading();
     },
     async addUserIntoStorage(userId) {
-        console.log(userId);
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/storage/user/${this.selectedStorageId}`,
+        `http://localhost:3000/api/storage/${this.selectedStorageId}/user/${userId}`,
         {
           credentials: "include",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: userId,
-          }),
+          }
         }
       );
       if (response.status == 400) {

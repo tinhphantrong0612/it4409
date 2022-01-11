@@ -66,6 +66,7 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: 'include',
           body: JSON.stringify(this.unitDetail),
         }
       );
@@ -87,7 +88,9 @@ export default {
         this.$store.action.showLoading();
         this.errorMessage = "";
         const response = await fetch(
-          `http://localhost:3000/api/unit/${this.selectedUnitId}`
+          `http://localhost:3000/api/unit/${this.selectedUnitId}`, {
+            credentials: 'include',
+          }
         );
         this.unitDetail = await response.json();
         this.$store.action.hideLoading();

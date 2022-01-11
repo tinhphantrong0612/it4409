@@ -97,7 +97,9 @@ export default {
     async getUnitList() {
       this.$store.action.showLoading();
       this.selectedUnitId = "";
-      const response = await fetch(`http://localhost:3000/api/unit`);
+      const response = await fetch(`http://localhost:3000/api/unit`, {
+        credentials: 'include',
+      });
       const data = await response.json();
       this.unitList = data;
       this.$store.action.hideLoading();
@@ -109,6 +111,7 @@ export default {
         `http://localhost:3000/api/unit/${this.selectedUnitId}`,
         {
           method: "DELETE",
+          credentials: 'include',
         }
       );
       if (response.status > 300) {

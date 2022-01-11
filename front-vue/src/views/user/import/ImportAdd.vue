@@ -154,6 +154,7 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(this.pruneImport()),
       });
       const data = await response.text();
