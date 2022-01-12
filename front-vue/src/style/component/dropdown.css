@@ -1,0 +1,17 @@
+.x-dropdown-menu {
+    position: relative;
+    width: fit-content;
+}
+
+.x-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    transition: 0.3s;
+    position: relative;
+}
+
+.x-dropdown-item:hover {
+    background: #62a68f;
+    color: white;
+}

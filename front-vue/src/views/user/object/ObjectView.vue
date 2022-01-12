@@ -16,9 +16,10 @@
           <input
             type="search"
             class="x-input x-input-search"
+            v-model = "searchTerm"
             placeholder="Nhập tên hàng hóa"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+          <div class="xi xi-search x-input-search-icon xi-size-100" @click = "getSearchedList()"></div>
         </div>
       </div>
       <div class="x-btngroup">
@@ -101,6 +102,7 @@ export default {
     return {
       objectList: [],
       unitList: [],
+      searchTerm: '',
       objectDetailShow: false,
       objectAddShow: false,
       selectedObjectId: "",
@@ -129,6 +131,20 @@ export default {
       });
       const data = await response.json();
       this.unitList = data;
+    },
+    async getSearchedList() {
+      if (!this.searchTerm) return;
+      this.$store.action.showLoading();
+      this.selectedObjectId = "";
+      const response = await fetch(`http://localhost:3000/api/object/search/${this.searchTerm}`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      if (data.length == 0) 
+        this.errorMessage = `Searched for "${this.searchTerm}" : No result found!`; 
+      else 
+        this.objectList = data;
+      this.$store.action.hideLoading();
     },
     async deleteObject() {
       if (!this.selectedObjectId) return;

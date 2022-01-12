@@ -4,6 +4,7 @@
 /* Import component */
 @import url('./component/button.css');
 @import url('./component/checkbox.css');
+@import url('./component/dropdown.css');
 @import url('./component/icon.css');
 @import url('./component/input.css');
 @import url('./component/label.css');
