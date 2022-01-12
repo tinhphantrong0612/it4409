@@ -124,8 +124,7 @@ export default {
       } else if (
         !lastExportInfo.ObjectId ||
         isNaN(Number(lastExportInfo.Amount)) ||
-        isNaN(Number(lastExportInfo.ExportPrice)) ||
-        !/^\d+$/.test(lastExportInfo.Barcode)
+        isNaN(Number(lastExportInfo.ExportPrice))
       ) {
         this.errorMessage =
           "Cần nhập đúng các dòng phía trước, barcode phải có dạng số";

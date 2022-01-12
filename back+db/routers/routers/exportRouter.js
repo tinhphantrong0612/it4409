@@ -10,9 +10,8 @@ exportRouter
         exportValidate.objectValidate,
         exportValidate.isAllExportAmountValid,
         exportController.post)
-    .put('/:id', exportValidate.emptyValidate,
+    .put('/:id',
         exportValidate.customerValidate,
-        exportValidate.objectValidate,
         exportValidate.isAllExportAmountValid,
         exportController.put)
     // Không cho phép xóa, tự động xóa khi exportInfo cuối cùng bị xóa

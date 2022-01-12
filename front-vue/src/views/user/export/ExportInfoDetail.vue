@@ -1,6 +1,6 @@
 <template>
   <div class="x-modal">
-    <div class="x-modal-dialog"> //z-index ?
+    <div class="x-modal-dialog"> 
       <div class="x-modal-content">
         <div class="x-modal-header">
           <div class="x-modal-title">Thông tin mặt hàng xuất</div>
@@ -22,11 +22,11 @@
               <div class="x-col x-col-6 p-1">
                   <div class="x-row justify-content-between">
                       <label for="" class="x-label">Ngày xuất</label>
-                      <div>{{toDDMMYYYY(exportInfo.exportDate)}}</div>
+                      <div>{{toDDMMYYYY(exportInfo.ExportDate)}}</div>
                   </div>
                   <div class="x-row justify-content-between">
                       <label for="" class="x-label">Khách hàng</label>
-                      <div>{{exportInfo.SupplierName}}</div>
+                      <div>{{exportInfo.CustomerName}}</div>
                   </div>
               </div>
             </div>
@@ -62,7 +62,7 @@ export default {
         ExportPrice: 0,
         Amount: 1,
         ExportDate: new Date(),
-        SupplierName: "",
+        CustomerName: "",
         UnitName: "",
       },
       errorMessage: "",

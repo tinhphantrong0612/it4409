@@ -38,6 +38,6 @@ module.exports = {
         });
         let result = await IExport.isAllExportAmountValid(objectList, req.session.StorageId);
         if (result) next();
-        else res.status(400).send("Số lượng mặt hàng không đủ để bán ra");
+        else res.status(400).send("Số lượng mặt hàng không đủ để xuất ra");
     }
 }

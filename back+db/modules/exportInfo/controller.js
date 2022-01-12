@@ -27,9 +27,9 @@ module.exports = {
         try {
             const result = await IExportInfo.update(req.params.id, req.body,req.session.StorageId);
             if (result.affectedRows < 1) {
-                res.status(200).send(result.affectedRows);
+                res.status(200).send(result);
             } else {
-                res.status(201).send(result.affectedRows);
+                res.status(201).send(result);
             }
         } catch (error) {
             console.log(error);

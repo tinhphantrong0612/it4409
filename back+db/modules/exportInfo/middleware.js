@@ -4,7 +4,6 @@ const IExportInfo = require('./model');
 module.exports = {
     emptyValidate: (req, res, next) => {
         if (!req.body ||
-            !req.body.ObjectId ||
             isNaN(req.body.ExportPrice) ||
             req.body.ExportPrice < 0 ||
             isNaN(req.body.Amount) ||
@@ -14,7 +13,10 @@ module.exports = {
     },
     amountValidate: async (req, res, next) => {
         try {
-            const [totalExportAmount, totalImportAmount, exportAmount] = await Promise.all([IExportInfo.getTotalExportAmount(req.body.ObjectId, req.session.StorageId), IImportInfo.getTotalImportAmount(req.body.ObjectId, req.session.StorageId), IImportInfo.getImportAmount(req.params.id, req.session.StorageId)]);
+            const [totalExportAmount, totalImportAmount, exportAmount] = 
+              await Promise.all([IExportInfo.getTotalExportAmount(req.body.ObjectId, req.session.StorageId), 
+                IImportInfo.getTotalImportAmount(req.body.ObjectId, req.session.StorageId), 
+                IExportInfo.getExportAmount(req.params.id, req.session.StorageId)]);
             if (totalImportAmount >= totalExportAmount - exportAmount + req.body.Amount) next();
             else res.status(400).send("Số lượng xuất ra không hợp lệ, tổng xuất lớn hơn tổng nhập");
         } catch (error) {

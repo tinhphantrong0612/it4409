@@ -23,6 +23,7 @@ class IExport {
         const queryExportInfo = `SELECT exportInfo.Amount,
                                         exportInfo.ExportPrice,
                                         object.DisplayName as ObjectName,
+                                        object.Id as ObjectId,
                                         unit.DisplayName as UnitName,
                                         exportInfo.Id
                                 FROM exportInfo
@@ -58,7 +59,7 @@ class IExport {
      * @returns Số dòng kết quả được thay thế
      */
     static async update(exportId, storageId, data) {
-        let query = `UPDATE export SET CustomerId='${data.CustomerId}' WHERE Id='${exportId}' AND StorageId='${storageId}'`;
+        let query = `UPDATE export SET CustomerId='${data.CustomerId}' WHERE Id='${exportId}' AND storageId='${storageId}'`;
         return await connection.queryDB(query);
     }
 
@@ -108,13 +109,20 @@ class IExport {
 
     static async isExportAmountValid(objectId, amount, storageId) {
         try {
-            let queryExport = `SELECT Amount FROM exportInfo WHERE ObjectId='${objectId}' WHERE storageId='${storageId}'`;
-            let queryImport = `SELECT Amount FROM importInfo WHERE ObjectId='${objectId}' WHERE storageId='${storageId}'`;
-            let [resultExport, resultImport] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryImport)]);
+            console.log(objectId);
+            console.log(amount);
+            console.log(storageId);
+            let queryExport = `SELECT Amount FROM exportInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
+            let queryImport = `SELECT Amount FROM importInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
+            let [resultExport, resultImport] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryImport)]);   
             resultExport.unshift(0);
-            resultExport.unshift(0);
+            resultImport.unshift(0);
+            console.log(resultExport);
+            console.log(resultImport);
             let totalExport = resultExport.reduce((a, b) => a + b.Amount);
             let totalImport = resultImport.reduce((a, b) => a + b.Amount);
+            console.log(totalExport);
+            console.log(totalImport);
             if (totalExport + amount > totalImport) throw new Error(false);
             else return true;
         } catch (error) {
