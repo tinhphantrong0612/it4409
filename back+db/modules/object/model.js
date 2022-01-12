@@ -1,6 +1,6 @@
 const connection = require('../databaseConnection');
 const config = require('../../config');
-const {v4: uuidv4} = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 
 class IObject {
     Id;
@@ -19,6 +19,11 @@ class IObject {
 
     static async getAll(storageId) {
         let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}'`;
+        return await connection.queryDB(query);
+    }
+
+    static async search(term, storageId) {
+        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}' AND object.DisplayName LIKE '%${term}%'`;
         return await connection.queryDB(query);
     }
 
@@ -54,7 +59,7 @@ class IObject {
      * @param {uuid} objectId Mã mặt hàng
      * @returns {Promise<boolean>} true - Đã sử dụng/false - Chưa sử dụng
      */
-     static async isImported(objectId, storageId) {
+    static async isImported(objectId, storageId) {
         let query = `SELECT Id FROM importInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
         const result = await connection.queryDB(query);
         if (result.length == 0) return false;

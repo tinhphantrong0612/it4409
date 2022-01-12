@@ -14,7 +14,7 @@ module.exports = {
     },
     getById: async (req, res) => {
         try {
-            const [result, importInfo, exportInfo] = await Promise.all([IObject.getById(req.params.id, req.session.StorageId), IImportInfo.getTotalObjectImportAmoutAndPrice(req.params.id, req.session.StorageId), IExportInfo.getTotalObjectExportAmoutAndPrice(req.params.id, req.session.StorageId)]);           
+            const [result, importInfo, exportInfo] = await Promise.all([IObject.getById(req.params.id, req.session.StorageId), IImportInfo.getTotalObjectImportAmoutAndPrice(req.params.id, req.session.StorageId), IExportInfo.getTotalObjectExportAmoutAndPrice(req.params.id, req.session.StorageId)]);
             if (result.length == 0) {
                 console.log("Get IObject: No content");
                 res.status(204).send("0");
@@ -26,6 +26,15 @@ module.exports = {
                 trueResult.ExportMoney = exportInfo.ExportMoney;
                 res.status(200).send(trueResult);
             }
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
+    search: async (req, res) => {
+        try {
+            const result = await IObject.search(req.params.term, req.session.StorageId);
+            res.status(200).send(result);
         } catch (error) {
             console.log(error);
             res.status(500).send("Internal Server Error");
