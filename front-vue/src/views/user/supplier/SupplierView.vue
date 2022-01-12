@@ -7,15 +7,20 @@
       </button>
     </div>
     <div class="x-toolbar justify-content-between">
-      <div class="x-searchgroup">
-        <div class="x-input-searchbox">
-          <input
-            type="search"
-            class="x-input x-input-search"
-            placeholder="Nhập tên nhà cung cấp"
-          />
-          <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+      <div class = "x-toolbar">
+        <div class="x-searchgroup">
+          <div class="x-input-searchbox">
+            <input
+              type="search"
+              class="x-input x-input-search"
+              placeholder="Nhập tên nhà cung cấp"
+            />
+            <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+          </div>
         </div>
+        <dropdown-menu id="dropdownmenu1" :arrays="dropdownItems">
+            Search by : {{this.searchFilter}} <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+        </dropdown-menu>
       </div>
       <div class="x-btngroup">
         <button
@@ -92,9 +97,10 @@
 import SupplierAdd from "./SupplierAdd.vue";
 import SupplierDetail from "./SupplierDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.vue";
 
 export default {
-  components: { SupplierAdd, SupplierDetail, BaseInformPopup },
+  components: { SupplierAdd, SupplierDetail, BaseInformPopup, DropdownMenu },
   name: "SupplierView",
   data() {
     return {
@@ -103,6 +109,18 @@ export default {
       supplierDetailShow: false,
       selectedSupplierId: "",
       errorMessage: "",
+      searchTerm: "",
+      searchFilter: "auto",
+      dropdownItems: [
+         {
+          text: 'Tên nhà cung cấp',
+          onClick: () => this.searchFilter = "name",
+        },
+        {
+          text: 'Số điện thoại',
+          onClick: () => this.searchFilter = "phone",
+        },
+      ]
     };
   },
   methods: {
