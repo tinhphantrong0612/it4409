@@ -15,7 +15,7 @@ userRouter
     })
     .get('/logout', userController.logout)
     .get('/:id',
-        userValidate.adminValidate, // Only admin allow
+        userValidate.isAdminValidate, // Only admin allow
         userController.getById)
     .post('/login',
         userValidate.emptyValidate, // Check empty body

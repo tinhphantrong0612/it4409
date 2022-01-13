@@ -3,7 +3,7 @@
     <the-user-header :displayName="this.displayName"></the-user-header>
     <the-user-navbar></the-user-navbar>
     <the-user-content></the-user-content>
-    <div class="x-spinner" v-show="storageId == ''">
+    <div class="x-spinner" v-show="storageId == '' && !isMessageListShow">
       <div class="storage-select-container">
         <div class="x-modal-header">
           <div class="x-modal-title">Chọn nhà kho</div>
@@ -35,12 +35,14 @@
           }}</span>
         </div>
         <div class="x-modal-footer">
+          <button class="x-btn x-btn-secondary" @click="isMessageListShow = true">Liên hệ quản trị viên</button>
           <button class="x-btn x-btn-danger" @click="logout()">
             Đăng xuất
           </button>
         </div>
       </div>
     </div>
+    <message-list v-if="isMessageListShow" @close="isMessageListShow = false"></message-list>
   </div>
 </template>
 
@@ -48,6 +50,8 @@
 import TheUserHeader from "../../components/layout/user/TheUserHeader.vue";
 import TheUserNavbar from "../../components/layout/user/TheUserNavbar.vue";
 import TheUserContent from "../../components/layout/user/TheUserContent.vue";
+
+import MessageList from './message/MessageList.vue';
 
 import { store } from "../../script/store";
 
@@ -57,6 +61,7 @@ export default {
     TheUserHeader,
     TheUserNavbar,
     TheUserContent,
+    MessageList
   },
   data() {
     return {
@@ -65,6 +70,7 @@ export default {
       storedState: store.state,
       storageList: [],
       errorMessage: "",
+      isMessageListShow: false
     };
   },
   watch: {

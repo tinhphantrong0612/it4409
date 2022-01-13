@@ -1,4 +1,4 @@
-const role = require('../../enum/role').role;
+const role = require('../../enum/enum').role;
 const storageController = require('../../modules/storage/controller');
 const storageRouter = require('express').Router();
 const storageValidate = require('../../modules/storage/middleware');

@@ -49,3 +49,7 @@
 .x-table .x-selected-row {
     background-color: red;
 }
+
+td > button {
+    margin: 2px;
+}

@@ -1,4 +1,4 @@
-const role = require('../../enum/role').role;
+const role = require('../../enum/enum').role;
 const messageController = require('../../modules/message/controller');
 const messageRouter = require('express').Router();
 const messageValidate = require('../../modules/message/middleware');

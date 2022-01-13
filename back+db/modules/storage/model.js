@@ -1,6 +1,6 @@
 const connection = require("../databaseConnection");
 const { v4: uuidv4 } = require('uuid');
-const role = require('../../enum/role').role;
+const role = require('../../enum/enum').role;
 
 class IStorage {
     Id;

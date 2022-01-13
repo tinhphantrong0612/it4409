@@ -1,4 +1,4 @@
-const role = require('../../enum/role').role;
+const role = require('../../enum/enum').role;
 
 module.exports = {
     emptyValidate: (req, res, next) => {
