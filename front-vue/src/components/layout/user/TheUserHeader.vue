@@ -1,7 +1,7 @@
 <template>
   <div class="x-header">
     <div class="x-app-name">
-      <div class="xi xi-list xi-size-x2" v-if="this.smallView" @click="clickNavbar()"></div>
+      <div class="xi xi-list xi-size-x2" v-if="this.showNavbarIcon" @click="clickNavbar()"></div>
       Quản lý kho hàng</div>
     <div class="x-header-control">
       <div class="x-user">Hello, {{this.displayName}}</div>
@@ -16,7 +16,7 @@ export default {
   name: "TheUserHeader",
   props: {
     displayName: String,
-    smallView: Boolean
+    showNavbarIcon: Boolean
   },
   methods: {
     clickNavbar() {

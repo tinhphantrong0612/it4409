@@ -1,11 +1,14 @@
 <template>
   <div class="no-line-break">
     <the-user-header 
-      :smallView="this.smallView" 
+      :showNavbarIcon="this.viewState" 
       :displayName="this.displayName"
       @click="showNav = !showNav">
     </the-user-header>
-    <the-user-navbar :show="this.showNav"></the-user-navbar>
+    <the-user-navbar 
+      :show="this.showNav"
+      :viewState="this.viewState">
+    </the-user-navbar>
     <the-user-content></the-user-content>
     <div class="x-spinner" v-show="storageId == '' && !isMessageListShow">
       <div class="storage-select-container">
@@ -69,7 +72,7 @@ export default {
   },
   data() {
     return {
-      smallView: false,
+      viewState: 0,
       showNav: true,
       storageId: "",
       displayName: "",
@@ -85,15 +88,25 @@ export default {
         this.setStorageId();
       }
     },
-    smallView: function() {
-      if (!this.smallView) {
+    viewState: function() {
+      if (this.viewState == 0) {
         this.showNav = true;
       }
     }
   },
   methods: {
     handleView() {
-      this.smallView = window.innerWidth <= 990;
+      if (window.innerWidth <= 1200) {
+        if (window.innerWidth <= 800) {
+          this.viewState = 2;
+        }
+        else {
+          this.viewState = 1;
+        }
+      }
+      else {
+        this.viewState = 0;
+      }
     },
     async getUserInformation() {
       let response = await fetch(`http://localhost:3000/user/login`, {

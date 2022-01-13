@@ -85,3 +85,31 @@
 .xi.xi-list {
     background-image: url('../../assets/content/icon/list.svg');
 }
+
+.xi.xi-package {
+    background-image: url('../../assets/content/icon/package.svg');
+}
+
+.xi.xi-scale {
+    background-image: url('../../assets/content/icon/scale.svg');
+}
+
+.xi.xi-customer {
+    background-image: url('../../assets/content/icon/customer.svg');
+}
+
+.xi.xi-supplier {
+    background-image: url('../../assets/content/icon/supplier.svg');
+}
+
+.xi.xi-import {
+    background-image: url('../../assets/content/icon/import.svg');
+}
+
+.xi.xi-export {
+    background-image: url('../../assets/content/icon/export.svg');
+}
+
+.xi.xi-storage {
+    background-image: url('../../assets/content/icon/storage.svg');
+}

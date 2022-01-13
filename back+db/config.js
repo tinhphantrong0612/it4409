@@ -4,7 +4,7 @@ const config = {
         port: 3306,
         user: 'root',
         // password: 'root',
-        password: 'mysql',
+        // password: 'mysql',
         database: 'it4409'
     }
 }
