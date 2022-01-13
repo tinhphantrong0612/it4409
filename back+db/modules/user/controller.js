@@ -1,5 +1,5 @@
 const path = require('path');
-const { user } = require('../../enum/role');
+const { user } = require('../../enum/role').role;
 const User = require('./model');
 
 module.exports = {

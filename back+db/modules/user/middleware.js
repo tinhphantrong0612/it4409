@@ -1,4 +1,4 @@
-const role = require('../../enum/role')
+const role = require('../../enum/role').role;
 
 module.exports = {
     emptyValidate: (req, res, next) => {
@@ -28,8 +28,13 @@ module.exports = {
      * @param {Response} res Response
      * @param {Function} next Next function in middleware chain
      */
-    adminValidate: (req, res, next) => {
+    isAdminValidate: (req, res, next) => {
         if (!req.session.Id || req.session.Role !== role.admin) res.status(401).send("Cần đăng nhập với vai trò quản trị viên.");
+        else next();
+    },
+
+    isUserValidate: (req, res, next) => {
+        if (!req.session.Id || req.session.Role !== role.user) res.status(401).send("Cần đăng nhập với vai trò người dùng");
         else next();
     }
 }

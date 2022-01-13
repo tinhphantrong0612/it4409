@@ -144,6 +144,17 @@ CREATE TABLE `it4409`.`storageuser` (
   FOREIGN KEY (`UserId`) REFERENCES `it4409`.`user` (`Id`)
 );
 
+CREATE TABLE `it4409`.`message` (
+  `Id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `UserId` INT NOT NULL,
+  `Message` VARCHAR(255) NOT NULL,
+  `Response` VARCHAR (255),
+  `MessageStatus` INT NOT NULL,
+  `ResponseStatus` INT NOT NULL,
+  `SentAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`UserId`) REFERENCES `it4409`.`user` (`Id`)
+)
+
 INSERT INTO `it4409`.`user` (`DisplayName`, `Username`, `Password`, `Role`) VALUES ('Phan Trọng Tình', 'tinh', '1', 0);
 INSERT INTO `it4409`.`user` (`DisplayName`, `Username`, `Password`, `Role`) VALUES ('Bùi Hoàng Long', 'long', '1', 0);
 INSERT INTO `it4409`.`user` (`DisplayName`, `Username`, `Password`, `Role`) VALUES ('Lưu Hồng Đức', 'duc', '1', 0);

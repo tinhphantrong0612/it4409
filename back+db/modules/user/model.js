@@ -1,5 +1,5 @@
 const connection = require('../databaseConnection');
-const role = require('../../enum/role');
+const role = require('../../enum/role').role;
 
 class User {
     Id;
