@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-user-header></the-user-header>
+    <the-user-header :displayName = 'this.displayName'></the-user-header>
     <the-user-navbar></the-user-navbar>
     <the-user-content></the-user-content>
     <div class="x-spinner" v-show="storageId == ''">
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       storageId: "",
+      displayName: "",
       storedState: store.state,
       storageList: [],
       errorMessage: "",
@@ -69,6 +70,13 @@ export default {
     }
   },
   methods: {
+    async getUserInformation() {
+      let response = await fetch(`http://localhost:3000/user/login`, {
+        credentials: 'include',
+      });
+      var userInfo = await response.json();
+      this.displayName = userInfo['DisplayName'];
+    },
     async getUserStorageList() {
       this.$store.action.showLoading();
       this.errorMessage = "";
@@ -121,6 +129,7 @@ export default {
   },
   created() {
     this.getUserStorageList();
+    this.getUserInformation();
   },
 };
 </script>

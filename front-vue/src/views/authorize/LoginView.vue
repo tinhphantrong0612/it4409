@@ -33,10 +33,11 @@ export default {
           password: this.password,
         }),
       });
-      let data = await response.text();
-      if (data == 0) {
+      if (response.status == 400) return;
+      let user = await response.json();
+      if (user['Role'] == 0) {
         this.$router.push("/admin");
-      } else if (data == 1) {
+      } else if (user['Role'] == 1) {
         this.$router.push("/app");
       }
     },
