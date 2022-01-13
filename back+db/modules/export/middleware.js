@@ -9,7 +9,7 @@ module.exports = {
         } else {
             let isValid = true;
             for (const exportInfo of req.body.ExportInfoList) {
-                if (!exportInfo.ObjectId || !exportInfo.ExportPrice || isNaN(exportInfo.ExportPrice) || exportInfo.ExportPrice < 0 || !exportInfo.Amount || isNaN(exportInfo.Amount) || exportInfo.Amount <= 0) {
+                if (!exportInfo.ObjectId || isNaN(exportInfo.ExportPrice) || exportInfo.ExportPrice < 0 || !exportInfo.Amount || isNaN(exportInfo.Amount) || exportInfo.Amount <= 0) {
                     isValid = false;
                     break;
                 }

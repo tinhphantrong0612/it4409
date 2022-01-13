@@ -102,6 +102,16 @@ class IImport {
             return false;
         }
     }
+
+    static async searchBySupplierName(supplierName, storageId) {
+        let query = `SELECT import.Id,
+                                import.ImportDate,
+                                import.SupplierId,
+                                supplier.DisplayName as SupplierName
+                        FROM import
+                            INNER JOIN supplier ON import.SupplierId = supplier.Id WHERE import.storageId='${storageId}' AND supplier.DisplayName LIKE '%${supplierName}%'`;
+        return await connection.queryDB(query);
+    }
 }
 
 module.exports = IImport;

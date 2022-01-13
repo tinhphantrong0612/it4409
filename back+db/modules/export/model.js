@@ -109,25 +109,24 @@ class IExport {
 
     static async isExportAmountValid(objectId, amount, storageId) {
         try {
-            console.log(objectId);
-            console.log(amount);
-            console.log(storageId);
             let queryExport = `SELECT Amount FROM exportInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
             let queryImport = `SELECT Amount FROM importInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
             let [resultExport, resultImport] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryImport)]);   
             resultExport.unshift(0);
             resultImport.unshift(0);
-            console.log(resultExport);
-            console.log(resultImport);
             let totalExport = resultExport.reduce((a, b) => a + b.Amount);
             let totalImport = resultImport.reduce((a, b) => a + b.Amount);
-            console.log(totalExport);
-            console.log(totalImport);
             if (totalExport + amount > totalImport) throw new Error(false);
             else return true;
         } catch (error) {
             throw new Error(false);
         }
+    }
+
+    static async searchByCustomerName(customerName, storageId) {
+        const query = `SELECT export.Id, export.ExportDate, export.CustomerId, customer.DisplayName as CustomerName FROM export INNER JOIN customer ON export.CustomerId = customer.Id WHERE export.StorageId='${storageId}' AND customer.DisplayName LIKE '%${customerName}%'`;
+        console.log(query);
+        return await connection.queryDB(query);
     }
 }
 

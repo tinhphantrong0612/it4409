@@ -13,14 +13,13 @@
             <input
               type="search"
               class="x-input x-input-search"
-              placeholder="Nhập tên nhà cung cấp"
+              v-model = "searchTerm"
+              placeholder = "Nhập từ khóa tìm kiếm"
+              @search="getSearchResult()"
             />
-            <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+            <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
           </div>
         </div>
-        <dropdown-menu id="dropdownmenu1" :arrays="dropdownItems">
-            Search by : {{this.searchFilter}} <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
-        </dropdown-menu>
       </div>
       <div class="x-btngroup">
         <button
@@ -97,10 +96,9 @@
 import SupplierAdd from "./SupplierAdd.vue";
 import SupplierDetail from "./SupplierDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
-import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.vue";
 
 export default {
-  components: { SupplierAdd, SupplierDetail, BaseInformPopup, DropdownMenu },
+  components: { SupplierAdd, SupplierDetail, BaseInformPopup},
   name: "SupplierView",
   data() {
     return {
@@ -110,18 +108,16 @@ export default {
       selectedSupplierId: "",
       errorMessage: "",
       searchTerm: "",
-      searchFilter: "auto",
-      dropdownItems: [
-         {
-          text: 'Tên nhà cung cấp',
-          onClick: () => this.searchFilter = "name",
-        },
-        {
-          text: 'Số điện thoại',
-          onClick: () => this.searchFilter = "phone",
-        },
-      ]
+      searchInterval: null
     };
+  },
+  watch: {
+    searchTerm: function() {
+      clearInterval(this.searchInterval);
+      this.searchInterval = setTimeout(() => {
+        this.getSearchResult();
+      }, 1000);
+    }
   },
   methods: {
     async getSupplierList() {
@@ -134,8 +130,19 @@ export default {
       this.supplierList = data;
       this.$store.action.hideLoading();
     },
+    async getSearchResult() {
+      this.$store.action.showLoading();
+      clearInterval(this.searchInterval);
+      this.selectedSupplierId = "";
+      const response = await fetch(`http://localhost:3000/api/supplier/search?filter=${this.searchTerm}`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      this.supplierList = data;
+      this.$store.action.hideLoading();
+    },
     async deleteSupplier() {
-      if (!this.selectedSupplierId) return;
+      if (!this.selectedSupplierId) return; 
       this.$store.action.showLoading();
       const response = await fetch(
         `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,

@@ -4,6 +4,7 @@ const customerValidate = require('../../modules/customer/middleware')
 
 customerRouter
     .get('/', customerController.getAll)
+    .get('/search', customerController.search)
     .get('/:id', customerController.getById)
     .post('/', customerValidate.emptyValidate, customerValidate.duplicateValidate, customerController.post)
     .put('/:id', customerValidate.emptyValidate, customerValidate.duplicateValidate,customerController.put)

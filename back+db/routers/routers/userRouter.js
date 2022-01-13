@@ -4,15 +4,18 @@ const userValidate = require('../../modules/user/middleware');
 
 userRouter
     .get('/login', (req, res) => {
-        if (req.session.Id && req.session.Role) {
-            res.status(200).send(`${req.session.Role}`);
+        if (req.session.Id) {
+            res.status(200).send(JSON.stringify({
+                Role: req.session.Role,
+                DisplayName: req.session.DisplayName,
+            }));
         } else {
             res.status(400).send("Người dùng chưa đăng nhập")
         }
     })
     .get('/logout', userController.logout)
     .get('/:id',
-        userValidate.adminValidate, // Only admin allow
+        userValidate.isAdminValidate, // Only admin allow
         userController.getById)
     .post('/login',
         userValidate.emptyValidate, // Check empty body

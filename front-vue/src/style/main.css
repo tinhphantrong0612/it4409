@@ -15,6 +15,7 @@
 @import url('./component/table.css');
 
 /* Import layout */
+@import url('./layout/authorize_layout.css');
 @import url('./layout/grid.css');
 @import url('./layout/content.css');
 @import url('./layout/header.css');

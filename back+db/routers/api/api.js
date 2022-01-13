@@ -12,6 +12,8 @@ const importRouter = require('../routers/importRouter');
 const importInfoRouter = require('../routers/importInfoRouter');
 const exportInfoRouter = require('../routers/exportInfoRouter');
 const storageRouter = require('../routers/storageRouter');
+const messageRouter = require('../routers/messageRouter');
+const userValidate = require('../../modules/user/middleware');
 
 api.use('/unit', storageValidate.chosenStorageValidate, unitRouter)
     .use('/object', storageValidate.chosenStorageValidate, objectRouter)
@@ -21,6 +23,7 @@ api.use('/unit', storageValidate.chosenStorageValidate, unitRouter)
     .use('/import', storageValidate.chosenStorageValidate, importRouter)
     .use('/importInfo', storageValidate.chosenStorageValidate, importInfoRouter)
     .use('/exportInfo', storageValidate.chosenStorageValidate, exportInfoRouter)
-    .use('/storage', storageRouter);
+    .use('/storage', storageRouter)
+    .use('/message', userValidate.loggedInValidate, messageRouter);
 
 module.exports = api;

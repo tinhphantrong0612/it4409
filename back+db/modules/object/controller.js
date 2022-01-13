@@ -31,15 +31,6 @@ module.exports = {
             res.status(500).send("Internal Server Error");
         }
     },
-    search: async (req, res) => {
-        try {
-            const result = await IObject.search(req.params.term, req.session.StorageId);
-            res.status(200).send(result);
-        } catch (error) {
-            console.log(error);
-            res.status(500).send("Internal Server Error");
-        }
-    },
     post: async (req, res) => {
         try {
             const result = await IObject.insert(req.body.DisplayName.toUpperCase(), req.body.UnitId, req.session.StorageId);
@@ -77,6 +68,15 @@ module.exports = {
                 console.log("Delete IObject: Not delete")
                 res.status(200).send("Nope");
             }
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
+    search: async (req, res) => {
+        try {
+            const result = await IObject.searchByName(req.query.filter, req.session.StorageId);
+            res.status(200).send(result);
         } catch (error) {
             console.log(error);
             res.status(500).send("Internal Server Error");

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <the-admin-header></the-admin-header>
+        <the-admin-header :displayName = 'this.displayName'></the-admin-header>
         <the-admin-navbar></the-admin-navbar>
         <the-admin-content></the-admin-content>
     </div>
@@ -17,6 +17,23 @@ export default {
         TheAdminContent,
         TheAdminHeader,
         TheAdminNavbar
-    }
+    },
+    data() {
+        return {
+            displayName: "",
+        };
+    },
+    methods: {
+        async getUserInformation() {
+        let response = await fetch(`http://localhost:3000/user/login`, {
+            credentials: 'include',
+        });
+        var userInfo = await response.json();
+        this.displayName = userInfo['DisplayName'];
+        },
+    },
+    created() {
+        this.getUserInformation();
+    },
 }
 </script>

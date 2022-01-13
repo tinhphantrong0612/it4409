@@ -7,39 +7,46 @@
     </the-user-header>
     <the-user-navbar :show="this.showNav"></the-user-navbar>
     <the-user-content></the-user-content>
-    <div class="x-spinner" v-show="storageId == ''">
+    <div class="x-spinner" v-show="storageId == '' && !isMessageListShow">
       <div class="storage-select-container">
-        <select
-          v-if="storageList.length != 0"
-          name=""
-          id=""
-          class="x-input x-combobox w-100 storage-select"
-          v-model="storageId"
-        >
-          <option
-            :value="storage.Id"
-            v-for="storage in storageList"
-            :key="storage.Id"
-          >
-            {{ storage.DisplayName }}
-          </option>
-        </select>
-        <div v-if="storageList.length == 0">
-          <div>
-            Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ quản
-            trị viên
-          </div>
+        <div class="x-modal-header">
+          <div class="x-modal-title">Chọn nhà kho</div>
         </div>
-        <span class="x-label-error" v-show="errorMessage != ''">{{
-          errorMessage
-        }}</span>
-        <div>
+        <div class="x-modal-body">
+          <select
+            v-if="storageList.length != 0"
+            name=""
+            id=""
+            class="x-input x-combobox w-100 storage-select"
+            v-model="storageId"
+          >
+            <option
+              :value="storage.Id"
+              v-for="storage in storageList"
+              :key="storage.Id"
+            >
+              {{ storage.DisplayName }}
+            </option>
+          </select>
+          <div v-if="storageList.length == 0">
+            <div>
+              Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ
+              quản trị viên
+            </div>
+          </div>
+          <span class="x-label-error" v-show="errorMessage != ''">{{
+            errorMessage
+          }}</span>
+        </div>
+        <div class="x-modal-footer">
+          <button class="x-btn x-btn-secondary" @click="isMessageListShow = true">Liên hệ quản trị viên</button>
           <button class="x-btn x-btn-danger" @click="logout()">
             Đăng xuất
           </button>
         </div>
       </div>
     </div>
+    <message-list v-if="isMessageListShow" @close="isMessageListShow = false"></message-list>
   </div>
 </template>
 
@@ -47,6 +54,8 @@
 import TheUserHeader from "../../components/layout/user/TheUserHeader.vue";
 import TheUserNavbar from "../../components/layout/user/TheUserNavbar.vue";
 import TheUserContent from "../../components/layout/user/TheUserContent.vue";
+
+import MessageList from './message/MessageList.vue';
 
 import { store } from "../../script/store";
 
@@ -56,20 +65,23 @@ export default {
     TheUserHeader,
     TheUserNavbar,
     TheUserContent,
+    MessageList
   },
   data() {
     return {
       smallView: false,
       showNav: true,
       storageId: "",
+      displayName: "",
       storedState: store.state,
       storageList: [],
       errorMessage: "",
+      isMessageListShow: false
     };
   },
   watch: {
-    storageId: function() {
-      if (this.storageId != '') {
+    storageId: function () {
+      if (this.storageId != "") {
         this.setStorageId();
       }
     },
@@ -144,6 +156,7 @@ export default {
     this.handleView();
     window.addEventListener('resize', this.handleView);
     this.getUserStorageList();
+    this.getUserInformation();
   },
 };
 </script>

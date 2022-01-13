@@ -13,8 +13,10 @@
             type="search"
             class="x-input x-input-search"
             placeholder="Nhập tên khách hàng"
+            v-model="searchTerm"
+            @search="getSearchResult()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
         </div>
       </div>
       <div class="x-btngroup">
@@ -103,7 +105,17 @@ export default {
       customerDetailShow: false,
       selectedCustomerId: "",
       errorMessage: "",
+      searchTerm: '',
+      searchInterval: null
     };
+  },
+  watch: {
+    searchTerm: function () {
+      clearInterval(this.searchInterval);
+      this.searchInterval = setTimeout(() => {
+        this.getSearchResult();
+      }, 1000)
+    }
   },
   methods: {
     async getCustomerList() {
@@ -138,6 +150,17 @@ export default {
     checkNull(data) {
       if (data == "null") return "";
       return data;
+    },
+    async getSearchResult() {
+      this.$store.action.showLoading();
+      clearInterval(this.searchInterval);
+      this.selectedCustomerId = "";
+      const response = await fetch(`http://localhost:3000/api/customer/search?filter=${this.searchTerm}`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      this.customerList = data;
+      this.$store.action.hideLoading();
     },
   },
   created() {

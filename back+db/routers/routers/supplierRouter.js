@@ -4,6 +4,7 @@ const supplierValidate = require('../../modules/supplier/middleware')
 
 supplierRouter
     .get('/', supplierController.getAll)
+    .get('/search', supplierController.getSearchResult)
     .get('/:id', supplierController.getById)
     .post('/', supplierValidate.emptyValidate, supplierValidate.duplicateValidate, supplierController.post)
     .put('/:id', supplierValidate.emptyValidate, supplierValidate.duplicateValidate, supplierController.put)

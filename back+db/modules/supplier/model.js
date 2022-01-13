@@ -1,6 +1,6 @@
 const connection = require('../databaseConnection');
 const config = require('../../config');
-const {v4: uuidv4} = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 
 class Supplier {
     Id;
@@ -27,6 +27,11 @@ class Supplier {
         return await connection.queryDB(query);
     }
 
+    static async getSearchResult(term, storageId) {
+        let query = `SELECT * FROM supplier WHERE storageId='${storageId}' AND (DisplayName LIKE '%${term}%' OR Email LIKE '%${term}%' OR Phone LIKE '%${term}%')`;
+        return await connection.queryDB(query);
+    }
+
     static async post(name, address, phone, email, storageId, moreInfo = null) {
         let query = `INSERT INTO supplier (displayName, address, phone, email, moreInfo, Id, storageId) 
         VALUES ("${name}", "${address}", "${phone}", "${email}", "${moreInfo}", '${uuidv4()}', '${storageId}')`;
@@ -50,7 +55,7 @@ class Supplier {
      * @param {number} id Mã nhà cung cấp
      * @returns {boolean} 
      */
-     static async isSupplierIdUsed(id, storageId) {
+    static async isSupplierIdUsed(id, storageId) {
         let query = `SELECT Id FROM import WHERE import.supplierId='${id}' AND storageId='${storageId}'`;
         let result = await connection.queryDB(query);
         if (result.length == 0) return false;

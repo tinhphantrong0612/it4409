@@ -1,6 +1,6 @@
 const connection = require("../databaseConnection");
 const { v4: uuidv4 } = require('uuid');
-const role = require('../../enum/role');
+const role = require('../../enum/enum').role;
 
 class IStorage {
     Id;
@@ -130,7 +130,7 @@ class IStorage {
      * @returns {Promise<List<User>>} List of user not associated with storage
      */
      static async getNonStorageManager(storageId) {
-        let query = `SELECT User.Id, User.Username, User.DisplayName, User.Role FROM User WHERE NOT User.Role=${role.admin} AND Id NOT IN (SELECT User.Id FROM User INNER JOIN StorageUser ON StorageUser.StorageId='${storageId}')`;
+        let query = `SELECT User.Id, User.Username, User.DisplayName, User.Role FROM User WHERE NOT User.Role=${role.admin} AND Id NOT IN (SELECT User.Id FROM User INNER JOIN StorageUser ON StorageUser.UserId=User.Id WHERE StorageUser.StorageId='${storageId}')`;
         return await connection.queryDB(query);
     }
 
@@ -158,6 +158,15 @@ class IStorage {
         if (resultExist.length == 0) return false;
         else if (resultInStorage.length != 0) return false;
         else return true;
+    }
+
+    /**
+     * Get list of all storages
+     * @returns List of storages
+     */
+     static async search(name) {
+        let query = `SELECT * FROM Storage WHERE DisplayName LIKE '%${name}%'`;
+        return await connection.queryDB(query);
     }
 }
 
