@@ -24,6 +24,15 @@ module.exports = {
             res.status(500).send("Internal Server Error");
         }
     },
+    getSearchResult: async (req, res) => {
+        try {
+            const result = await Supplier.getSearchResult(req.params.key, req.params.term, req.session.StorageId);
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
     post: async (req, res) => {
         try {
             const result = await Supplier.post(req.body.displayName, req.body.address, req.body.phone, req.body.email, req.session.StorageId, req.body.moreInfo);

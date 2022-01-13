@@ -13,9 +13,10 @@
             <input
               type="search"
               class="x-input x-input-search"
-              placeholder="Nhập tên nhà cung cấp"
+              v-model = "searchTerm"
+              placeholder = "Nhập từ khóa tìm kiếm"
             />
-            <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+            <div class="xi xi-search x-input-search-icon xi-size-100" @click = "getSearchResult()"></div>
           </div>
         </div>
         <dropdown-menu id="dropdownmenu1" :arrays="dropdownItems">
@@ -110,15 +111,27 @@ export default {
       selectedSupplierId: "",
       errorMessage: "",
       searchTerm: "",
-      searchFilter: "auto",
+      searchFilter: SEARCH_FILTER.displayName,
       dropdownItems: [
          {
-          text: 'Tên nhà cung cấp',
-          onClick: () => this.searchFilter = "name",
+          text: SEARCH_FILTER.displayName,
+          onClick: () => this.searchFilter = SEARCH_FILTER.displayName,
         },
         {
-          text: 'Số điện thoại',
-          onClick: () => this.searchFilter = "phone",
+          text: SEARCH_FILTER.address,
+          onClick: () => this.searchFilter = SEARCH_FILTER.address,
+        },
+        {
+          text: SEARCH_FILTER.phone,
+          onClick: () => this.searchFilter = SEARCH_FILTER.phone,
+        },
+        {
+          text: SEARCH_FILTER.email,
+          onClick: () => this.searchFilter = SEARCH_FILTER.email,
+        },
+        {
+          text: SEARCH_FILTER.moreInfo,
+          onClick: () => this.searchFilter = SEARCH_FILTER.moreInfo,
         },
       ]
     };
@@ -134,8 +147,21 @@ export default {
       this.supplierList = data;
       this.$store.action.hideLoading();
     },
+    async getSearchResult() {
+      if (!this.searchTerm) return;
+      let keyIndex = Object.values(SEARCH_FILTER).indexOf(this.searchFilter);
+      let key =  Object.keys(SEARCH_FILTER)[keyIndex];
+      this.$store.action.showLoading();
+      this.selectedSupplierId = "";
+      const response = await fetch(`http://localhost:3000/api/supplier/search/${key}&${this.searchTerm}`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      this.supplierList = data;
+      this.$store.action.hideLoading();
+    },
     async deleteSupplier() {
-      if (!this.selectedSupplierId) return;
+      if (!this.selectedSupplierId) return; 
       this.$store.action.showLoading();
       const response = await fetch(
         `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,
@@ -162,4 +188,12 @@ export default {
     this.getSupplierList();
   },
 };
+
+const SEARCH_FILTER = { 
+  displayName: 'Tên nhà cung cấp', 
+  address: 'Địa chỉ', 
+  phone: 'Số điện thoại',
+  email: 'Email', 
+  moreInfo: 'Mô tả'
+}
 </script>
