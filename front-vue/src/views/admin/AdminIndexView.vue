@@ -1,7 +1,14 @@
 <template>
-  <div>
-    <the-admin-header :displayName="this.displayName"></the-admin-header>
-    <the-admin-navbar></the-admin-navbar>
+  <div class="no-line-break">
+    <the-admin-header 
+      :showNavbarIcon="this.viewState" 
+      :displayName="this.displayName"
+      @click="showNav = !showNav">
+    </the-admin-header>
+    <the-admin-navbar
+      :show="this.showNav"
+      :viewState="this.viewState">
+    </the-admin-navbar>
     <the-admin-content></the-admin-content>
   </div>
 </template>
@@ -20,10 +27,32 @@ export default {
   },
   data() {
     return {
+      viewState: 0,
+      showNav: true,
       displayName: "",
     };
   },
+  watch: {
+    viewState: function() {
+      if (this.viewState == 0) {
+        this.showNav = true;
+      }
+    }
+  },
   methods: {
+    handleView() {
+      if (window.innerWidth <= 1200) {
+        if (window.innerWidth <= 800) {
+          this.viewState = 2;
+        }
+        else {
+          this.viewState = 1;
+        }
+      }
+      else {
+        this.viewState = 0;
+      }
+    },
     async getUserInformation() {
       let response = await fetch(`http://localhost:3000/user/login`, {
         credentials: "include",
@@ -34,7 +63,7 @@ export default {
   },
   created() {
     this.handleView();
-    window.addEventListener("resize", this.handleView);
+    window.addEventListener('resize', this.handleView);
     this.getUserInformation();
   },
   beforeDestroy() {

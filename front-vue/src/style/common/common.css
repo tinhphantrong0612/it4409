@@ -35,9 +35,9 @@
 }
 
 .no-line-break {
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .m-auto {

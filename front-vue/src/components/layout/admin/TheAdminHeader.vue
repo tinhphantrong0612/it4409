@@ -1,6 +1,9 @@
 <template>
   <div class="x-header">
-    <div class="x-app-name">Quản lý kho hàng</div>
+    <div class="x-app-name">
+      <div class="xi xi-list xi-size-x2" v-if="this.showNavbarIcon" @click="clickNavbar()"></div>
+      Quản lý các kho hàng
+    </div>
     <div class="x-header-control">
       <drop-down 
         :title="this.displayName"

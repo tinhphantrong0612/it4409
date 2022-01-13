@@ -1,43 +1,21 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+	 viewBox="0 0 496 496" style="enable-background:new 0 0 496 496;" xml:space="preserve">
 <g>
 	<g>
-		<rect x="130.723" y="324.085" width="250.553" height="16.34"/>
-	</g>
-</g>
-<g>
-	<g>
-		<rect x="130.723" y="285.957" width="250.553" height="16.34"/>
-	</g>
-</g>
-<g>
-	<g>
-		<rect x="130.723" y="247.83" width="250.553" height="16.34"/>
-	</g>
-</g>
-<g>
-	<g>
-		<rect x="130.723" y="400.34" width="250.553" height="16.34"/>
-	</g>
-</g>
-<g>
-	<g>
-		<rect x="130.723" y="362.213" width="250.553" height="16.34"/>
-	</g>
-</g>
-<g>
-	<g>
-		<rect x="201.532" y="122.553" width="108.936" height="16.34"/>
-	</g>
-</g>
-<g>
-	<g>
-		<path d="M471.149,449.362V106.213h21.787V46.298H19.064v59.915h21.787v343.149H0v16.34h512v-16.34H471.149z M35.404,89.872V62.638
-			h441.191v27.234H35.404z M351.319,106.213v49.021H160.681v-49.021H351.319z M400.34,449.362H111.66V215.149H400.34V449.362z
-			 M454.809,138.894h-57.192v16.34h57.192v294.128h-38.128V215.149h19.064v-16.34H76.255v16.34h19.064v234.213H57.192V155.234
-			h57.191v-16.34H57.192v-32.681h87.149v65.362H367.66v-65.362h87.149V138.894z"/>
+		<g>
+			<path d="M496,139.592v-49.12L258.832,0.52L257.464,0h-18.928L0,90.48v49.12l16-6.072V480H0v16h496v-16h-16V133.528L496,139.592z
+				 M392,480H104V224h288V480z M464,480h-56V208H88v272H32V127.456L241.472,48h13.064L464,127.456V480z M258.832,32.52L257.464,32
+				h-18.928L16,116.408V101.52L241.472,16h13.064L480,101.52v14.88L258.832,32.52z"/>
+			<path d="M120,192h256v-80H120V192z M136,128h224v48H136V128z"/>
+			<rect x="328" y="144" width="16" height="16"/>
+			<rect x="152" y="144" width="160" height="16"/>
+			<path d="M376,304H120v160h256V304z M168,320h16v48h-16V320z M216,448h-80V320h16v64h48v-64h16V448z M360,448H232V320h128V448z"/>
+			<rect x="248" y="416" width="16" height="16"/>
+			<rect x="280" y="416" width="16" height="16"/>
+			<rect x="248" y="384" width="16" height="16"/>
+		</g>
 	</g>
 </g>
 <g>
