@@ -1,6 +1,6 @@
 <template>
   <div class="x-modal">
-    <div class="x-modal-dialog" style="max-width: 600px">
+    <div class="x-modal-dialog" style="max-width: 800px">
       <div class="x-modal-content">
         <div class="x-modal-header">
           <div class="x-modal-title">Danh sách tin nhắn</div>
@@ -132,8 +132,8 @@ export default {
       this.$store.action.hideLoading();
     },
     shortenMessage(message) {
-      if (message.length > 20) {
-        return `${message.substring(0, 20)}...`;
+      if (message.length > 30) {
+        return `${message.substring(0, 30)}...`;
       } else return message;
     },
     toHHMMDDMMYYYY(date) {

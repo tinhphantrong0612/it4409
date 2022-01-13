@@ -12,6 +12,7 @@ import ImportView from './views/user/import/ImportView.vue';
 import ExportView from './views/user/export/ExportView.vue';
 
 import StorageView from './views/admin/storage/StorageView.vue';
+import MessageView from './views/admin/message/MessageView.vue';
 
 import AuthorizeIndexView from './views/authorize/AuthorizeIndexView.vue';
 import LoginView from './views/authorize/LoginView.vue';
@@ -46,6 +47,10 @@ const routes = [
       {
         path: '/storage',
         component: StorageView
+      },
+      {
+        path: '/message',
+        component: MessageView
       },
       {
         path: '/',

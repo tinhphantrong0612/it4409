@@ -1,6 +1,6 @@
 <template>
   <div class="x-modal" id="modalAdd">
-    <div class="x-modal-dialog">
+    <div class="x-modal-dialog" style="max-width: 800px">
       <div class="x-modal-content">
         <div class="x-modal-header">
           <div class="x-modal-title">Tin nhắn mới</div>
