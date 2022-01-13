@@ -16,7 +16,7 @@ export default {
   name: "TheUserHeader",
   props: {
     displayName: String,
-    showNavbarIcon: Boolean
+    showNavbarIcon: Number
   },
   methods: {
     clickNavbar() {

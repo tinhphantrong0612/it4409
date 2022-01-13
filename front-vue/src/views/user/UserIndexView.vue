@@ -171,5 +171,8 @@ export default {
     this.getUserStorageList();
     this.getUserInformation();
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleView);
+  },
 };
 </script>
