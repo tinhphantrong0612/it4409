@@ -2,7 +2,8 @@
   <div class="x-header">
     <div class="x-app-name">
       <div class="xi xi-list xi-size-x2" v-if="this.showNavbarIcon" @click="clickNavbar()"></div>
-      Quản lý kho hàng</div>
+      Quản lý kho hàng
+    </div>
     <div class="x-header-control">
       <div class="x-user">Hello, {{this.displayName}}</div>
       <div class="x-func xi xi-dropdown xi-size-125"></div>
