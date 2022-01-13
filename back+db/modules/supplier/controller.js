@@ -26,7 +26,7 @@ module.exports = {
     },
     getSearchResult: async (req, res) => {
         try {
-            const result = await Supplier.getSearchResult(req.params.key, req.params.term, req.session.StorageId);
+            const result = await Supplier.getSearchResult(req.query.filter, req.session.StorageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);

@@ -4,6 +4,7 @@ const exportValidate = require('../../modules/export/middleware');
 
 exportRouter
     .get('/', exportController.getAll)
+    .get('/search', exportController.search)
     .get('/:id', exportController.getById)
     .post('/', exportValidate.emptyValidate,
         exportValidate.customerValidate,

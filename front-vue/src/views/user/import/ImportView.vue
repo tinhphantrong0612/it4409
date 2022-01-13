@@ -13,8 +13,10 @@
             type="search"
             class="x-input x-input-search"
             placeholder="Nhập tên nhà cung cấp"
+            v-model="searchTerm"
+            @search="getSearchResult()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
         </div>
       </div>
       <div class="x-btngroup">
@@ -108,7 +110,17 @@ export default {
       theImportDetailShow: false,
       selectedImportId: "",
       errorMessage: "",
+      searchTerm: '',
+      searchInterval: null
     };
+  },
+  watch: {
+    searchTerm: function() {
+      clearInterval(this.searchInterval);
+      this.searchInterval = setTimeout(() => {
+        this.getSearchResult();
+      }, 1000)
+    }
   },
   methods: {
     async getImportList() {
@@ -142,6 +154,17 @@ export default {
         const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
         const year = theDate.getFullYear();
         return `${day}/${month}/${year}`;
+    },
+    async getSearchResult() {
+      this.$store.action.showLoading();
+      clearInterval(this.searchInterval);
+      this.selectedImportId = "";
+      const response = await fetch(`http://localhost:3000/api/import/search?filter=${this.searchTerm}`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      this.theImportList = data;
+      this.$store.action.hideLoading();
     }
   },
   created() {

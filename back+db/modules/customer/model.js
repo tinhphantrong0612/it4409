@@ -56,6 +56,11 @@ class Customer {
         if (result.length == 0) return false;
         else return true;
     }
+
+    static async getSearchResult(term, storageId) {
+        let query = `SELECT * FROM Customer WHERE storageId='${storageId}' AND (DisplayName LIKE '%${term}%' OR Email LIKE '%${term}%' OR Phone LIKE '%${term}%')`;
+        return await connection.queryDB(query);
+    }
 }
 
 module.exports = Customer;

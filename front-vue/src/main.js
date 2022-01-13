@@ -82,7 +82,10 @@ const routes = [
         component: ExportView
       }
     ]
-  },
+  }, {
+    path: '/:pathMatch(.*)*',
+    redirect: '/authorize'
+  }
 ]
 
 const router = new VueRouter({

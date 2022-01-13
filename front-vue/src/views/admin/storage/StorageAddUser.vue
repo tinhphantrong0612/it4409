@@ -9,16 +9,33 @@
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
             <div v-if="userList.length > 0">
-              <div
-                class="x-btn x-btn-secondary w-100 m-1"
-                v-for="user in userList"
-                @click="addUserIntoStorage(user.Id)"
-                :key="user.Id"
-              >
-                {{ user.DisplayName }}
-              </div>
+              <table class="x-table">
+                <thead>
+                  <th>Id người dùng</th>
+                  <th>Tên người dùng</th>
+                  <th>Tên đăng nhập</th>
+                  <th>Chức năng</th>
+                </thead>
+                <tbody>
+                  <tr v-for="user in userList" :key="user.Id">
+                    <td>{{ user.Id }}</td>
+                    <td>{{ user.DisplayName }}</td>
+                    <td>{{ user.Username }}</td>
+                    <td>
+                      <button
+                        class="x-btn x-btn-primary m-1"
+                        @click="addUserIntoStorage(user.Id)"
+                      >
+                        Add
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div v-if="userList.length == 0">Danh sách người dùng không thuộc nhà kho này rỗng</div>
+            <div v-if="userList.length == 0">
+              Danh sách người dùng không thuộc nhà kho này rỗng
+            </div>
           </div>
           <span class="x-label-error" v-show="errorMessage != ''">{{
             errorMessage
@@ -75,7 +92,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          }
+          },
         }
       );
       if (response.status == 400) {

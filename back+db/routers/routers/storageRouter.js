@@ -15,7 +15,8 @@ storageRouter
             res.status(500).send("Internal Server Error");
         }
     })
-    .get('/:id', storageController.getDetailById)
+    .get('/search', userValidate.adminValidate, storageController.search)
+    .get('/:id', userValidate.adminValidate, storageController.getDetailById)
     .post('/',
         userValidate.adminValidate, // Must be admin
         storageValidate.emptyValidate, // Not empty

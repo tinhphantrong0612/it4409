@@ -17,8 +17,10 @@
             type="search"
             class="x-input x-input-search"
             placeholder="Nhập tên kho hàng"
+            v-model="searchTerm"
+            @search="getSearchResult()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100"></div>
+          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
         </div>
       </div>
       <div class="x-btngroup">
@@ -95,14 +97,25 @@ export default {
     StorageAdd,
     StorageDetail
   },
+  
   data() {
     return {
       storageList: [],
       selectedStorageId: "",
       errorMessage: "",
       storageDetailShow: false,
-      storageAddShow: false
+      storageAddShow: false,
+      searchTerm: '',
+      searchInterval: null
     };
+  },
+  watch: {
+    searchTerm: function () {
+      clearInterval(this.searchInterval);
+      this.searchInterval = setTimeout(() => {
+        this.getSearchResult();
+      }, 1000)
+    }
   },
   computed: {
     console() {
@@ -146,6 +159,17 @@ export default {
         console.log(data);
         await this.getStorageList();
       }
+      this.$store.action.hideLoading();
+    },
+    async getSearchResult() {
+      this.$store.action.showLoading();
+      clearInterval(this.searchInterval);
+      this.selectedStorageId = "";
+      const response = await fetch(`http://localhost:3000/api/storage/search?filter=${this.searchTerm}`, {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      this.storageList = data;
       this.$store.action.hideLoading();
     },
   },

@@ -18,8 +18,9 @@
             class="x-input x-input-search"
             v-model = "searchTerm"
             placeholder="Nhập tên hàng hóa"
+            @search="getSearchedList()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100" @click = "getSearchedList()"></div>
+          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchedList()"></div>
         </div>
       </div>
       <div class="x-btngroup">
@@ -106,13 +107,22 @@ export default {
       objectDetailShow: false,
       objectAddShow: false,
       selectedObjectId: "",
-      errorMessage: ''
+      errorMessage: '',
+      searchInterval: null
     };
   },
   computed: {
     console() {
       return console;
     },
+  },
+  watch: {
+    searchTerm: function () {
+      clearInterval(this.searchInterval);
+      this.searchInterval = setTimeout(() => {
+        this.getSearchedList();
+      }, 1000);
+    }
   },
   methods: {
     async getObjectList() {
@@ -133,15 +143,15 @@ export default {
       this.unitList = data;
     },
     async getSearchedList() {
-      if (!this.searchTerm) return;
       this.$store.action.showLoading();
       this.selectedObjectId = "";
-      const response = await fetch(`http://localhost:3000/api/object/search/${this.searchTerm}`, {
+      clearInterval(this.searchInterval);
+      const response = await fetch(`http://localhost:3000/api/object/search?filter=${this.searchTerm}`, {
         credentials: 'include',
       });
       const data = await response.json();
       if (data.length == 0) 
-        this.errorMessage = `Searched for "${this.searchTerm}" : No result found!`; 
+        this.errorMessage = `Searched for "${this.searchTerm}" : No result found!`;
       else 
         this.objectList = data;
       this.$store.action.hideLoading();

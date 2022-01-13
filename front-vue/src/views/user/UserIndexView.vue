@@ -1,35 +1,40 @@
 <template>
   <div>
-    <the-user-header :displayName = 'this.displayName'></the-user-header>
+    <the-user-header :displayName="this.displayName"></the-user-header>
     <the-user-navbar></the-user-navbar>
     <the-user-content></the-user-content>
     <div class="x-spinner" v-show="storageId == ''">
       <div class="storage-select-container">
-        <select
-          v-if="storageList.length != 0"
-          name=""
-          id=""
-          class="x-input x-combobox w-100 storage-select"
-          v-model="storageId"
-        >
-          <option
-            :value="storage.Id"
-            v-for="storage in storageList"
-            :key="storage.Id"
-          >
-            {{ storage.DisplayName }}
-          </option>
-        </select>
-        <div v-if="storageList.length == 0">
-          <div>
-            Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ quản
-            trị viên
-          </div>
+        <div class="x-modal-header">
+          <div class="x-modal-title">Chọn nhà kho</div>
         </div>
-        <span class="x-label-error" v-show="errorMessage != ''">{{
-          errorMessage
-        }}</span>
-        <div>
+        <div class="x-modal-body">
+          <select
+            v-if="storageList.length != 0"
+            name=""
+            id=""
+            class="x-input x-combobox w-100 storage-select"
+            v-model="storageId"
+          >
+            <option
+              :value="storage.Id"
+              v-for="storage in storageList"
+              :key="storage.Id"
+            >
+              {{ storage.DisplayName }}
+            </option>
+          </select>
+          <div v-if="storageList.length == 0">
+            <div>
+              Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ
+              quản trị viên
+            </div>
+          </div>
+          <span class="x-label-error" v-show="errorMessage != ''">{{
+            errorMessage
+          }}</span>
+        </div>
+        <div class="x-modal-footer">
           <button class="x-btn x-btn-danger" @click="logout()">
             Đăng xuất
           </button>
@@ -63,19 +68,19 @@ export default {
     };
   },
   watch: {
-    storageId: function() {
-      if (this.storageId != '') {
+    storageId: function () {
+      if (this.storageId != "") {
         this.setStorageId();
       }
-    }
+    },
   },
   methods: {
     async getUserInformation() {
       let response = await fetch(`http://localhost:3000/user/login`, {
-        credentials: 'include',
+        credentials: "include",
       });
       var userInfo = await response.json();
-      this.displayName = userInfo['DisplayName'];
+      this.displayName = userInfo["DisplayName"];
     },
     async getUserStorageList() {
       this.$store.action.showLoading();

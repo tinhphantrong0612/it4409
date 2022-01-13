@@ -4,11 +4,11 @@
       <label class="x-label x-login-label-title"><b>DTH Solutions</b></label>
       <label class="x-label x-label-title"><b>Username</b></label>
       <div>
-        <input class='x-input' style="width:30rem" type="text" name="" id="" v-model="username" />
+        <input class='x-input' style="width:30rem" type="text" name="" v-model="username" />
       </div>
       <label class="x-label x-label-title"><b>Password</b></label>
       <div>
-        <input class='x-input' style="width:30rem" type="password" name="" id="" v-model="password" />
+        <input class='x-input' style="width:30rem" type="password" name="" v-model="password" />
       </div>
       <div class="x-login-btn-bar">
         <div>

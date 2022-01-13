@@ -4,6 +4,7 @@ const importValidate = require('../../modules/import/middleware');
 
 importRouter
     .get('/', importController.getAll)
+    .get('/search', importController.search)
     .get('/:id', importController.getById)
     .post('/',
         importValidate.emptyValidate,

@@ -22,11 +22,6 @@ class IObject {
         return await connection.queryDB(query);
     }
 
-    static async search(term, storageId) {
-        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}' AND object.DisplayName LIKE '%${term}%'`;
-        return await connection.queryDB(query);
-    }
-
     static async insert(name, unitId, storageId) {
         let query = `INSERT INTO object (displayName, unitId, Id, storageId) VALUES ("${name}", ${unitId}, '${uuidv4()}', '${storageId}')`;
         return await connection.queryDB(query);
@@ -76,6 +71,16 @@ class IObject {
         const result = await connection.queryDB(query);
         if (result.length == 0) return false;
         else return true;
+    }
+
+    /**
+     * Search for object
+     * @param {String} name Name to search
+     * @returns {Promise<List<Object>>} List of results
+     */
+    static async searchByName(name, storageId) {
+        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}' AND object.DisplayName LIKE '%${name}%'`;
+        return await connection.queryDB(query);
     }
 }
 
