@@ -34,6 +34,12 @@
     text-align: center;
 }
 
+.no-line-break {
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+
 .m-auto {
     margin: auto;
 }

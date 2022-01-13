@@ -1,10 +1,11 @@
 .x-navbar {
     background-color: var(--x-body-bg);
     height: calc(100vh - 48px);
-    width: 225px;
+    width: var(--x-navbar-width);
     float: left;
     overflow: auto;
     box-sizing: border-box;
+    transition: 0.8s cubic-bezier(.25,.1,.25,1);
 }
 
 .x-navbar-item {

@@ -1,7 +1,11 @@
 <template>
-  <div>
-    <the-user-header></the-user-header>
-    <the-user-navbar></the-user-navbar>
+  <div class="no-line-break">
+    <the-user-header 
+      :smallView="this.smallView" 
+      :displayName="this.displayName"
+      @click="showNav = !showNav">
+    </the-user-header>
+    <the-user-navbar :show="this.showNav"></the-user-navbar>
     <the-user-content></the-user-content>
     <div class="x-spinner" v-show="storageId == ''">
       <div class="storage-select-container">
@@ -55,6 +59,8 @@ export default {
   },
   data() {
     return {
+      smallView: false,
+      showNav: true,
       storageId: "",
       storedState: store.state,
       storageList: [],
@@ -66,9 +72,24 @@ export default {
       if (this.storageId != '') {
         this.setStorageId();
       }
+    },
+    smallView: function() {
+      if (!this.smallView) {
+        this.showNav = true;
+      }
     }
   },
   methods: {
+    handleView() {
+      this.smallView = window.innerWidth <= 990;
+    },
+    async getUserInformation() {
+      let response = await fetch(`http://localhost:3000/user/login`, {
+        credentials: "include",
+      });
+      var userInfo = await response.json();
+      this.displayName = userInfo["DisplayName"];
+    },
     async getUserStorageList() {
       this.$store.action.showLoading();
       this.errorMessage = "";
@@ -120,6 +141,8 @@ export default {
     },
   },
   created() {
+    this.handleView();
+    window.addEventListener('resize', this.handleView);
     this.getUserStorageList();
   },
 };

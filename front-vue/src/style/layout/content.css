@@ -2,13 +2,14 @@
     background-color: var(--x-body-bg);
     height: calc(100vh - 48px);
     float: right;
-    width: calc(100% - 225px);
+    width: calc(100% - var(--x-navbar-width));
     box-sizing: border-box;
     border-left: 1px solid var(--x-secondary);
     padding: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: 0.8s cubic-bezier(.25,.1,.25,1);
 }
 
 .x-content .x-headbar {

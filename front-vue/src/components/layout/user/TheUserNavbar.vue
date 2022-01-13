@@ -11,6 +11,33 @@
 
 <script>
 export default {
-    name: "TheUserNavbar"
+  name: "TheUserNavbar",
+  props: ["show"],
+  watch: {
+    show: function () {
+      if (this.show == true) {
+        this.setShowNav();
+      }
+      else {
+        this.setHideNav();
+      }
+    },
+  },
+  methods: {
+    setShowNav() {
+      document.querySelector(':root').style.setProperty('--x-navbar-width', '225px');
+    },
+    setHideNav() {
+      document.querySelector(':root').style.setProperty('--x-navbar-width', '0px');
+    }
+  },
+  created() {
+    if (this.show == true) {
+      this.setShowNav();
+    }
+    else {
+      this.setHideNav();
+    }
+  },
 }
 </script>

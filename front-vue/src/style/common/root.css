@@ -50,4 +50,5 @@
     --x-body-color: var(--x-gray-900);
     --x-body-bg: var(--x-gray-200);
     --x-border-color: var(--x-gray-500);
+    --x-navbar-width: 225px;
 }
