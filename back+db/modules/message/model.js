@@ -17,6 +17,11 @@ class Message {
         return await connection.queryDB(query);
     }
 
+    static async searchByAdmin(term) {
+        let query = `SELECT Message.Id, Message.UserId, Message.Message, Message.Response, Message.MessageStatus, Message.ResponseStatus, Message.SentAt, User.Username as Username, User.DisplayName as UserDisplayName FROM Message INNER JOIN User ON User.Id=Message.UserId WHERE User.DisplayName LIKE '%${term}%' ORDER BY Message.SentAt DESC`;
+        return await connection.queryDB(query);
+    }
+
     static async getAllByUser(userId) {
         let query = `SELECT * FROM Message WHERE UserId=${userId}`;
         return await connection.queryDB(query);

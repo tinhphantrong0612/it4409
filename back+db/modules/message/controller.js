@@ -11,6 +11,15 @@ module.exports = {
             res.status(500).send("Internal Server Error");
         }
     },
+    searchByAdmin: async (req, res) => {
+        try {
+            let result = await Message.searchByAdmin(req.query.filter);
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
     getAllMessageByUser: async (req, res) => {
         try {
             let result = await Message.getAllByUser(req.session.Id);

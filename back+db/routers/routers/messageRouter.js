@@ -15,6 +15,7 @@ messageRouter
             res.status(500).send("Internal Server Error");
         }
     })
+    .get('/search', userValidate.isAdminValidate, messageController.searchByAdmin)
     .get('/:id', (req, res) => {
         if (req.session.Role == role.admin) {
             messageController.getByIdFromAdmin(req, res);
