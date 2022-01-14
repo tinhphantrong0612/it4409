@@ -6,18 +6,32 @@
     </div>
     <div class="x-header-control">
       <div class="x-user" style='margin-right:10px; font-style: italic; align-self:center;'>Hello, {{this.displayName}} !</div>
-      <button class="x-btn x-btn-danger" @click="logout()">Đăng xuất</button>
+      <dropdown-menu id="settings" :arrays="dropdownItems">
+        <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+      </dropdown-menu>
     </div>
   </div>
 </template>
 
 <script>
+import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.vue";
 
 export default {
   name: "TheAdminHeader",
+  components: {DropdownMenu},
   props: {
     displayName: String,
     showNavbarIcon: Number
+  },
+  data() {
+    return {
+      dropdownItems: [
+        {
+          text: 'Đăng xuất',
+          onClick: () => this.logout(),
+        },
+      ],
+    }
   },
   methods: {
     async logout() {

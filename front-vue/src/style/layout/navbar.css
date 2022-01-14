@@ -19,6 +19,10 @@
     display: block;
 }
 
+.x-navbar-item .xi {
+    margin-right: 4px;
+}
+
 .router-link-exact-active.router-link-active {
     background-color: var(--x-primary);
     color: var(--x-body-bg);

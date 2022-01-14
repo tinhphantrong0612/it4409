@@ -1,5 +1,5 @@
 .x-dropdown-menu {
-    position: flex;
+    position: relative;
     width: fit-content;
 }
 

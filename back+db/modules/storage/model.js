@@ -120,7 +120,7 @@ class IStorage {
         for (const thing of storageContains) {
             let query = `SELECT Id FROM ${thing.table} WHERE StorageId='${Id}'`;
             let result = await connection.queryDB(query);
-            if (result.length != 0) throw new Error(`Kho vẫn còn ${thing.displayName}`);
+            if (result.length != 0) throw new Error(`Không thể xóa. Kho vẫn còn ${thing.displayName.toLocaleLowerCase()}`);
         }
     }
 

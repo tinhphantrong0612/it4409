@@ -32,7 +32,7 @@
             </option>
           </select>
           <div v-if="storageList.length == 0">
-            <div>
+            <div style="white-space: break-spaces">
               Tài khoản chưa được liên kết với kho hàng nào, vui lòng liên hệ
               quản trị viên
             </div>

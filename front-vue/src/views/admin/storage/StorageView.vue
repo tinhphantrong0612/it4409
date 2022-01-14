@@ -77,23 +77,23 @@
         getStorageList();
       "
     ></storage-add>
-    <!-- <base-inform-popup
+    <base-inform-popup
       v-show="errorMessage != ''"
       :message="errorMessage"
       @close="errorMessage = ''"
-    ></base-inform-popup> -->
+    ></base-inform-popup>
   </div>
 </template>
 
 <script>
-// import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 import StorageAdd from './StorageAdd.vue';
 import StorageDetail from './StorageDetail.vue';
 
 export default {
   name: "StorageView",
   components: {
-    // BaseInformPopup,
+    BaseInformPopup,
     StorageAdd,
     StorageDetail
   },

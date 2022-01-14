@@ -7,7 +7,7 @@
     <div class="x-header-control">
       <div class="x-user" style='margin-right:10px; font-style: italic; align-self:center;'>Hello, {{this.displayName}} !</div>
       <dropdown-menu id="settings" :arrays="dropdownItems">
-        Tùy chọn <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+        <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
       </dropdown-menu>
     </div>
   </div>
