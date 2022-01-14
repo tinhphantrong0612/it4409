@@ -39,11 +39,13 @@
 .x-table tbody tr:hover > td {
     opacity: 0.75;
     background-color: var(--x-background-on-hover);
+    cursor: pointer;
 }
 
 .x-table.x-input-table tr:hover > td {
     opacity: 1;
     background-color: var(--x-body-bg) !important;
+    cursor: pointer;
 }
 
 .x-table .x-selected-row {
