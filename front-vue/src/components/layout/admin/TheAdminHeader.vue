@@ -5,8 +5,7 @@
       Quản lý các kho hàng
     </div>
     <div class="x-header-control">
-      <div class="x-user">Hello, {{this.displayName}}</div>
-      <div class="x-func xi xi-dropdown xi-size-125"></div>
+      <div class="x-user" style='margin-right:10px; font-style: italic; align-self:center;'>Hello, {{this.displayName}} !</div>
       <button class="x-btn x-btn-danger" @click="logout()">Đăng xuất</button>
     </div>
   </div>
