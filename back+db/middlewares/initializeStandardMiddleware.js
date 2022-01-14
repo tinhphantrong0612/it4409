@@ -30,5 +30,5 @@ module.exports = function (app) {
     }))
         .use(express.urlencoded({ extended: true }))
         .use(express.json())
-        .use(globalMiddleware.trimBody)
+        .use(globalMiddleware.trimBody, globalMiddleware.badWordsDetect)
 }

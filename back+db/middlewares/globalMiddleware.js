@@ -7,5 +7,24 @@ module.exports = {
             }
         }
         next();
+    },
+    badWordsDetect: (req, res, next) => {
+        if (req.body) {
+            let keyArr = Object.keys(req.body);
+            for (const key of keyArr) {
+                if (typeof(req.body[key]) == "string") {
+                    let wordArr = req.body[key].toLowerCase().split(" ");
+                    let badWords = ["bad1", "bad2", "bad3"];
+
+                    var foundBadWords = badWords.filter(e => wordArr.includes(e));
+                    foundBadWords.join(", ");
+                    if (foundBadWords.length != 0) {
+                        res.status(400).send("Vui lòng không nhập từ xấu: " + foundBadWords);
+                        return;
+                    }
+                }
+            }
+        }
+        next();
     }
 }
