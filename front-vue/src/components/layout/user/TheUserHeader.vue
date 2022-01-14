@@ -5,19 +5,39 @@
       Quản lý kho hàng
     </div>
     <div class="x-header-control">
-      <div class="x-user">Hello, {{this.displayName}}</div>
-      <div class="x-func xi xi-dropdown xi-size-125"></div>
-      <button class="x-btn x-btn-danger" @click="logout()">Đăng xuất</button>
+      <div class="x-user" style='margin-right:10px; font-style: italic; align-self:center;'>Hello, {{this.displayName}} !</div>
+      <dropdown-menu id="settings" :arrays="dropdownItems">
+        Tùy chọn <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+      </dropdown-menu>
     </div>
   </div>
 </template>
 
 <script>
+import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.vue";
+
 export default {
+  components: { DropdownMenu },
   name: "TheUserHeader",
   props: {
     displayName: String,
     showNavbarIcon: Number
+  },
+  data() {
+    return {
+      dropdownItems: [
+        {
+          text: 'Chọn nhà kho',
+          onClick: () => {
+            this.$parent.storageId = '';
+          },
+        },
+        {
+          text: 'Đăng xuất',
+          onClick: () => this.logout(),
+        },
+      ],
+    };
   },
   methods: {
     clickNavbar() {

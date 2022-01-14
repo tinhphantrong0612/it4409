@@ -1,11 +1,11 @@
 .x-dropdown-menu {
-    position: relative;
+    position: flex;
     width: fit-content;
 }
 
 .x-dropdown-item {
     display: block;
-    width: 100%;
+    width: auto;
     padding: 5px 10px;
     transition: 0.3s;
     position: relative;

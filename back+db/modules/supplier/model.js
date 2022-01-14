@@ -27,8 +27,8 @@ class Supplier {
         return await connection.queryDB(query);
     }
 
-    static async getSearchResult(term, storageId) {
-        let query = `SELECT * FROM supplier WHERE storageId='${storageId}' AND (DisplayName LIKE '%${term}%' OR Email LIKE '%${term}%' OR Phone LIKE '%${term}%')`;
+    static async getSearchResult(key, term, storageId) {
+        let query = `SELECT * FROM supplier WHERE storageId='${storageId}' AND ${key} LIKE '%${term}%'`;
         return await connection.queryDB(query);
     }
 
