@@ -15,11 +15,13 @@
               class="x-input x-input-search"
               v-model = "searchTerm"
               placeholder = "Nhập từ khóa tìm kiếm"
-              @search="getSearchResult()"
             />
-            <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
+            <div class="xi xi-search x-input-search-icon xi-size-100" @click = "getSearchResult()"></div>
           </div>
         </div>
+        <dropdown-menu :arrays="dropdownItems">
+            Search by : {{this.searchFilter}} <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+        </dropdown-menu>
       </div>
       <div class="x-btngroup">
         <button
@@ -96,9 +98,10 @@
 import SupplierAdd from "./SupplierAdd.vue";
 import SupplierDetail from "./SupplierDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.vue";
 
 export default {
-  components: { SupplierAdd, SupplierDetail, BaseInformPopup},
+  components: { SupplierAdd, SupplierDetail, BaseInformPopup, DropdownMenu },
   name: "SupplierView",
   data() {
     return {
@@ -108,16 +111,30 @@ export default {
       selectedSupplierId: "",
       errorMessage: "",
       searchTerm: "",
-      searchInterval: null
+      searchFilter: SEARCH_FILTER.displayName,
+      dropdownItems: [
+         {
+          text: SEARCH_FILTER.displayName,
+          onClick: () => this.searchFilter = SEARCH_FILTER.displayName,
+        },
+        {
+          text: SEARCH_FILTER.address,
+          onClick: () => this.searchFilter = SEARCH_FILTER.address,
+        },
+        {
+          text: SEARCH_FILTER.phone,
+          onClick: () => this.searchFilter = SEARCH_FILTER.phone,
+        },
+        {
+          text: SEARCH_FILTER.email,
+          onClick: () => this.searchFilter = SEARCH_FILTER.email,
+        },
+        {
+          text: SEARCH_FILTER.moreInfo,
+          onClick: () => this.searchFilter = SEARCH_FILTER.moreInfo,
+        },
+      ]
     };
-  },
-  watch: {
-    searchTerm: function() {
-      clearInterval(this.searchInterval);
-      this.searchInterval = setTimeout(() => {
-        this.getSearchResult();
-      }, 1000);
-    }
   },
   methods: {
     async getSupplierList() {
@@ -131,10 +148,12 @@ export default {
       this.$store.action.hideLoading();
     },
     async getSearchResult() {
+      if (!this.searchTerm) return;
+      let keyIndex = Object.values(SEARCH_FILTER).indexOf(this.searchFilter);
+      let key =  Object.keys(SEARCH_FILTER)[keyIndex];
       this.$store.action.showLoading();
-      clearInterval(this.searchInterval);
       this.selectedSupplierId = "";
-      const response = await fetch(`http://localhost:3000/api/supplier/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`http://localhost:3000/api/supplier/search/${key}&${this.searchTerm}`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -169,4 +188,12 @@ export default {
     this.getSupplierList();
   },
 };
+
+const SEARCH_FILTER = { 
+  displayName: 'Tên nhà cung cấp', 
+  address: 'Địa chỉ', 
+  phone: 'Số điện thoại',
+  email: 'Email', 
+  moreInfo: 'Mô tả'
+}
 </script>

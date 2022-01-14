@@ -1,9 +1,9 @@
 <template>
   <div :id="id" class="x-dropdown-menu"  style="margin-left: 5px;">
-    <button class="x-btn x-btn-success" @click="isOpen = !isOpen" :class="{ isActive: isOpen }">
+    <button class ='x-btn x-btn-success' @click="isOpen = !isOpen" :class="{ isActive: isOpen }">
       <slot />
     </button>
-    <div v-if="isOpen" style="position: absolute; background: white; z-index: 50;">
+    <div v-if="isOpen" :style=this.dropdownStyle style="position: absolute; background: white; z-index: 50">
       <dropdown-item 
         v-for="(item, index) in arrays"
         :key="index"
@@ -42,6 +42,10 @@ export default {
       type: String,
       required: true,
     },
+    dropdownStyle: {
+      type: String,
+      required: false,
+    }
   },
   methods: {
     callToClose() {
