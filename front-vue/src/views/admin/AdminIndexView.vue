@@ -66,5 +66,8 @@ export default {
     window.addEventListener('resize', this.handleView);
     this.getUserInformation();
   },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleView);
+  },
 };
 </script>
