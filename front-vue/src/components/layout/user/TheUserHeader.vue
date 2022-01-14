@@ -33,6 +33,12 @@ export default {
           },
         },
         {
+          text: 'Liên hệ Admin',
+          onClick: () => {
+            this.$parent.isMessageListShow = true;
+          }
+        },
+        {
           text: 'Đăng xuất',
           onClick: () => this.logout(),
         },

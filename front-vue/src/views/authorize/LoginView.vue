@@ -1,28 +1,27 @@
 <template>
-  <body class = 'x-login-container'>
+  <form @submit.prevent="login()" ref="loginForm" class='x-login-container'>
+    <label class="x-login-label-title">LTD Solutions</label>
+    <label class="x-login-label-subtitle">Log in</label>
+    <label class="x-label x-label-title"><b>Username</b></label>
     <div>
-      <label class="x-label x-login-label-title"><b>DTH Solutions</b></label>
-      <label class="x-label x-label-title"><b>Username</b></label>
+      <input class='x-input' style="width:30rem" type="text" name="" v-model="username" />
+    </div>
+    <label class="x-label x-label-title"><b>Password</b></label>
+    <div>
+      <input class='x-input' style="width:30rem" type="password" name="" v-model="password" />
+    </div>
+    <div class="x-login-btn-bar">
       <div>
-        <input class='x-input' style="width:30rem" type="text" name="" v-model="username" />
+      <button class ='x-btn x-btn-success x-login-btn-left' @click="submit">Đăng nhập</button>
       </div>
-      <label class="x-label x-label-title"><b>Password</b></label>
       <div>
-        <input class='x-input' style="width:30rem" type="password" name="" v-model="password" />
-      </div>
-      <div class="x-login-btn-bar">
-        <div>
-          <button class ='x-btn x-btn-success x-login-btn-left' @click="login()">Đăng nhập</button>
-        </div>
-        <div>
-          <button class ='x-btn x-btn-success x-login-btn-right' @click="register()">Đăng ký</button>
-        </div>
+        <button class ='x-btn x-btn-success x-login-btn-right' @click="register()">Đăng ký</button>
       </div>
     </div>
-    <span class="x-label-error" v-show="errorMessage != ''">{{
-            errorMessage
-      }}</span>
-  </body>
+      <div class="x-label-error" v-show="errorMessage != ''">{{
+        errorMessage
+      }}</div>
+  </form>
 </template>
 
 <script>
@@ -36,6 +35,9 @@ export default {
     };
   },
   methods: {
+    submit: function () {
+      this.$refs.form.$el.submit();
+    },
     async login() {
       let response = await fetch(`http://localhost:3000/user/login`, {
         credentials: "include",

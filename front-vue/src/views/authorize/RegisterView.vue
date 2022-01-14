@@ -1,7 +1,7 @@
 <template>
-  <body class = 'x-login-container'>
-    <div>
-      <label class="x-label x-login-label-title"><b>DTH Solutions</b></label>
+    <form @submit.prevent="register()" ref="registerForm" class = 'x-login-container'>
+      <label class="x-label x-login-label-title">LTD Solutions</label>
+      <label class="x-label x-login-label-subtitle">Sign Up</label>
       <label class="x-label x-label-title"><b>Your name</b></label>
       <div>
         <input class='x-input' style="width:30rem" type="text" name="" v-model="displayName" />
@@ -16,18 +16,17 @@
       </div>
       <div class="x-login-btn-bar">
         <div>
-          <button class ='x-btn x-btn-success x-login-btn-left' @click="login()">Đăng nhập</button>
+          <button class ='x-btn x-btn-success x-login-btn-left' @click="login()">Quay lại đăng nhập</button>
         </div>
         <div>
-          <button class ='x-btn x-btn-success x-login-btn-right' @click="register()">Đăng ký</button>
+          <button class ='x-btn x-btn-success x-login-btn-right' @click="submit">Đăng ký</button>
         </div>
       </div>
-    </div>
-    <span v-bind:class = "getClass" 
-    v-show="message != ''">{{
-            message
-    }}</span>
-  </body>
+      <div v-bind:class = "getClass" 
+         v-show="message != ''">{{
+          message
+      }}</div>
+    </form>
 </template>
 
 <script>
@@ -43,6 +42,9 @@ export default {
     };
   },
   methods: {
+    submit: function () {
+      this.$refs.form.$el.submit();
+    },
     async login() {
       this.$router.push('/login');
     },
@@ -73,6 +75,7 @@ export default {
       console.log(response.status);
       if (response.status == 201) {
         this.hasError = false;
+        setTimeout(() => this.$router.push('/login') , 1500);
       } else {
         this.hasError = true;
       }
