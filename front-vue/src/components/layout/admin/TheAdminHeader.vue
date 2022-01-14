@@ -5,33 +5,17 @@
       Quản lý các kho hàng
     </div>
     <div class="x-header-control">
-      <drop-down 
-        :title="this.displayName"
-        :items="this.items"
-        @message="processMessage">
-      </drop-down>
+      <div class="x-user">Hello, {{this.displayName}}</div>
+      <div class="x-func xi xi-dropdown xi-size-125"></div>
+      <button class="x-btn x-btn-danger" @click="logout()">Đăng xuất</button>
     </div>
   </div>
 </template>
 
 <script>
-import DropDown from "../../components/DropDown.vue"
 
 export default {
   name: "TheAdminHeader",
-  components: {
-    DropDown,
-  },
-  data() {
-    return {
-      items: [
-        {
-          message: "logout",
-          name: "Đăng xuất",
-        },
-      ]
-    }
-  },
   props: {
     displayName: String,
     showNavbarIcon: Number
@@ -47,10 +31,6 @@ export default {
       this.$store.action.hideLoading();
       this.$router.push("/authorize");
     },
-    processMessage(message) {
-      if (message == "logout")
-        this.logout();
-    }
   },
 };
 </script>
