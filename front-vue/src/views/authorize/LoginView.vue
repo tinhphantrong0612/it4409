@@ -64,7 +64,7 @@ export default {
   methods: {
     async login() {
       this.$store.action.showLoading();
-      let response = await fetch(`http://localhost:3000/user/login`, {
+      let response = await fetch(`${this.$currentOrigin}/user/login`, {
         credentials: "include",
         method: "POST",
         headers: {
@@ -89,7 +89,7 @@ export default {
       }
     },
     async checkLogin() {
-      let response = await fetch(`http://localhost:3000/user/login`, {
+      let response = await fetch(`${this.$currentOrigin}/user/login`, {
         credentials: "include",
       });
       if (response.status == 400) return;

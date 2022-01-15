@@ -51,7 +51,7 @@ export default {
     },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/unit`, {
+      const response = await fetch(`${this.$currentOrigin}/api/unit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

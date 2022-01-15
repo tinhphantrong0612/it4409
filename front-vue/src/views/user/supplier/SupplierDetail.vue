@@ -105,7 +105,7 @@ export default {
     async save() {
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,
+        `${this.$currentOrigin}/api/supplier/${this.selectedSupplierId}`,
         {
           method: "PUT",
           headers: {
@@ -133,7 +133,7 @@ export default {
         this.$store.action.showLoading();
         this.errorMessage = "";
         const response = await fetch(
-          `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,
+          `${this.$currentOrigin}/api/supplier/${this.selectedSupplierId}`,
           {
             credentials: 'include',
           }

@@ -74,7 +74,7 @@ export default {
       this.$router.push("/login");
     },
     async checkLogin() {
-      let response = await fetch(`http://localhost:3000/user/login`, {
+      let response = await fetch(`${this.$currentOrigin}/user/login`, {
         credentials: "include",
       });
       if (response.status == 400) return;
@@ -86,7 +86,7 @@ export default {
     },
     async register() {
       this.$store.action.showLoading();
-      let response = await fetch(`http://localhost:3000/user/register`, {
+      let response = await fetch(`${this.$currentOrigin}/user/register`, {
         credentials: "include",
         method: "POST",
         headers: {

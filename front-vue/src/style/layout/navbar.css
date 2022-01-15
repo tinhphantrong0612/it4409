@@ -17,6 +17,7 @@
     box-sizing: border-box;
     color: var(--x-body-color);
     display: block;
+    position: relative;
 }
 
 .x-navbar-item .xi {

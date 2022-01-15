@@ -3,6 +3,7 @@
     <the-user-header 
       :showNavbarIcon="this.viewState" 
       :displayName="this.displayName"
+      :isNewMessage="isNewMessage"
       @click="showNav = !showNav">
     </the-user-header>
     <the-user-navbar 
@@ -49,7 +50,7 @@
         </div>
       </div>
     </div>
-    <message-list v-if="isMessageListShow" @close="isMessageListShow = false"></message-list>
+    <message-list ref="messageList" v-if="isMessageListShow" @close="isMessageListShow = false"></message-list>
   </div>
 </template>
 
@@ -79,7 +80,8 @@ export default {
       storedState: store.state,
       storageList: [],
       errorMessage: "",
-      isMessageListShow: false
+      isMessageListShow: false,
+      isNewMessage: false
     };
   },
   watch: {
@@ -91,6 +93,11 @@ export default {
     viewState: function() {
       if (this.viewState == 0) {
         this.showNav = true;
+      }
+    },
+    isMessageListShow: function() {
+      if (this.isMessageListShow) {
+        this.isNewMessage = false;
       }
     }
   },
@@ -109,16 +116,17 @@ export default {
       }
     },
     async getUserInformation() {
-      let response = await fetch(`http://localhost:3000/user/login`, {
+      let response = await fetch(`${this.$currentOrigin}/user/login`, {
         credentials: "include",
       });
       var userInfo = await response.json();
       this.displayName = userInfo["DisplayName"];
+      this.subscribe();
     },
     async getUserStorageList() {
       this.$store.action.showLoading();
       this.errorMessage = "";
-      let response = await fetch(`http://localhost:3000/api/storage`, {
+      let response = await fetch(`${this.$currentOrigin}/api/storage`, {
         credentials: "include",
       });
       if (response.status == 401) {
@@ -131,7 +139,7 @@ export default {
     },
     async logout() {
       this.$store.action.showLoading();
-      let response = await fetch(`http://localhost:3000/user/logout`, {
+      let response = await fetch(`${this.$currentOrigin}/user/logout`, {
         credentials: "include",
       });
       let data = await response.text();
@@ -139,13 +147,34 @@ export default {
       this.$store.action.hideLoading();
       this.$router.push("/authorize");
     },
+    async subscribe() {
+      let response = await fetch(`${this.$currentOrigin}/api/message/subscribe`, {
+        credentials: "include"
+      })
+      if (response.status == 502) {// Time out
+        this.subscribe();
+      } else if (response.status != 200) {
+        this.errorMessage = response.statusText;
+        console.log(response.statusText)
+        await Promise(resolve => setTimeout(resolve, 1000));
+        this.subscribe();
+      } else {
+        console.log("New response");
+        this.isNewMessage = true;
+        if (this.isMessageListShow) {
+          this.$refs.messageList.getMessageList();
+          this.isNewMessage = false;
+        }
+        this.subscribe();
+      }
+    },
     async setStorageId() {
       this.$store.action.showLoading();
       if (this.storageId == "") {
         this.errorMessage = "Chưa chọn nhà kho";
         this.$store.action.showLoading();
       } else {
-        let response = await fetch(`http://localhost:3000/user/storageid`, {
+        let response = await fetch(`${this.$currentOrigin}/user/storageid`, {
           credentials: "include",
           headers: {
             "Content-type": "application/json",

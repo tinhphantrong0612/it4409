@@ -74,7 +74,7 @@ export default {
     },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/exportInfo/${this.selectedExportInfoId}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/exportInfo/${this.selectedExportInfoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/exportInfo/${this.selectedExportInfoId}`,
+        `${this.$currentOrigin}/api/exportInfo/${this.selectedExportInfoId}`,
         {credentials: 'include'}
       );
       if (response.status == 400) {

@@ -159,7 +159,7 @@ export default {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedImportId = "";
-      const response = await fetch(`http://localhost:3000/api/import/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/import/search?filter=${this.searchTerm}`, {
         credentials: 'include',
       });
       const data = await response.json();

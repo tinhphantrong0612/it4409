@@ -81,7 +81,13 @@ class Message {
         let result= await connection.queryDB(query);
         if (result.length == 0) return false;
         else return true;
-    } 
+    }
+
+    static async getUserIdFromMessageId(messageId) {
+        let query = `SELECT UserId FROM Message WHERE Id=${messageId}`;
+        let message = await connection.queryDB(query);
+        return message[0].UserId;
+    }
 }
 
 module.exports = Message;

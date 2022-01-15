@@ -147,7 +147,7 @@ export default {
     async save() {
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/storage/${this.selectedStorageId}`,
+        `${this.$currentOrigin}/api/storage/${this.selectedStorageId}`,
         {
           credentials: "include",
           method: "PUT",
@@ -172,7 +172,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = "";
       const response = await fetch(
-        `http://localhost:3000/api/storage/${this.selectedStorageId}`,
+        `${this.$currentOrigin}/api/storage/${this.selectedStorageId}`,
         {
           credentials: "include",
         }
@@ -184,7 +184,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = "";
       const response = await fetch(
-        `http://localhost:3000/api/storage/${this.selectedStorageId}/user/${userId}`,
+        `${this.$currentOrigin}/api/storage/${this.selectedStorageId}/user/${userId}`,
         {
           credentials: "include",
           method: "DELETE"

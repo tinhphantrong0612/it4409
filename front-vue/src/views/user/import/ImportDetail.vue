@@ -144,7 +144,7 @@ export default {
     async save() {
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/import/${this.selectedImportId}`,
+        `${this.$currentOrigin}/api/import/${this.selectedImportId}`,
         {
           method: "PUT",
           headers: {
@@ -163,7 +163,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/import/${this.selectedImportId}`, {credentials: 'include',}
+        `${this.$currentOrigin}/api/import/${this.selectedImportId}`, {credentials: 'include',}
       );
       if (response.status == 500) {
         this.$emit("error", "Lỗi Server");
@@ -180,7 +180,7 @@ export default {
     async remove(importInfoId) {
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/importInfo/${importInfoId}`,
+        `${this.$currentOrigin}/api/importInfo/${importInfoId}`,
         {
           method: "DELETE",
           credentials: 'include',

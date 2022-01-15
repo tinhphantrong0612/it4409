@@ -80,7 +80,7 @@ export default {
     },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/importInfo/${this.selectedImportInfoId}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/importInfo/${this.selectedImportInfoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = '';
       const response = await fetch(
-        `http://localhost:3000/api/importInfo/${this.selectedImportInfoId}`, {
+        `${this.$currentOrigin}/api/importInfo/${this.selectedImportInfoId}`, {
           credentials: 'include',
         }
       );

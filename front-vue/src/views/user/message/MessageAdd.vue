@@ -48,7 +48,7 @@ export default {
             this.$store.action.hideLoading();
             return;
         }
-        let response = await fetch(`http://localhost:3000/api/message`, {
+        let response = await fetch(`${this.$currentOrigin}/api/message`, {
             credentials: 'include',
             method: "POST",
             headers: {

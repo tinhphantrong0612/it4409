@@ -1,11 +1,13 @@
 <template>
   <div class="x-navbar">
-    <router-link class="x-navbar-item" to="/storage">
+    <router-link class="x-navbar-item" to="/storage" @click="$emit('switch-view', 'storage')">
       <div class="xi xi-storage xi-size-x2"></div>
       <span v-if="this.viewState != 2">Kho hàng</span>
     </router-link>
-    <router-link class="x-navbar-item" to="/message">
-      <div class="xi xi-message xi-size-x2"></div>
+    <router-link class="x-navbar-item" to="/message" @click="$emit('switch-view', 'message')">
+      <div class="xi xi-message xi-size-x2" style="position: relative;">
+        <div class="notify-red" v-show="isNewMessage"></div>
+      </div>
       <span v-if="this.viewState != 2">Tin nhắn</span>
     </router-link>
   </div>
@@ -14,7 +16,7 @@
 <script>
 export default {
   name: "TheAdminNavbar",
-  props: ["show", "viewState"],
+  props: ["show", "viewState", "isNewMessage"],
   watch: {
     show: function () {
       if (this.show == true) {
@@ -55,3 +57,16 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+.notify-red {
+  background-color: red;
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  border-radius: 50%;
+  top: -2px;
+  right: -2px;
+}
+</style>

@@ -126,7 +126,7 @@ export default {
     async getStorageList() {
       this.$store.action.showLoading();
       this.selectedStorageId = "";
-      const response = await fetch(`http://localhost:3000/api/storage`, {
+      const response = await fetch(`${this.$currentOrigin}/api/storage`, {
         credentials: "include",
       });
       if (response.status == 401) {
@@ -142,7 +142,7 @@ export default {
       if (!this.selectedStorageId) return;
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/storage/${this.selectedStorageId}`,
+        `${this.$currentOrigin}/api/storage/${this.selectedStorageId}`,
         {
           credentials: "include",
           method: "DELETE",
@@ -165,7 +165,7 @@ export default {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedStorageId = "";
-      const response = await fetch(`http://localhost:3000/api/storage/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/storage/search?filter=${this.searchTerm}`, {
         credentials: 'include',
       });
       const data = await response.json();

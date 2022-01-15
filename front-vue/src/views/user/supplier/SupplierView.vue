@@ -140,7 +140,7 @@ export default {
     async getSupplierList() {
       this.$store.action.showLoading();
       this.selectedSupplierId = "";
-      const response = await fetch(`http://localhost:3000/api/supplier`, {
+      const response = await fetch(`${this.$currentOrigin}/api/supplier`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -153,7 +153,7 @@ export default {
       // let key =  Object.keys(SEARCH_FILTER)[keyIndex];
       this.$store.action.showLoading();
       this.selectedSupplierId = "";
-      const response = await fetch(`http://localhost:3000/api/supplier/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/supplier/search?filter=${this.searchTerm}`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -164,7 +164,7 @@ export default {
       if (!this.selectedSupplierId) return; 
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/supplier/${this.selectedSupplierId}`,
+        `${this.$currentOrigin}/api/supplier/${this.selectedSupplierId}`,
         {
           method: "DELETE",
           credentials: 'include',

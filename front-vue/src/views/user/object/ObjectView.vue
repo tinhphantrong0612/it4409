@@ -128,7 +128,7 @@ export default {
     async getObjectList() {
       this.$store.action.showLoading();
       this.selectedObjectId = "";
-      const response = await fetch(`http://localhost:3000/api/object`, {
+      const response = await fetch(`${this.$currentOrigin}/api/object`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -136,7 +136,7 @@ export default {
       this.$store.action.hideLoading();
     },
     async getUnitList() {
-      const response = await fetch(`http://localhost:3000/api/unit`, {
+      const response = await fetch(`${this.$currentOrigin}/api/unit`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -146,7 +146,7 @@ export default {
       this.$store.action.showLoading();
       this.selectedObjectId = "";
       clearInterval(this.searchInterval);
-      const response = await fetch(`http://localhost:3000/api/object/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/object/search?filter=${this.searchTerm}`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -160,7 +160,7 @@ export default {
       if (!this.selectedObjectId) return;
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/object/${this.selectedObjectId}`,
+        `${this.$currentOrigin}/api/object/${this.selectedObjectId}`,
         {
           credentials: 'include',
           method: "DELETE",

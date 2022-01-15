@@ -1,5 +1,5 @@
 const path = require('path');
-const { user } = require('../../enum/enum').role;
+const { role } = require('../../enum/enum');
 const User = require('./model');
 
 module.exports = {
@@ -52,9 +52,12 @@ module.exports = {
 
     logout: async (req, res) => {
         // delete user session
+        if (req.app.userSubscriber) delete req.app.userSubscriber[req.session.Id];
+        if (req.app.adminSubscriber) delete req.app.adminSubscriber[req.session.Id];
         delete req.session.Id;
         delete req.session.StorageId;
         delete req.session.Role;
+        
         res.status(200).send("Ok");
     },
     setStorageId: (req, res) => {

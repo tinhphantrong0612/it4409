@@ -72,7 +72,7 @@ export default {
       this.errorMessage = "";
       this.successMessage = "";
       const response = await fetch(
-        `http://localhost:3000/api/storage/nonuser/${this.selectedStorageId}`,
+        `${this.$currentOrigin}/api/storage/nonuser/${this.selectedStorageId}`,
         {
           credentials: "include",
         }
@@ -86,7 +86,7 @@ export default {
     async addUserIntoStorage(userId) {
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/storage/${this.selectedStorageId}/user/${userId}`,
+        `${this.$currentOrigin}/api/storage/${this.selectedStorageId}/user/${userId}`,
         {
           credentials: "include",
           method: "POST",

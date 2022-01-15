@@ -7,9 +7,12 @@
     </the-admin-header>
     <the-admin-navbar
       :show="this.showNav"
-      :viewState="this.viewState">
+      :isNewMessage="this.isNewMessage"
+      :viewState="this.viewState"
+      @switch-view="currentView = $event"
+      >
     </the-admin-navbar>
-    <the-admin-content></the-admin-content>
+    <the-admin-content @update="handleUpdate($event)"></the-admin-content>
   </div>
 </template>
 
@@ -30,6 +33,8 @@ export default {
       viewState: 0,
       showNav: true,
       displayName: "",
+      isNewMessage: false,
+      currentView: "storage"
     };
   },
   watch: {
@@ -53,13 +58,36 @@ export default {
         this.viewState = 0;
       }
     },
+    async subscribe() {
+      let response = await fetch(`${this.$currentOrigin}/api/message/subscribe`, {
+        credentials: "include"
+      })
+      if (response.status == 502) {// Time out
+        this.subscribe();
+      } else if (response.status != 200) {
+        this.errorMessage = response.statusText;
+        console.log(response.statusText)
+        await Promise(resolve => setTimeout(resolve, 1000));
+        this.subscribe();
+      } else {
+        console.log("New message");
+        this.isNewMessage = true;
+        this.subscribe();
+      }
+    },
     async getUserInformation() {
-      let response = await fetch(`http://localhost:3000/user/login`, {
+      let response = await fetch(`${this.$currentOrigin}/user/login`, {
         credentials: "include",
       });
       var userInfo = await response.json();
       this.displayName = userInfo["DisplayName"];
+      this.subscribe();
     },
+    handleUpdate(event) {
+      if (event.event == 'reload') {
+        this.isNewMessage = false;
+      }
+    }
   },
   created() {
     this.handleView();

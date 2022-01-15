@@ -22,7 +22,7 @@ export const store = {
              * @param {String} thing Danh sách cần lấy, ví dụ: supplierList -> thing = supplier
              */
             getListOfThing: async (thing) => {
-                const response = await fetch(`http://localhost:3000/api/${thing}`, {
+                const response = await fetch(`${this.$currentOrigin}/api/${thing}`, {
                     credentials: 'include'
                 });
                 const data = await response.json();

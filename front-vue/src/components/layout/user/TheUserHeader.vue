@@ -8,6 +8,7 @@
       <div class="x-user" style='margin-right:10px; font-style: italic; align-self:center;'>Hello, {{this.displayName}} !</div>
       <dropdown-menu id="settings" :arrays="dropdownItems">
         <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+        <div class="notify-red" v-show="isNewMessage"></div>
       </dropdown-menu>
     </div>
   </div>
@@ -21,7 +22,8 @@ export default {
   name: "TheUserHeader",
   props: {
     displayName: String,
-    showNavbarIcon: Number
+    showNavbarIcon: Number,
+    isNewMessage: Boolean
   },
   data() {
     return {
@@ -51,7 +53,7 @@ export default {
     },
     async logout() {
       this.$store.action.showLoading();
-      let response = await fetch(`http://localhost:3000/user/logout`, {
+      let response = await fetch(`${this.$currentOrigin}/user/logout`, {
         credentials: "include",
       });
       let data = await response.text();
@@ -59,6 +61,18 @@ export default {
       this.$store.action.hideLoading();
       this.$router.push("/authorize");
     },
-  },
+  }
 };
 </script>
+
+<style scoped>
+.notify-red {
+  background-color: red;
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  border-radius: 50%;
+  top: 8px;
+  right: 8px;
+}
+</style>

@@ -97,7 +97,7 @@ export default {
     async getUnitList() {
       this.$store.action.showLoading();
       this.selectedUnitId = "";
-      const response = await fetch(`http://localhost:3000/api/unit`, {
+      const response = await fetch(`${this.$currentOrigin}/api/unit`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -108,7 +108,7 @@ export default {
       if (!this.selectedUnitId) return;
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/unit/${this.selectedUnitId}`,
+        `${this.$currentOrigin}/api/unit/${this.selectedUnitId}`,
         {
           method: "DELETE",
           credentials: 'include',

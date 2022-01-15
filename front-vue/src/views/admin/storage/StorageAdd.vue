@@ -62,7 +62,7 @@ export default {
     },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/storage`, {
+      const response = await fetch(`${this.$currentOrigin}/api/storage`, {
         credentials: 'include',
         method: "POST",
         headers: {

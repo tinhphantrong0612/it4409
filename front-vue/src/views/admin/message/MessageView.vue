@@ -56,7 +56,7 @@
             <td>{{ msg.UserDisplayName }}</td>
             <td>{{ msg.Username }}</td>
             <td>{{ shortenMessage(msg.Message) }}</td>
-            <td>{{ statusToText(msg.ResponseStatus) }}</td>
+            <td>{{ statusToText(msg.MessageStatus, msg.ResponseStatus) }}</td>
           </tr>
         </tbody>
       </table>
@@ -108,7 +108,7 @@ export default {
     async getMessageList() {
       this.$store.action.showLoading();
       this.selectedMessageId = "";
-      const response = await fetch(`http://localhost:3000/api/message`, {
+      const response = await fetch(`${this.$currentOrigin}/api/message`, {
         credentials: "include",
       });
       if (response.status == 401) {
@@ -118,13 +118,16 @@ export default {
       }
       const data = await response.json();
       this.messageList = data;
+      this.$emit("update", {
+        event: "reload"
+      })
       this.$store.action.hideLoading();
     },
     async deleteMessage() {
       if (!this.selectedMessageId) return;
       this.$store.action.showLoading();
       const response = await fetch(
-        `http://localhost:3000/api/message/${this.selectedMessageId}`,
+        `${this.$currentOrigin}/api/message/${this.selectedMessageId}`,
         {
           credentials: "include",
           method: "DELETE",
@@ -148,7 +151,7 @@ export default {
       clearInterval(this.searchInterval);
       this.selectedMessageId = "";
       const response = await fetch(
-        `http://localhost:3000/api/message/search?filter=${this.searchTerm}`,
+        `${this.$currentOrigin}/api/message/search?filter=${this.searchTerm}`,
         {
           credentials: "include",
         }
@@ -167,17 +170,10 @@ export default {
 
       return `${hour}:${minute} ${day}/${month}/${year - 2000}`;
     },
-    statusToText(num) {
-      switch (num) {
-        case 0:
-          return "Đã gửi";
-        case 1:
-          return "Đã đọc";
-        case 2:
-          return "Đã phản hồi";
-        default:
-          break;
-      }
+    statusToText(messageStatus, responseStatus) {
+      if (messageStatus == 1 && responseStatus == 0) return "Tin nhắn mới";
+      else if (messageStatus == 2 && responseStatus == 0) return "Đã xem";
+      else return "Đã phản hồi";
     },
     shortenMessage(message) {
       if (message.length > 30) {

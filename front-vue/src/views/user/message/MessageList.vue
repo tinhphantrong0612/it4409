@@ -19,7 +19,7 @@
                 <tbody>
                   <tr v-for="message in messageList" :key="message.Id">
                     <td>{{ toHHMMDDMMYYYY(message.SentAt) }}</td>
-                    <td>{{ statusToText(message.ResponseStatus) }}</td>
+                    <td>{{ statusToText(message.MessageStatus, message.ResponseStatus) }}</td>
                     <td>{{ shortenMessage(message.Message) }}</td>
                     <td>
                       <button
@@ -103,7 +103,7 @@ export default {
       this.$store.action.showLoading();
       this.errorMessage = "";
       this.successMessage = "";
-      let response = await fetch(`http://localhost:3000/api/message`, {
+      let response = await fetch(`${this.$currentOrigin}/api/message`, {
         credentials: "include",
       });
       if (response.status == 400) {
@@ -116,7 +116,7 @@ export default {
     async deleteMessage(messageId) {
       this.$store.action.showLoading();
       let response = await fetch(
-        `http://localhost:3000/api/message/${messageId}`,
+        `${this.$currentOrigin}/api/message/${messageId}`,
         {
           credentials: "include",
           method: "DELETE",
@@ -146,16 +146,15 @@ export default {
 
       return `${hour}:${minute} ${day}/${month}/${year - 2000}`;
     },
-    statusToText(num) {
-      switch (num) {
-        case 0:
-          return "Đã gửi";
-        case 1:
-          return "Đã đọc";
-        case 2:
-          return "Đã phản hồi";
-        default:
-          break;
+    statusToText(messageStatus, responseStatus) {
+      if (messageStatus == 1 && responseStatus == 0) {
+        return "Đã gửi";
+      } else if (messageStatus == 2 && responseStatus == 0) {
+        return "Đã đọc";
+      } else if (responseStatus == 1) {
+        return "Phản hồi mới";
+      } else {
+        return "Đã phản hồi";
       }
     },
   },

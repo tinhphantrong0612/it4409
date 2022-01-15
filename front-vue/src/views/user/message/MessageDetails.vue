@@ -75,7 +75,7 @@ export default {
     },
     async getMessageDetails() {
         this.$store.action.showLoading();
-        let response = await fetch(`http://localhost:3000/api/message/${this.selectedMessageId}`, {
+        let response = await fetch(`${this.$currentOrigin}/api/message/${this.selectedMessageId}`, {
             credentials: 'include'
         })
         if (response.status > 300) {

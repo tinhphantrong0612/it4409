@@ -98,7 +98,7 @@ export default {
     },
     async save() {
       this.$store.action.showLoading();
-      const response = await fetch(`http://localhost:3000/api/supplier`, {
+      const response = await fetch(`${this.$currentOrigin}/api/supplier`, {
         method: "POST",
         credentials: 'include',
         headers: {

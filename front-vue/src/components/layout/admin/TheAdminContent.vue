@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <router-view @update="$emit('update', $event)"></router-view>
 </template>
 
 <script>

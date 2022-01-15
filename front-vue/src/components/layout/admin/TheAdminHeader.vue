@@ -36,7 +36,7 @@ export default {
   methods: {
     async logout() {
       this.$store.action.showLoading();
-      let response = await fetch(`http://localhost:3000/user/logout`, {
+      let response = await fetch(`${this.$currentOrigin}/user/logout`, {
         credentials: "include",
       });
       let data = await response.text();
