@@ -25,7 +25,7 @@
                         <label for="" class="x-label">Lúc: </label>
                       </div>
                       <div class="x-col x-col-9">
-                        {{ toHHMMDDMMYYYY(message.SentAt) }}
+                        {{ $utils.toHHMMDDMMYYYY(message.SentAt) }}
                       </div>
                     </div>
                     <div class="x-row">
@@ -33,7 +33,7 @@
                         <label for="" class="x-label">Trạng thái</label>
                       </div>
                       <div class="x-col x-col-9">
-                        {{ statusToText(message.ResponseStatus) }}
+                        {{ statusToText(message.MessageStatus, message.ResponseStatus) }}
                       </div>
                     </div>
                     <div class="x-row">
@@ -134,27 +134,10 @@ export default {
       this.$emit('save');
       this.$store.action.hideLoading();
     },
-    toHHMMDDMMYYYY(date) {
-      let newDate = new Date(date);
-      let hour = newDate.getHours();
-      let minute = newDate.getMinutes();
-      let day = newDate.getDate();
-      let month = newDate.getMonth() + 1;
-      let year = newDate.getFullYear();
-
-      return `${hour}:${minute} ${day}/${month}/${year - 2000}`;
-    },
-    statusToText(num) {
-      switch (num) {
-        case 0:
-          return "Đã gửi";
-        case 1:
-          return "Đã đọc";
-        case 2:
-          return "Đã phản hồi";
-        default:
-          break;
-      }
+    statusToText(messageStatus, responseStatus) {
+      if (messageStatus == 1 && responseStatus == 0) return "Tin nhắn mới";
+      else if (messageStatus == 2 && responseStatus == 0) return "Đã xem";
+      else return "Đã phản hồi";
     },
   },
   created() {

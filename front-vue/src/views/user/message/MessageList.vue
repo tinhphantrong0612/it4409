@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="message in messageList" :key="message.Id">
-                    <td>{{ toHHMMDDMMYYYY(message.SentAt) }}</td>
+                    <td>{{ $utils.toHHMMDDMMYYYY(message.SentAt) }}</td>
                     <td>{{ statusToText(message.MessageStatus, message.ResponseStatus) }}</td>
                     <td>{{ shortenMessage(message.Message) }}</td>
                     <td>
@@ -135,16 +135,6 @@ export default {
       if (message.length > 30) {
         return `${message.substring(0, 30)}...`;
       } else return message;
-    },
-    toHHMMDDMMYYYY(date) {
-      let newDate = new Date(date);
-      let hour = newDate.getHours();
-      let minute = newDate.getMinutes();
-      let day = newDate.getDate();
-      let month = newDate.getMonth() + 1;
-      let year = newDate.getFullYear();
-
-      return `${hour}:${minute} ${day}/${month}/${year - 2000}`;
     },
     statusToText(messageStatus, responseStatus) {
       if (messageStatus == 1 && responseStatus == 0) {

@@ -128,7 +128,7 @@ export default {
       let importInfoListSize = this.newImport.ImportInfoList.length;
       let lastImportInfo =
         this.newImport.ImportInfoList[importInfoListSize - 1];
-      if (importInfoListSize == 5) {
+      if (importInfoListSize >= 5) {
         this.errorMessage = "Mỗi đơn hàng chỉ có thể nhập tối đa 5 mặt hàng";
         return;
       } else if (

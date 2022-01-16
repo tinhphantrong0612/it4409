@@ -162,7 +162,7 @@ export default {
       console.log(data);
     },
     toVND(money) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(money);
+      return this.$utils.toVND(money)
     }
   },
   watch: {

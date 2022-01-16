@@ -13,9 +13,8 @@ exportRouter
         exportController.post)
     .put('/:id',
         exportValidate.customerValidate,
-        exportValidate.isAllExportAmountValid,
         exportController.put)
-    // Không cho phép xóa, tự động xóa khi exportInfo cuối cùng bị xóa
-    // .delete('/:id', exportController.delete);
+// Không cho phép xóa, tự động xóa khi exportInfo cuối cùng bị xóa
+// .delete('/:id', exportController.delete);
 
 module.exports = exportRouter;

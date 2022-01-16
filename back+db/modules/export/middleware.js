@@ -36,8 +36,21 @@ module.exports = {
                 amount: obj.Amount
             }
         });
-        let result = await IExport.isAllExportAmountValid(objectList, req.session.StorageId);
+        let packedObjectList = [];
+        // trường hợp xuất cùng loại mặt hàng nhiều lần
+        objectList.forEach(obj => {
+            let isDuplicate = false;
+            for (const packedObj of packedObjectList) {
+                if (packedObj.objectId == obj.objectId) {
+                    packedObj.amount = Number(packedObj.amount) + Number(obj.amount);
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate) packedObjectList.push(obj);
+        });
+        let result = await IExport.isAllExportAmountValid(packedObjectList, req.session.StorageId);
         if (result) next();
         else res.status(400).send("Số lượng mặt hàng không đủ để xuất ra");
-    }
+    },
 }

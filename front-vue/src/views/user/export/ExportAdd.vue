@@ -11,7 +11,7 @@
             <div class="x-row justify-content-center">
               <div class="x-col x-col-12">
                 <label for="inpName" class="x-label">Khách hàng</label>
-                <select name="" id="" class="x-input" v-model="newExport.customerId">
+                <select name="" id="" class="x-input" v-model="newExport.CustomerId">
                   <option
                     v-for="customer in customerList"
                     :key="customer.Id"
@@ -118,7 +118,7 @@ export default {
       let ExportInfoListSize = this.newExport.ExportInfoList.length;
       let lastExportInfo =
         this.newExport.ExportInfoList[ExportInfoListSize - 1];
-      if (ExportInfoListSize == 5) {
+      if (ExportInfoListSize >= 5) {
         this.errorMessage = "Mỗi đơn hàng chỉ có thể nhập tối đa 5 mặt hàng";
         return;
       } else if (
@@ -127,7 +127,7 @@ export default {
         isNaN(Number(lastExportInfo.ExportPrice))
       ) {
         this.errorMessage =
-          "Cần nhập đúng các dòng phía trước, barcode phải có dạng số";
+          "Cần nhập đúng các dòng phía trước";
       } else
         this.newExport.ExportInfoList.push({
           ObjectId: this.objectList[0].Id,

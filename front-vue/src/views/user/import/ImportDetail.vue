@@ -44,11 +44,11 @@
                         <td>
                           {{ importInfo.ObjectName }}
                         </td>
-                        <td>
+                        <td class="text-right">
                           {{ importInfo.Amount }}
                         </td>
-                        <td>
-                          {{ importInfo.ImportPrice }}
+                        <td class="text-right">
+                          {{ $utils.toVND(importInfo.ImportPrice) }}
                         </td>
                         <td>
                           {{ importInfo.Barcode }}
@@ -187,13 +187,18 @@ export default {
         }
       );
       if (response.status == 400) {
+        await this.getImportDetail();
         this.errorMessage = await response.text();
+        return;
       }
       await this.getImportDetail();
     },
     edit(importInfoId) {
       this.selectedImportInfoId = importInfoId;
       this.importInfoPopupShow = true;
+    },
+    toVND(money) {
+      return this.$utils.toVND(money);
     }
   },
   watch: {

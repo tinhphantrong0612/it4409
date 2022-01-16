@@ -54,6 +54,7 @@ class IImportInfo {
 
     static async getById(id, storageId) {
         let query = `SELECT
+                        importInfo.ObjectId,
                         object.DisplayName as ObjectName,
                         importInfo.Barcode,
                         importInfo.ImportPrice,

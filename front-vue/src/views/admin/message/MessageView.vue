@@ -52,7 +52,7 @@
             "
             @click="selectedMessageId = msg.Id"
           >
-            <td>{{ toHHMMDDMMYYYY(msg.SentAt) }}</td>
+            <td>{{ $utils.toHHMMDDMMYYYY(msg.SentAt) }}</td>
             <td>{{ msg.UserDisplayName }}</td>
             <td>{{ msg.Username }}</td>
             <td>{{ shortenMessage(msg.Message) }}</td>
@@ -159,16 +159,6 @@ export default {
       const data = await response.json();
       this.messageList = data;
       this.$store.action.hideLoading();
-    },
-    toHHMMDDMMYYYY(date) {
-      let newDate = new Date(date);
-      let hour = newDate.getHours();
-      let minute = newDate.getMinutes();
-      let day = newDate.getDate();
-      let month = newDate.getMonth() + 1;
-      let year = newDate.getFullYear();
-
-      return `${hour}:${minute} ${day}/${month}/${year - 2000}`;
     },
     statusToText(messageStatus, responseStatus) {
       if (messageStatus == 1 && responseStatus == 0) return "Tin nhắn mới";

@@ -8,43 +8,35 @@
         </div>
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
-            <div class="x-row justify-content-center">
-              <div class="x-col x-col-6 p-1">
-                  <div class="x-row justify-content-between">
-                      <label for="" class="x-label">Mặt hàng</label>
-                      <div>{{importInfo.ObjectName}}</div>
-                  </div>
-                  <div class="x-row justify-content-between">
-                      <label for="" class="x-label">Đơn vị</label>
-                      <div>{{importInfo.UnitName}}</div>
-                  </div>
-              </div>
-              <div class="x-col x-col-6 p-1">
-                  <div class="x-row justify-content-between">
-                      <label for="" class="x-label">Ngày nhập</label>
-                      <div>{{toDDMMYYYY(importInfo.ImportDate)}}</div>
-                  </div>
-                  <div class="x-row justify-content-between">
-                      <label for="" class="x-label">Nhà cung cấp</label>
-                      <div>{{importInfo.SupplierName}}</div>
-                  </div>
-              </div>
+            <div class="x-row justify-content-start">
+              <label for="" class="x-label x-col x-col-3">Mặt hàng</label>
+                <div class="x-col x-col-9">{{importInfo.ObjectName}}</div>
+            </div>
+            <div class="x-row justify-content-start"><label for="" class="x-label x-col x-col-3">Đơn vị</label>
+                <div class="x-col x-col-9">{{importInfo.UnitName}}</div></div>
+            <div class="x-row justify-content-start"><label for="" class="x-label x-col x-col-3">Ngày nhập</label>
+                      <div class="x-col x-col-9">{{$utils.toDDMMYYYY(importInfo.ImportDate)}}</div></div>
+            <div class="x-row justify-content-start"> <label for="" class="x-label x-col x-col-3">Khách hàng</label>
+                      <div class="x-col x-col-9">{{importInfo.SupplierName}}</div></div>
+            <div class="x-row">
+                <label for="" class="x-label x-col x-col-3 justify-content-center">Số lượng nhập
+                    
+                </label>
+                <input type="number" min="1" v-model="importInfo.Amount" class="x-input x-col x-col-9">
             </div>
             <div class="x-row">
-                <label for="" class="x-label w-100">Số lượng nhập
-                    <input type="number" min="1" v-model="importInfo.Amount" class="x-input w-100">
+                <label for="" class="x-label x-col x-col-3 justify-content-center">Giá nhập
                 </label>
+                <input type="number" min="0" v-model="importInfo.ImportPrice" class="x-input x-col x-col-9">
             </div>
             <div class="x-row">
-                <label for="" class="x-label w-100">Giá nhập
-                    <input type="number" min="0" v-model="importInfo.ImportPrice" class="x-input w-100">
+                <label for="" class="x-label x-col x-col-3 justify-content-center">Barcode
                 </label>
+                <input type="number" min="0" v-model="importInfo.Barcode" class="x-input x-col x-col-9">
             </div>
-            <div class="x-row">
-                <label for="" class="x-label w-100">Barcode
-                    <input type="text" v-model="importInfo.Barcode" class="x-input w-100">
-                </label>
-            </div>
+            <span class="x-label-error" v-show="errorMessage != ''">{{
+                  errorMessage
+                }}</span>
           </div>
         </div>
         <div class="x-modal-footer">
@@ -70,6 +62,7 @@ export default {
         ImportDate: new Date(),
         SupplierName: "",
         UnitName: "",
+        ObjectId: ""
       },
       errorMessage: "",
     };
@@ -108,13 +101,6 @@ export default {
         this.$emit("error", this.errorMessage);
       } else this.importInfo = await response.json();
       this.$store.action.hideLoading();
-    },
-    toDDMMYYYY(date) {
-      const theDate = new Date(date);
-        const day = theDate.getDate() < 10 ? `0${theDate.getDate()}` : theDate.getDate();
-        const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
-        const year = theDate.getFullYear();
-        return `${day}/${month}/${year}`;
     }
   },
   created() {

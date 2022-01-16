@@ -103,6 +103,7 @@ class IExport {
             await Promise.all(promises);
             return true;
         } catch (error) {
+            console.log(error);
             return false;
         }
     }
@@ -111,15 +112,16 @@ class IExport {
         try {
             let queryExport = `SELECT Amount FROM exportInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
             let queryImport = `SELECT Amount FROM importInfo WHERE ObjectId='${objectId}' AND storageId='${storageId}'`;
-            let [resultExport, resultImport] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryImport)]);   
+            let [resultExport, resultImport] = await Promise.all([connection.queryDB(queryExport), connection.queryDB(queryImport)]);
             resultExport.unshift(0);
             resultImport.unshift(0);
             let totalExport = resultExport.reduce((a, b) => a + b.Amount);
             let totalImport = resultImport.reduce((a, b) => a + b.Amount);
-            if (totalExport + amount > totalImport) throw new Error(false);
+            if (totalExport + amount > totalImport) throw new Error(`Số lượng hàng đã xuất: ${totalExport}\nLượng hàng đã nhập: ${totalImport}\n Lượng hàng sẽ xuất: ${amount}`);
             else return true;
         } catch (error) {
-            throw new Error(false);
+            console.log(error);
+            throw new Error("Có gì đó sai sai");
         }
     }
 

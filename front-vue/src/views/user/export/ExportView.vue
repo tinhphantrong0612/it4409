@@ -46,7 +46,7 @@
             :class="{ 'x-selected-row': theExport.Id == selectedExportId }"
           >
             <td>{{ theExport.CustomerName }}</td>
-            <td>{{ toDDMMYYYY(theExport.ExportDate) }}</td>
+            <td>{{ $utils.toDDMMYYYY(theExport.ExportDate) }}</td>
           </tr>
         </tbody>
       </table>
@@ -138,22 +138,6 @@ export default {
     checkNull(data) {
       if (data == "null") return "";
       return data;
-    },
-    toHHMMDDMMYYYY(date) {
-      const theDate = new Date(date);
-        const day = theDate.getDate() < 10 ? `0${theDate.getDate()}` : theDate.getDate();
-        const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
-        const year = theDate.getFullYear();
-        const hour = theDate.getHours() < 10 ? `0${theDate.getHours()}` : theDate.getHours();
-        const minute = theDate.getMinutes() < 10 ? `0${theDate.getMinutes()}` : theDate.getMinutes();
-        return `${hour}:${minute} ${day}/${month}/${year}`;
-    },
-    toDDMMYYYY(date) {
-      const theDate = new Date(date);
-        const day = theDate.getDate() < 10 ? `0${theDate.getDate()}` : theDate.getDate();
-        const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
-        const year = theDate.getFullYear();
-        return `${day}/${month}/${year}`;
     },
     async getSearchResult() {
       this.$store.action.showLoading();

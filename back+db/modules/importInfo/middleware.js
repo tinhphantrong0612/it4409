@@ -7,15 +7,19 @@ module.exports = {
         if (!req.body ||
             !/^\d+$/.test(req.body.Barcode) ||
             isNaN(req.body.ImportPrice) ||
-            req.body.ImportPrice < 0 ||
-            isNaN(req.body.Amount) ||
-            req.body.Amount <= 0) {
+            req.body.ImportPrice < 0 || !req.body.ObjectId
+        ) {
             res.status(400).send("Thiếu trường thông tin");
-        } else next();
+        } else if (isNaN(req.body.Amount) || req.body.Amount <= 0) res.status(400).send("Số lượng nhập không hợp lệ")
+        else next();
     },
     amountValidate: async (req, res, next) => {
         try {
-            const [totalExportAmount, totalImportAmount, importAmount] = await Promise.all([IExportInfo.getTotalExportAmount(req.body.ObjectId, req.session.StorageId), IImportInfo.getTotalImportAmount(req.body.ObjectId, req.session.StorageId), IExportInfo.getExportAmount(req.params.id, req.session.StorageId)]);
+            const [totalExportAmount, totalImportAmount, importAmount] = await Promise.all([
+                IExportInfo.getTotalExportAmount(req.body.ObjectId, req.session.StorageId),
+                IImportInfo.getTotalImportAmount(req.body.ObjectId, req.session.StorageId),
+                IImportInfo.getImportAmount(req.params.id, req.session.StorageId)]
+            );
             if (totalImportAmount - importAmount + req.body.Amount >= totalExportAmount) next();
             else res.status(400).send("Số lượng thay đổi không hợp lệ, tổng xuất lớn hơn tổng nhập");
         } catch (error) {

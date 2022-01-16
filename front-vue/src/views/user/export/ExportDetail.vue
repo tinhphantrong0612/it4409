@@ -43,11 +43,11 @@
                         <td class="">
                           {{ ExportInfo.ObjectName }}
                         </td>
-                        <td>
+                        <td class="text-right">
                           {{ ExportInfo.Amount }}
                         </td>
                         <td>
-                          {{ ExportInfo.ExportPrice }}
+                          {{ $utils.toVND(ExportInfo.ExportPrice) }}
                         </td>
                         <td>
                           <button

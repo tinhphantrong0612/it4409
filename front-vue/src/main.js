@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import { store } from './script/store'
+import {utils} from './script/utils';
 
 
 import ObjectView from './views/user/object/ObjectView.vue';
@@ -100,6 +101,7 @@ const router = new VueRouter({
 
 Vue.config.productionTip = false
 Vue.prototype.$store = store;
+Vue.prototype.$utils = utils;
 Vue.prototype.$currentOrigin = `http://${window.location.hostname}:3000`;
 store.action.setCurrentOrigin(Vue.prototype.$currentOrigin);
 new Vue({

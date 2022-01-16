@@ -26,6 +26,7 @@ class IExportInfo {
 
     static async getById(id, storageId) {
         let query = `SELECT exportInfo.Amount,
+                            exportInfo.ObjectId,
                             exportInfo.ExportPrice,
                             object.DisplayName as ObjectName,
                             export.exportDate as ExportDate,
@@ -109,7 +110,7 @@ class IExportInfo {
      * @returns Tổng số object đã xuất kho
      */
     static async getTotalExportAmount(objectId, storageId) {
-        let query = `SELECT Amount FROM exportInfo WHERE objectId='${objectId}' AND storageId='${storageId}'`;
+        let query = `SELECT * FROM exportInfo WHERE objectId='${objectId}' AND storageId='${storageId}'`;
         const result = await connection.queryDB(query);
         result.unshift(0);
         return result.reduce((a, b) => a + b.Amount);
@@ -135,6 +136,13 @@ class IExportInfo {
             let deleteQuery = `DELETE FROM Export WHERE Id='${exportId}' AND storageId='${storageId}'`;
             await connection.queryDB(deleteQuery);
         }
+    }
+
+    static async getObjectIdFromExportInfoId(exportInfoId, storageId) {
+        let query = `SELECT ObjectId FROM ExportInfo WHERE Id=${exportInfoId} AND StorageId='${storageId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length < 1) throw new Error("Mặt hàng không tồn tại.");
+        else return result[0].ObjectId;
     }
 }
 
