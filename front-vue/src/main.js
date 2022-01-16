@@ -101,7 +101,7 @@ const router = new VueRouter({
 Vue.config.productionTip = false
 Vue.prototype.$store = store;
 Vue.prototype.$currentOrigin = `http://${window.location.hostname}:3000`;
-
+store.action.setCurrentOrigin(Vue.prototype.$currentOrigin);
 new Vue({
   router,
   render: h => h(App),
