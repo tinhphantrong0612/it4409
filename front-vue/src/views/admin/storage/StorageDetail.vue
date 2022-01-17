@@ -171,6 +171,7 @@ export default {
     async getStorageDetails() {
       this.$store.action.showLoading();
       this.errorMessage = "";
+      this.successMessage = "";
       const response = await fetch(
         `${this.$currentOrigin}/api/storage/${this.selectedStorageId}`,
         {
@@ -183,6 +184,7 @@ export default {
     async remove(userId) {
       this.$store.action.showLoading();
       this.errorMessage = "";
+      this.successMessage = "";
       const response = await fetch(
         `${this.$currentOrigin}/api/storage/${this.selectedStorageId}/user/${userId}`,
         {

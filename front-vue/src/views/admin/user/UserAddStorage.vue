@@ -3,28 +3,26 @@
     <div class="x-modal-dialog x-edit-import-info">
       <div class="x-modal-content">
         <div class="x-modal-header">
-          <div class="x-modal-title">Thêm thủ kho</div>
+          <div class="x-modal-title">Thêm kho</div>
           <button class="xi xi-close" @click="close()"></button>
         </div>
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
-            <div v-if="userList.length > 0">
+            <div v-if="storageList.length > 0">
               <table class="x-table">
                 <thead>
-                  <th>Id người dùng</th>
-                  <th>Tên người dùng</th>
-                  <th>Tên đăng nhập</th>
+                  <th>Tên nhà kho</th>
+                  <th>Địa chỉ</th>
                   <th>Chức năng</th>
                 </thead>
                 <tbody>
-                  <tr v-for="user in userList" :key="user.Id">
-                    <td>{{ user.Id }}</td>
-                    <td>{{ user.DisplayName }}</td>
-                    <td>{{ user.Username }}</td>
+                  <tr v-for="storage in storageList" :key="storage.Id">
+                    <td>{{ storage.DisplayName }}</td>
+                    <td>{{ storage.Address }}</td>
                     <td>
                       <button
                         class="x-btn x-btn-primary m-1"
-                        @click="addUserIntoStorage(user.Id)"
+                        @click="addStorageIntoUser(storage.Id)"
                       >
                         Add
                       </button>
@@ -33,8 +31,8 @@
                 </tbody>
               </table>
             </div>
-            <div v-if="userList.length == 0">
-              Danh sách người dùng không thuộc nhà kho này rỗng
+            <div v-if="storageList.length == 0">
+              Danh sách nhà kho không quản lý bởi người dùng này rỗng
             </div>
           </div>
           <span class="x-label-error" v-show="errorMessage != ''">{{
@@ -54,10 +52,10 @@
 
 <script>
 export default {
-  props: ["selectedStorageId"],
+  props: ["selectedUserId"],
   data() {
     return {
-      userList: [],
+      storageList: [],
       errorMessage: "",
       successMessage: "",
     };
@@ -66,12 +64,12 @@ export default {
     close() {
       this.$emit("close");
     },
-    async getUserList() {
+    async getStorageList() {
       this.$store.action.showLoading();
       this.errorMessage = "";
       this.successMessage = "";
       const response = await fetch(
-        `${this.$currentOrigin}/api/storage/nonuser/${this.selectedStorageId}`,
+        `${this.$currentOrigin}/user/nonstorage/${this.selectedUserId}`,
         {
           credentials: "include",
         }
@@ -79,13 +77,13 @@ export default {
       if (response.status == 400) {
         this.errorMessage = await response.text();
         this.$emit("error", this.errorMessage);
-      } else this.userList = await response.json();
+      } else this.storageList = await response.json();
       this.$store.action.hideLoading();
     },
-    async addUserIntoStorage(userId) {
+    async addStorageIntoUser(storageId) {
       this.$store.action.showLoading();
       const response = await fetch(
-        `${this.$currentOrigin}/api/storage/${this.selectedStorageId}/user/${userId}`,
+        `${this.$currentOrigin}/api/storage/${storageId}/user/${this.selectedUserId}`,
         {
           credentials: "include",
           method: "POST",
@@ -95,17 +93,17 @@ export default {
         }
       );
       if (response.status == 400) {
-        await this.getUserList();
+        await this.getStorageList();
         this.errorMessage = await response.text();
       } else {
-        await this.getUserList();
+        await this.getStorageList();
         this.successMessage = await response.text();
       }
       this.$store.action.hideLoading();
     },
   },
   created() {
-    this.getUserList();
+    this.getStorageList();
   },
 };
 </script>

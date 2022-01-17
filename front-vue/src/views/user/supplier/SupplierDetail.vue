@@ -22,7 +22,6 @@
                 />
 								<label for="inpAddress" class="x-label">Địa chỉ</label>
                 <input
-									id="inpAddress"
                   type="text"
                   class="x-input x-input-100"
                   v-model="supplierDetail.address"
@@ -32,7 +31,6 @@
                 />
 								<label for="inpPhone" class="x-label">Số điện thoại</label>
                 <input
-									id="inpPhone"
                   type="text"
                   class="x-input x-input-100"
                   v-model="supplierDetail.phone"

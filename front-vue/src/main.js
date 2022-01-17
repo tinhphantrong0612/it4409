@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import { store } from './script/store'
-import {utils} from './script/utils';
+import { utils } from './script/utils';
 
 
 import ObjectView from './views/user/object/ObjectView.vue';
@@ -14,6 +14,7 @@ import ExportView from './views/user/export/ExportView.vue';
 
 import StorageView from './views/admin/storage/StorageView.vue';
 import MessageView from './views/admin/message/MessageView.vue';
+import UserView from './views/admin/user/UserView.vue';
 
 import AuthorizeIndexView from './views/authorize/AuthorizeIndexView.vue';
 import LoginView from './views/authorize/LoginView.vue';
@@ -48,6 +49,10 @@ const routes = [
       {
         path: '/storage',
         component: StorageView
+      },
+      {
+        path: '/user',
+        component: UserView
       },
       {
         path: '/message',

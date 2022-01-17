@@ -3,15 +3,29 @@ const { role } = require('../../enum/enum');
 const User = require('./model');
 
 module.exports = {
+    getAll: async (req, res) => {
+        try {
+            let result = await User.getAll();
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error")
+        }
+    },
     /**
      * Lấy thông tin người dùng qua Id
      * @param {Request} req Request từ người dùng
      * @param {Response} res Response của server
      */
     getById: async (req, res) => {
-        let user = await User.getOneById(req.params.id);
-        if (user == null) res.stutus(400).send("Không tìm thấy người dùng yêu cầu");
-        else res.status(200).send(user);
+        try {
+            let user = await User.getOneById(req.params.id);
+            if (user == null) res.stutus(400).send("Không tìm thấy người dùng yêu cầu");
+            else res.status(200).send(user);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error")
+        }
     },
     /**
      * Kiểm tra thông tin đăng nhập của người dùng
@@ -73,7 +87,7 @@ module.exports = {
         delete req.session.Id;
         delete req.session.StorageId;
         delete req.session.Role;
-        
+
         res.status(200).send("Ok");
     },
     setStorageId: (req, res) => {
@@ -82,6 +96,40 @@ module.exports = {
         } else {
             req.session.StorageId = req.body.storageId;
             res.status(200).send("Thành công");
+        }
+    },
+    /**
+     * Set user as admin        
+     * @param {*} req 
+     * @param {*} res 
+     */
+    setAdmin: async (req, res) => {
+        try {
+            let result = await User.setAdmin(req.params.id);
+            if (result.affectedRows < 1) {
+                res.status(200).send("Cấp quyền quản trị viên không thành công");
+            } else res.status(201).send("Cấp quyền quản trị viên thành công");
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error")
+        }
+    },
+    getNonAssignStorage: async(req, res) => {
+        try {
+            let result = await User.getNonAssignStorage(req.params.id);
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
+    getSearchResult: async (req, res) => {
+        try {
+            let result = await User.searchByNameWithPaging(req.query.filter, req.query.pageNumber, req.query.pageSize);
+            res.status(200).send(result);
+        } catch(error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
         }
     }
 }

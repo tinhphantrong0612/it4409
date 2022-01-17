@@ -152,7 +152,7 @@ class IStorage {
     }
 
     static async isUserValid(userId, storageId) {
-        let queryUserExist = `SELECT Id FROM User WHERE Id=${userId}`;
+        let queryUserExist = `SELECT Id FROM User WHERE Id=${userId} AND Role=${role.user}`;
         let queryUserInStorage = `SELECT UserId From StorageUser WHERE UserId=${userId} AND StorageId='${storageId}'`;
         let [resultExist, resultInStorage] = await Promise.all([connection.queryDB(queryUserExist), connection.queryDB(queryUserInStorage)]);
         if (resultExist.length == 0) return false;

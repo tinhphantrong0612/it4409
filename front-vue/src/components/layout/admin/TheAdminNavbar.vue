@@ -4,6 +4,10 @@
       <div class="xi xi-storage xi-size-x2"></div>
       <span v-if="this.viewState != 2">Kho hàng</span>
     </router-link>
+    <router-link class="x-navbar-item" to="/user" @click="$emit('switch-view', 'user')">
+      <div class="xi xi-user xi-size-x2"></div>
+      <span v-if="this.viewState != 2">Người dùng</span>
+    </router-link>
     <router-link class="x-navbar-item" to="/message" @click="$emit('switch-view', 'message')">
       <div class="xi xi-message xi-size-x2" style="position: relative;">
         <div class="notify-red" v-show="isNewMessage"></div>

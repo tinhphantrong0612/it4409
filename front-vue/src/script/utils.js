@@ -11,11 +11,21 @@ export const utils = {
     },
     toHHMMDDMMYYYY(date) {
         const theDate = new Date(date);
-          const day = theDate.getDate() < 10 ? `0${theDate.getDate()}` : theDate.getDate();
-          const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
-          const year = theDate.getFullYear();
-          const hour = theDate.getHours() < 10 ? `0${theDate.getHours()}` : theDate.getHours();
-          const minute = theDate.getMinutes() < 10 ? `0${theDate.getMinutes()}` : theDate.getMinutes();
-          return `${hour}:${minute} ${day}/${month}/${year}`;
+        const day = theDate.getDate() < 10 ? `0${theDate.getDate()}` : theDate.getDate();
+        const month = theDate.getMonth() < 9 ? `0${theDate.getMonth() + 1}` : theDate.getMonth() + 1;
+        const year = theDate.getFullYear();
+        const hour = theDate.getHours() < 10 ? `0${theDate.getHours()}` : theDate.getHours();
+        const minute = theDate.getMinutes() < 10 ? `0${theDate.getMinutes()}` : theDate.getMinutes();
+        return `${hour}:${minute} ${day}/${month}/${year}`;
+    },
+    toRoleName(id) {
+        switch (id) {
+            case 0:
+                return "Quản trị viên"
+            case 1:
+                return "Người dùng"
+            default:
+                return "Không rõ"
+        }
     }
 }
