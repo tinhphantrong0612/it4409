@@ -12,6 +12,7 @@
 
 .x-header .x-app-name {
     font-size: 30px;
+    display: inline-block;
 }
 
 .x-header .x-user {

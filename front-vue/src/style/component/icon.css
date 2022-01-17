@@ -118,3 +118,7 @@
 .xi.xi-message {
     background-image: url('../../assets/content/icon/message.svg');
 }
+
+.xi.xi-app-logo {
+    background-image: url('../../assets/storage_manager_logo.png');
+}

@@ -2,6 +2,7 @@
   <div class="x-header">
     <div class="x-app-name">
       <div class="xi xi-list xi-size-x2" v-if="this.showNavbarIcon" @click="clickNavbar()"></div>
+      <div class="xi xi-app-logo xi-size-x4"></div>
       Quản lý kho hàng
     </div>
     <div class="x-header-control">
