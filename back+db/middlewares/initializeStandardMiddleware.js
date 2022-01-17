@@ -17,7 +17,7 @@ module.exports = function (app) {
     // xác định bởi cookie từ request, truy cập bằng req.session
     app.use(cors({
         allowedHeaders: ['Content-Type', 'Authorization'],
-        origin: ['http://localhost:8080', 'http://192.168.1.13:8080'],
+        origin: ['http://localhost:8080', 'http://192.168.1.69:8080'],
         credentials: true
     })).use(session({
         resave: false,
