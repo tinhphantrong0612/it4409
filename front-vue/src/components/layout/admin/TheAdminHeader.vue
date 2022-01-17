@@ -34,6 +34,9 @@ export default {
     }
   },
   methods: {
+    async clickNavbar() {
+      this.$emit("click");
+    }
     async logout() {
       this.$store.action.showLoading();
       let response = await fetch(`${this.$currentOrigin}/user/logout`, {
