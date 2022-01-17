@@ -16,17 +16,20 @@
           <input
             type="search"
             class="x-input x-input-search"
-            v-model = "searchTerm"
+            v-model="searchTerm"
             placeholder="Nhập tên hàng hóa"
-            @search="getSearchedList()"
+            @search="getNewSearchedList()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchedList()"></div>
+          <div
+            class="xi xi-search x-input-search-icon xi-size-100"
+            @click="getNewSearchedList()"
+          ></div>
         </div>
       </div>
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getObjectList()"
+          @click="getSearchedList()"
         ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
@@ -59,6 +62,20 @@
         </tbody>
       </table>
     </div>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="objectList.length"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchedList();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchedList();
+      "
+    ></base-paging-bar>
     <object-detail
       :show="objectDetailShow"
       :unitList="unitList"
@@ -68,7 +85,7 @@
         objectDetailShow = false;
         selectedObjectId = '';
       "
-      @save="getObjectList()"
+      @save="getSearchedList()"
     ></object-detail>
     <object-add
       v-if="objectAddShow"
@@ -76,7 +93,7 @@
       @close="objectAddShow = false"
       @save="
         objectAddShow = false;
-        getObjectList();
+        getSearchedList();
       "
     ></object-add>
     <base-inform-popup
@@ -91,24 +108,31 @@
 import ObjectDetail from "./ObjectDetail.vue";
 import ObjectAdd from "./ObjectAdd.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
   name: "ObjectView",
+  props: ["storageId"],
   components: {
     ObjectDetail,
     ObjectAdd,
-    BaseInformPopup
+    BaseInformPopup,
+    BasePagingBar,
   },
   data() {
     return {
       objectList: [],
       unitList: [],
-      searchTerm: '',
+      searchTerm: "",
       objectDetailShow: false,
       objectAddShow: false,
       selectedObjectId: "",
-      errorMessage: '',
-      searchInterval: null
+      pageSize: 10,
+      pageNumber: 1,
+      totalRecord: 0,
+      totalPage: 0,
+      errorMessage: "",
+      searchInterval: null,
     };
   },
   computed: {
@@ -120,16 +144,19 @@ export default {
     searchTerm: function () {
       clearInterval(this.searchInterval);
       this.searchInterval = setTimeout(() => {
-        this.getSearchedList();
+        this.getNewSearchedList();
       }, 1000);
-    }
+    },
+    storageId: function () {
+      if (this.storageId) this.getNewSearchedList();
+    },
   },
   methods: {
     async getObjectList() {
       this.$store.action.showLoading();
       this.selectedObjectId = "";
       const response = await fetch(`${this.$currentOrigin}/api/object`, {
-        credentials: 'include',
+        credentials: "include",
       });
       const data = await response.json();
       this.objectList = data;
@@ -137,23 +164,41 @@ export default {
     },
     async getUnitList() {
       const response = await fetch(`${this.$currentOrigin}/api/unit`, {
-        credentials: 'include',
+        credentials: "include",
       });
       const data = await response.json();
       this.unitList = data;
+    },
+    async getNewSearchedList() {
+      this.pageNumber = 1;
+      await this.getSearchedList();
     },
     async getSearchedList() {
       this.$store.action.showLoading();
       this.selectedObjectId = "";
       clearInterval(this.searchInterval);
-      const response = await fetch(`${this.$currentOrigin}/api/object/search?filter=${this.searchTerm}`, {
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${this.$currentOrigin}/api/object/search?filter=${this.searchTerm}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (response.status == 401) {
+        this.$router.push('/authorize');
+        return;
+      }
       const data = await response.json();
-      if (data.length == 0) 
+      if (data.data.length == 0) {
         this.errorMessage = `Searched for "${this.searchTerm}" : No result found!`;
-      else 
-        this.objectList = data;
+        this.totalRecord = 0;
+        this.totalPage = 1;
+        this.data = [];
+      } else {
+        this.totalRecord = data.totalRecord;
+        this.totalPage = data.totalPage;
+        this.objectList = data.data;
+      }
+
       this.$store.action.hideLoading();
     },
     async deleteObject() {
@@ -162,7 +207,7 @@ export default {
       const response = await fetch(
         `${this.$currentOrigin}/api/object/${this.selectedObjectId}`,
         {
-          credentials: 'include',
+          credentials: "include",
           method: "DELETE",
         }
       );
@@ -171,13 +216,13 @@ export default {
       } else {
         const data = await response.text();
         console.log(data);
-        await this.getObjectList();
+        await this.getNewSearchedList();
       }
       this.$store.action.hideLoading();
     },
   },
   created() {
-    this.getObjectList();
+    this.getSearchedList();
     this.getUnitList();
   },
 };

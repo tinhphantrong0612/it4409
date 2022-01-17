@@ -13,6 +13,7 @@
 @import url('./component/select.css');
 @import url('./component/spinner.css');
 @import url('./component/table.css');
+@import url('./component/paging.css');
 
 /* Import layout */
 @import url('./layout/authorize_layout.css');

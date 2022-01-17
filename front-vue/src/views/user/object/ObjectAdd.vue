@@ -90,7 +90,10 @@ export default {
     },
   },
   created() {
-      this.objectDetail.UnitId = this.unitList[0].Id;
+    if (this.unitList.length == 0) {
+      this.errorMessage = "Chưa có thông tin đơn vị, thêm đợi vị trước khi thêm mặt hàng";
+    }
+    else this.objectDetail.UnitId = this.unitList[0].Id;
   }
 };
 </script>

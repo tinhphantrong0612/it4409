@@ -27,5 +27,17 @@ module.exports = {
             }
         }
         next();
+    },
+    pagingFilter: (req, res, next) => {
+        if (isNaN(Number(req.query.pageNumber)) || isNaN(Number(req.query.pageSize))) {
+            res.status(400).send("Kích thước phân trang không hợp lệ");
+        } else {
+            req.query.pageNumber = Math.floor(req.query.pageNumber);
+            req.query.pageSize = Math.floor(req.query.pageSize);
+            if (req.query.pageNumber < 0) req.query.pageNumber = 1;
+            if (req.query.pageSize < 0) req.query.pageSize = 10;
+            if (req.query.pageSize > 50) req.query.pageSize = 50;
+            next();
+        }
     }
 }

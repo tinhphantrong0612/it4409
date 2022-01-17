@@ -1,0 +1,82 @@
+.x-paging-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.x-total-record {
+    font-weight: 700;
+}
+
+.x-total-record > * {
+    font-weight: 500;
+}
+
+.x-paging-control {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.x-paging-control > * {
+    margin-left: 12px;
+}
+
+.x-pagination {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.x-pagination > * {
+    margin-left: 4px;
+}
+
+.x-page-numbs {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.x-page-numbs > * {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.x-page-size {
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.x-prev {
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.x-next {
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.x-paging-control .x-blur {
+    opacity: .9;
+}
+
+.x-page-number {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    line-height: 20px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.x-page-selected {
+    font-weight: 700;
+    border: 1px solid var(--x-success);
+}

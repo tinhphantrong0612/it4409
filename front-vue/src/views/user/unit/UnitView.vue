@@ -100,6 +100,10 @@ export default {
       const response = await fetch(`${this.$currentOrigin}/api/unit`, {
         credentials: 'include',
       });
+      if (response.status == 401) {
+        this.$router.push('/authorize');
+        return;
+      }
       const data = await response.json();
       this.unitList = data;
       this.$store.action.hideLoading();

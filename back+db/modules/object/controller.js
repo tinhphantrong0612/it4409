@@ -81,5 +81,14 @@ module.exports = {
             console.log(error);
             res.status(500).send("Internal Server Error");
         }
+    },
+    filter: async (req, res) => {
+        try {
+            const result = await IObject.searchByNameWithPaging(req.query.filter, req.query.pageNumber, req.query.pageSize, req.session.StorageId);
+            res.status(200).send(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
     }
 }

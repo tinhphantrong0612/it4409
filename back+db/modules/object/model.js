@@ -82,6 +82,23 @@ class IObject {
         let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}' AND object.DisplayName LIKE '%${name}%'`;
         return await connection.queryDB(query);
     }
+
+    /**
+     * Search with paging
+     */
+    static async searchByNameWithPaging(name, pageNumber, pageSize, storageId) {
+        let startAfter = (pageNumber-1) * pageSize;
+        let query = `SELECT object.Id, object.DisplayName, unit.DisplayName as UnitName FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}' AND object.DisplayName LIKE '%${name}%' LIMIT ${startAfter}, ${pageSize}`;
+        let queryCount = `SELECT Count(object.Id) as totalRecord FROM object INNER JOIN unit ON object.unitId = unit.Id WHERE object.storageId='${storageId}' AND object.DisplayName LIKE '%${name}%'`;
+        let [data, countResult] = await Promise.all([connection.queryDB(query), connection.queryDB(queryCount)]);
+        let totalRecord = countResult[0].totalRecord;
+        let totalPage = totalRecord % pageSize == 0 && totalRecord !== 0 ? totalRecord / pageSize : Math.floor(totalRecord/pageSize) + 1;
+        return {
+            totalRecord,
+            totalPage,
+            data
+        }
+    }
 }
 
 module.exports = IObject;
