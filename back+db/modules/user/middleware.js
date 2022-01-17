@@ -1,4 +1,5 @@
 const role = require('../../enum/enum').role;
+const User = require('./model');
 
 module.exports = {
     emptyValidate: (req, res, next) => {
@@ -35,6 +36,12 @@ module.exports = {
 
     isUserValidate: (req, res, next) => {
         if (!req.session.Id || req.session.Role !== role.user) res.status(401).send("Cần đăng nhập với vai trò người dùng");
+        else next();
+    },
+
+    storageValidate: async (req, res, next) => {
+        let isAssignedStorage = await User.checkUserStorage(req.session.Id, req.body.storageId);
+        if (!isAssignedStorage) res.status(400).send("Người kho hàng không hợp lệ");
         else next();
     }
 }

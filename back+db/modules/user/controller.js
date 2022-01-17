@@ -50,6 +50,22 @@ module.exports = {
         }
     },
 
+    registerAdmin: async (req, res) => {
+        // Kiểm tra người dùng đã tồn tại
+        let user = await User.findOneByUsername(req.body.username);
+        if (user == null) { // Nếu chưa
+            // Thêm người dùng
+            let result = await User.addAdmin(req.body.username, req.body.password, req.body.displayName);
+            if (result.affectedRows < 1) { // Thêm thất bại
+                res.status(200).send("Có lỗi xảy ra, không thể thêm người dùng");
+            } else {  // Thêm thành công
+                res.status(201).send("Đăng ký thành công");
+            }
+        } else { // Người dùng đã tồn tại
+            res.status(400).send("Người dùng đã tồn tại");
+        }
+    },
+
     logout: async (req, res) => {
         // delete user session
         if (req.app.userSubscriber) delete req.app.userSubscriber[req.session.Id];

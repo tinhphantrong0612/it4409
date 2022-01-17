@@ -1,13 +1,22 @@
 <template>
   <div class="x-header">
     <div class="x-app-name">
-      <div class="xi xi-list xi-size-x2" v-if="this.showNavbarIcon" @click="clickNavbar()"></div>
+      <div
+        class="xi xi-list xi-size-x2"
+        v-if="this.showNavbarIcon"
+        @click="clickNavbar()"
+      ></div>
       Quản lý các kho hàng
     </div>
     <div class="x-header-control">
-      <div class="x-user" style='margin-right:10px; font-style: italic; align-self:center;'>Hello, {{this.displayName}} !</div>
+      <div
+        class="x-user"
+        style="margin-right: 10px; font-style: italic; align-self: center"
+      >
+        Hello, {{ this.displayName }} !
+      </div>
       <dropdown-menu id="settings" :arrays="dropdownItems">
-        <div style = "color: '#fff'" class="xi xi-dropdown" ></div>
+        <div style="color: '#fff'" class="xi xi-dropdown"></div>
       </dropdown-menu>
     </div>
   </div>
@@ -18,20 +27,24 @@ import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.v
 
 export default {
   name: "TheAdminHeader",
-  components: {DropdownMenu},
+  components: { DropdownMenu },
   props: {
     displayName: String,
-    showNavbarIcon: Number
+    showNavbarIcon: Number,
   },
   data() {
     return {
       dropdownItems: [
         {
-          text: 'Đăng xuất',
+          text: "Thêm quản trị viên",
+          onClick: () => (this.$parent.isAdminSignupShow = true),
+        },
+        {
+          text: "Đăng xuất",
           onClick: () => this.logout(),
         },
       ],
-    }
+    };
   },
   methods: {
     async logout() {

@@ -40,6 +40,18 @@ class User {
         return await connection.queryDB(query);
     }
 
+    static async addAdmin(username, password, displayName) {
+        let query = `INSERT INTO user (Username, Password, DisplayName, Role) VALUES ("${username}", "${password}", "${displayName}", ${role.admin})`;
+        return await connection.queryDB(query);
+    }
+
+    static async checkUserStorage(userId, storageId) {
+        let query = `SELECT * FROM StorageUser WHERE UserId=${userId} AND StorageId='${storageId}'`;
+        let result = await connection.queryDB(query);
+        if (result.length == 0) return false;
+        else return true;
+    }
+
     /**
      * Kiểm tra thông tin đăng nhập của người dùng
      * @param {String} username Tên đăng nhập
