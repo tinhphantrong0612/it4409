@@ -194,7 +194,7 @@ export default {
       });
       if (response.status == 401) {
         this.$store.action.hideLoading();
-        this.$router.push('/login');
+        this.$router.push('/authorize');
         return;
       }
       const data = await response.json();

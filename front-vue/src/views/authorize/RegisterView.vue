@@ -71,7 +71,7 @@ export default {
       this.$refs.form.$el.submit();
     },
     async login() {
-      this.$router.push("/login");
+      this.$router.push("/authorize");
     },
     async checkLogin() {
       let response = await fetch(`${this.$currentOrigin}/user/login`, {
@@ -102,7 +102,7 @@ export default {
       console.log(response.status);
       if (response.status == 201) {
         this.hasError = false;
-        setTimeout(() => this.$router.push("/login"), 1500);
+        setTimeout(() => this.$router.push("/authorize"), 1500);
       } else {
         this.hasError = true;
       }

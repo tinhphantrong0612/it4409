@@ -71,7 +71,7 @@
             id="btnEditFooterClose"
             @click="close()"
           >
-            Đóng
+            Hủy
           </button>
           <button class="x-btn x-btn-primary" @click="save()">Sửa</button>
         </div>

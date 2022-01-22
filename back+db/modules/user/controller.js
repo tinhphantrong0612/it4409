@@ -80,6 +80,20 @@ module.exports = {
         }
     },
 
+    setAdmin: async (req, res) => {
+        try {
+            let result = await User.setAdmin(req.params.id);
+            if (result.affectedRows < 1) {
+                res.status(200).send("Giao quyền quản trị không thành công");
+            } else {
+                res.status(201).send("Giao quyền quản trị thành công");
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    },
+
     logout: async (req, res) => {
         // delete user session
         if (req.app.userSubscriber) delete req.app.userSubscriber[req.session.Id];

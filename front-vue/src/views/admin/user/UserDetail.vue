@@ -75,15 +75,13 @@
             successMessage
           }}</span>
         </div>
-        <div class="x-modal-footer">
-          <button
-            class="x-btn x-btn-secondary"
-            id="btnEditFooterClose"
-            @click="close()"
-          >
-            Close
-          </button>
-          <button class="x-btn x-btn-primary" @click="save()">Save</button>
+        <div class="x-modal-footer justify-content-between">
+          <div class="x-right-side">
+            <button class="x-btn x-btn-success" @click="setAdmin()">Giao quyền quản trị</button>
+          </div>
+          <div class="x-left-side">
+            <button class="x-btn x-btn-secondary" @click="close()">Đóng</button>
+          </div>
         </div>
       </div>
     </div>
@@ -99,13 +97,13 @@
 </template>
 
 <script>
-import UserAddStorage from './UserAddStorage.vue';
+import UserAddStorage from "./UserAddStorage.vue";
 
 export default {
   name: "UserDetail",
   props: ["show", "selectedUserId"],
   components: {
-      UserAddStorage
+    UserAddStorage,
   },
   data() {
     return {
@@ -116,7 +114,7 @@ export default {
       },
       userAddStorageShow: false,
       errorMessage: "",
-      successMessage: ""
+      successMessage: "",
     };
   },
   methods: {
@@ -133,30 +131,29 @@ export default {
       this.userDetail = await response.json();
       this.$store.action.hideLoading();
     },
-    async save() {
+    async setAdmin() {
       this.$store.action.showLoading();
+      this.errorMessage = "";
+      this.successMessage = "";
       const response = await fetch(
-        `${this.$currentOrigin}/api/user/${this.selectedUserId}`,
+        `${this.$currentOrigin}/user/setAdmin/${this.selectedUserId}`,
         {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
           credentials: "include",
-          body: JSON.stringify(this.userDetail),
         }
       );
-      const data = await response.text();
-      if (response.status == 400) {
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push("/authorize");
+        return;
+      } else if (response.status == 400) {
+        this.$store.action.hideLoading();
+        this.errorMessage = await response.text();
+      } else {
         this.$store.action.hideLoading();
         await this.getUserDetail();
-        this.errorMessage = data;
-        return;
+        this.$emit("set-admin");
+        this.successMessage = await response.text();
       }
-      this.$store.action.showLoading();
-    },
-    toVND(money) {
-      return this.$utils.toVND(money);
     },
     async remove(storageId) {
       this.$store.action.showLoading();
@@ -166,7 +163,7 @@ export default {
         `${this.$currentOrigin}/api/storage/${storageId}/user/${this.selectedUserId}`,
         {
           credentials: "include",
-          method: "DELETE"
+          method: "DELETE",
         }
       );
       if (response.status >= 400) {
@@ -177,7 +174,7 @@ export default {
         this.successMessage = await response.text();
       }
       this.$store.action.hideLoading();
-    }
+    },
   },
   watch: {
     show: async function () {

@@ -82,7 +82,7 @@
         userDetailShow = false;
         selectedUserId = '';
       "
-      @save="getNewSearchResult()"
+      @set-admin="getNewSearchResult()"
     ></user-detail>
     <user-admin-add
       v-show="userAdminAddShow"

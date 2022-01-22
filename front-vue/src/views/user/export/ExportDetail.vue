@@ -4,7 +4,7 @@
       <div class="x-modal-content">
         <div class="x-modal-header">
           <div class="x-modal-title">Thông tin xuất hàng</div>
-          <button class="xi xi-close" id="close-btn" @click="close()"></button>
+          <button class="xi xi-close" @click="close()"></button>
         </div>
         <div class="x-modal-body">
           <div class="x-col x-col-12 m-auto">
@@ -71,18 +71,17 @@
           </div>
         </div>
         <div class="x-modal-footer">
-          <button class="x-btn x-btn-secondary" id="cancel-btn" @click="close()">Hủy</button>
+          <button class="x-btn x-btn-secondary" @click="close()">Hủy</button>
           <button class="x-btn x-btn-primary" @click="save()">Lưu</button>
         </div>
       </div>
     </div>
-    <Export-info-detail
+    <export-info-detail
       :selectedExportInfoId="selectedExportInfoId"
       v-if="ExportInfoPopupShow"
       @save="
         selectedExportInfoId = '';
         ExportInfoPopupShow = false;
-        disableClose();
         getExportDetail();
       "
       @error="
@@ -95,7 +94,7 @@
         selectedExportInfoId = '';
         ExportInfoPopupShow = false;
       "
-    ></Export-info-detail>
+    ></export-info-detail>
     <base-inform-popup
       v-show="popupErrorMessage != ''"
       :message="popupErrorMessage"
@@ -137,10 +136,6 @@ export default {
     close() {
       this.$emit("close");
     },
-    disableClose() {
-      document.getElementById("cancel-btn").style.display = "none"
-      document.getElementById("close-btn").style.display = "none"
-    },
     async save() {
       this.$store.action.showLoading();
       const response = await fetch(
@@ -157,7 +152,12 @@ export default {
       const data = await response.text();
       if (response.status == 400) {
         this.errorMessage = data;
-      } else this.$emit("save");
+      } else if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push('/authorize');
+        return;
+      }
+      else this.$emit("save");
       this.$store.action.hideLoading();
     },
     async getExportDetail() {

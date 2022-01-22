@@ -96,3 +96,11 @@
 .x-table-modal {
     max-width: 750px;
 }
+
+.x-modal-footer .x-left-side > * {
+    margin-right: 0.25rem;
+}
+
+.x-modal-footer .x-right-size > * {
+    margin-left: 0.25rem;
+}

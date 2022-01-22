@@ -24,12 +24,12 @@ userRouter
         }
     })
     .get('/logout', userController.logout)
+    .get('/setAdmin/:id', userValidate.isAdminValidate, userValidate.isValidToBecomeAdmin, userController.setAdmin)
+    .get('/nonstorage/:id', userValidate.isAdminValidate, userController.getNonAssignStorage)
     .get('/:id',
         userValidate.isAdminValidate, // Only admin allow
         userController.getById
     )
-    .get('/setAdmin/:id', userValidate.isAdminValidate, userValidate.isValidToBecomeAdmin, userController.registerAdmin)
-    .get('/nonstorage/:id', userValidate.isAdminValidate, userController.getNonAssignStorage)
     .post('/login',
         userValidate.emptyValidate, // Check empty body
         userController.login

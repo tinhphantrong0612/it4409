@@ -32,7 +32,7 @@
             id="btnEditFooterClose"
             @click="close()"
           >
-            Close
+            Hủy
           </button>
           <button class="x-btn x-btn-primary" @click="save()">Lưu</button>
         </div>

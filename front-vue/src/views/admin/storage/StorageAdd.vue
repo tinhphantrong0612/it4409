@@ -36,7 +36,7 @@
           }}</span>
         </div>
         <div class="x-modal-footer">
-          <button class="x-btn x-btn-secondary" @click="close()">Đóng</button>
+          <button class="x-btn x-btn-secondary" @click="close()">Hủy</button>
           <button class="x-btn x-btn-primary" @click="save()">Lưu</button>
         </div>
       </div>
