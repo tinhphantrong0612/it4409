@@ -22,7 +22,7 @@
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getExportList()"
+          @click="getSearchResult()"
         ></button>
       </div>
     </div>
@@ -58,7 +58,7 @@
       @close="ExportAddShow = false"
       @save="
         ExportAddShow = false;
-        getExportList();
+        getNewSearchResult();
       "
     ></export-add>
     <export-detail
@@ -72,11 +72,11 @@
       "
       @save="
         theExportDetailShow = false;
-        getExportList();
+        getNewSearchResult();
       "
       @error="
         selectedExportId = '';
-        getExportList();
+        getNewSearchResult();
         theExportDetailShow = false;
         errorMessage = $event;
       "
@@ -86,6 +86,20 @@
       :message="errorMessage"
       @close="errorMessage = ''"
     ></base-inform-popup>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="totalRecord"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchResult();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchResult();
+      "
+    ></base-paging-bar>
   </div>
 </template>
 
@@ -93,13 +107,15 @@
 import ExportAdd from './ExportAdd.vue';
 import ExportDetail from "./ExportDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
   components: { 
     ExportAdd,
     ExportDetail,
-    BaseInformPopup
-    },
+    BaseInformPopup,
+    BasePagingBar
+  },
   name: "ExportView",
   data() {
     return {
@@ -111,7 +127,11 @@ export default {
       selectedExportId: "",
       errorMessage: "",
       searchTerm: "",
-      searchInterval: null
+      searchInterval: null,
+      totalPage: 1,
+      totalRecord: 0,
+      pageNumber: 1,
+      pageSize: 10
     };
   },
   watch: {
@@ -139,22 +159,33 @@ export default {
       if (data == "null") return "";
       return data;
     },
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
+    },
     async getSearchResult() {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedExportId = "";
-      const response = await fetch(`${this.$currentOrigin}/api/export/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/export/search?filter=${this.searchTerm}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`, {
         credentials: 'include',
       });
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push('/login');
+        return;
+      }
       const data = await response.json();
-      this.theExportList = data;
+      this.theExportList = data.data;
+      this.totalPage = data.totalPage;
+      this.totalRecord = data.totalRecord;
       this.$store.action.hideLoading();
     }
   },
   created() {
-    this.getExportList();
-    this.getCustomerList();
     this.getObjectList();
+    this.getCustomerList();
+    this.getNewSearchResult();
   },
 };
 </script>

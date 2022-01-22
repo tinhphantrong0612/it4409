@@ -103,14 +103,33 @@ class IImport {
         }
     }
 
-    static async searchBySupplierName(supplierName, storageId) {
+    static async searchBySupplierName(supplierName, pageSize, pageNumber, storageId) {
+        // let query = `SELECT import.Id,
+        //                         import.ImportDate,
+        //                         import.SupplierId,
+        //                         supplier.DisplayName as SupplierName
+        //                 FROM import
+        //                     INNER JOIN supplier ON import.SupplierId = supplier.Id WHERE import.storageId='${storageId}' AND supplier.DisplayName LIKE '%${supplierName}%'`;
+        let startAfter = (pageNumber - 1) * pageSize;
         let query = `SELECT import.Id,
-                                import.ImportDate,
-                                import.SupplierId,
-                                supplier.DisplayName as SupplierName
-                        FROM import
-                            INNER JOIN supplier ON import.SupplierId = supplier.Id WHERE import.storageId='${storageId}' AND supplier.DisplayName LIKE '%${supplierName}%'`;
-        return await connection.queryDB(query);
+                            import.ImportDate,
+                            import.SupplierId,
+                            supplier.DisplayName as SupplierName
+                    FROM import
+                        INNER JOIN supplier ON import.SupplierId = supplier.Id
+                    WHERE import.storageId='${storageId}' AND supplier.DisplayName LIKE '%${supplierName}%'
+                    LIMIT ${startAfter}, ${pageSize}`;
+        let queryCount = `  SELECT Count(import.Id) as totalRecord
+                            FROM import INNER JOIN supplier ON import.SupplierId = supplier.Id
+                            WHERE import.storageId='${storageId}' AND supplier.DisplayName LIKE '%${supplierName}%'`;
+        let [data, countResult] = await Promise.all([connection.queryDB(query), connection.queryDB(queryCount)]);
+        let totalRecord = countResult[0].totalRecord;
+        let totalPage = totalRecord % pageSize == 0 && totalRecord !== 0 ? totalRecord / pageSize : Math.floor(totalRecord / pageSize) + 1;
+        return {
+            totalRecord,
+            totalPage,
+            data
+        }
     }
 }
 

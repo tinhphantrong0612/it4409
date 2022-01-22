@@ -17,19 +17,19 @@
             type="search"
             class="x-input x-input-search"
             v-model="searchTerm"
-            placeholder="Nhập tên người dùng"
-            @search="getNewSearchedList()"
+            placeholder="Nhập tên người dùng, tên tài khoản"
+            @search="getNewSearchResult()"
           />
           <div
             class="xi xi-search x-input-search-icon xi-size-100"
-            @click="getNewSearchedList()"
+            @click="getNewSearchResult()"
           ></div>
         </div>
       </div>
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getSearchedList()"
+          @click="getSearchResult()"
         ></button>
       </div>
     </div>
@@ -55,23 +55,23 @@
           >
             <td>{{ user.DisplayName }}</td>
             <td>{{ user.Username }}</td>
-            <td>{{$utils.toRoleName(user.Role)}}</td>
+            <td>{{ $utils.toRoleName(user.Role) }}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <base-paging-bar
       :totalPage="totalPage"
-      :totalRecord="userList.length"
+      :totalRecord="totalRecord"
       :pageNumber="pageNumber"
       :pageSize="pageSize"
       @update:page-number="
         pageNumber = $event;
-        getSearchedList();
+        getSearchResult();
       "
       @update:page-size="
         pageSize = $event;
-        getNewSearchedList();
+        getNewSearchResult();
       "
     ></base-paging-bar>
     <user-detail
@@ -82,14 +82,14 @@
         userDetailShow = false;
         selectedUserId = '';
       "
-      @save="getNewSearchedList()"
+      @save="getNewSearchResult()"
     ></user-detail>
-    <!-- <user-admin-add
+    <user-admin-add
       v-show="userAdminAddShow"
-      @save="getNewSearchedList()"
+      @save="getNewSearchResult()"
       @close="userAdminAddShow = false"
     >
-    </user-admin-add> -->
+    </user-admin-add>
     <base-inform-popup
       v-show="errorMessage != ''"
       :message="errorMessage"
@@ -100,7 +100,7 @@
 
 <script>
 import UserDetail from "./UserDetail.vue";
-// import UserAdminAdd from "./UserAdminAdd.vue";
+import UserAdminAdd from "./UserAdminAdd.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
@@ -108,7 +108,7 @@ export default {
   name: "UserView",
   components: {
     UserDetail,
-    // UserAdminAdd,
+    UserAdminAdd,
     BaseInformPopup,
     BasePagingBar,
   },
@@ -137,7 +137,7 @@ export default {
     searchTerm: function () {
       clearInterval(this.searchInterval);
       this.searchInterval = setTimeout(() => {
-        this.getNewSearchedList();
+        this.getNewSearchResult();
       }, 1000);
     },
   },
@@ -152,11 +152,11 @@ export default {
       this.userList = data;
       this.$store.action.hideLoading();
     },
-    async getNewSearchedList() {
-        this.pageNumber = 1;
-        await this.getSearchedList();
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
     },
-    async getSearchedList() {
+    async getSearchResult() {
       this.$store.action.showLoading();
       this.selectedUserId = "";
       clearInterval(this.searchInterval);
@@ -172,21 +172,14 @@ export default {
         return;
       }
       const data = await response.json();
-      if (data.data.length == 0) {
-        this.errorMessage = `Searched for "${this.searchTerm}" : No result found!`;
-        this.totalRecord = 0;
-        this.totalPage = 1;
-        this.data = [];
-      } else {
-        this.totalRecord = data.totalRecord;
-        this.totalPage = data.totalPage;
-        this.userList = data.data;
-      }
+      this.totalRecord = data.totalRecord;
+      this.totalPage = data.totalPage;
+      this.userList = data.data;
       this.$store.action.hideLoading();
     },
   },
   created() {
-    this.getSearchedList();
+    this.getSearchResult();
   },
 };
 </script>

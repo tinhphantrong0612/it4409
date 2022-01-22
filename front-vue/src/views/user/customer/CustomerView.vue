@@ -12,11 +12,14 @@
           <input
             type="search"
             class="x-input x-input-search"
-            placeholder="Nhập tên khách hàng"
+            placeholder="Nhập từ khóa tìm kiếm"
             v-model="searchTerm"
             @search="getSearchResult()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
+          <div
+            class="xi xi-search x-input-search-icon xi-size-100"
+            @click="getSearchResult()"
+          ></div>
         </div>
       </div>
       <div class="x-btngroup">
@@ -87,6 +90,20 @@
       :message="errorMessage"
       @close="errorMessage = ''"
     ></base-inform-popup>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="totalRecord"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchResult();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchResult();
+      "
+    ></base-paging-bar>
   </div>
 </template>
 
@@ -94,9 +111,10 @@
 import CustomerAdd from "./CustomerAdd.vue";
 import CustomerDetail from "./CustomerDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
-  components: { CustomerAdd, CustomerDetail, BaseInformPopup },
+  components: { CustomerAdd, CustomerDetail, BaseInformPopup, BasePagingBar },
   name: "CustomerView",
   data() {
     return {
@@ -105,8 +123,12 @@ export default {
       customerDetailShow: false,
       selectedCustomerId: "",
       errorMessage: "",
-      searchTerm: '',
-      searchInterval: null
+      searchTerm: "",
+      searchInterval: null,
+      totalPage: 1,
+      totalRecord: 0,
+      pageNumber: 1,
+      pageSize: 10,
     };
   },
   watch: {
@@ -114,15 +136,15 @@ export default {
       clearInterval(this.searchInterval);
       this.searchInterval = setTimeout(() => {
         this.getSearchResult();
-      }, 1000)
-    }
+      }, 1000);
+    },
   },
   methods: {
     async getCustomerList() {
       this.$store.action.showLoading();
       this.selectedCustomerId = "";
       const response = await fetch(`${this.$currentOrigin}/api/customer`, {
-        credentials: 'include'
+        credentials: "include",
       });
       const data = await response.json();
       this.customerList = data;
@@ -134,7 +156,7 @@ export default {
       const response = await fetch(
         `${this.$currentOrigin}/api/customer/${this.selectedCustomerId}`,
         {
-          credentials: 'include',
+          credentials: "include",
           method: "DELETE",
         }
       );
@@ -151,20 +173,34 @@ export default {
       if (data == "null") return "";
       return data;
     },
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
+    },
     async getSearchResult() {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedCustomerId = "";
-      const response = await fetch(`${this.$currentOrigin}/api/customer/search?filter=${this.searchTerm}`, {
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${this.$currentOrigin}/api/customer/search?filter=${this.searchTerm}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push("/login");
+        return;
+      }
       const data = await response.json();
-      this.customerList = data;
+      this.customerList = data.data;
+      this.totalPage = data.totalPage;
+      this.totalRecord = data.totalRecord;
       this.$store.action.hideLoading();
     },
   },
   created() {
-    this.getCustomerList();
+    this.getSearchResult();
   },
 };
 </script>

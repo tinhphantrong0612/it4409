@@ -9,7 +9,7 @@
           <input
             type="search"
             class="x-input x-input-search"
-            placeholder="Nhập tên người dùng"
+            placeholder="Nhập tên người dùng, tên tài khoản"
             v-model="searchTerm"
             @search="getSearchResult()"
           />
@@ -22,7 +22,7 @@
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getMessageList()"
+          @click="getSearchResult()"
         ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
@@ -66,20 +66,36 @@
       v-if="selectedMessageId != 0"
       @close="
         selectedMessageId = 0;
-        getMessageList();
+        getSearchResult();
       "
-      @save="getMessageList()"
+      @save="getNewSearchResult()"
     ></message-details>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="totalRecord"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchResult();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchResult();
+      "
+    ></base-paging-bar>
   </div>
 </template>
 
 <script>
 import MessageDetails from "./MessageDetails.vue";
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
   name: "MessageView",
   components: {
     MessageDetails,
+    BasePagingBar
   },
 
   data() {
@@ -89,6 +105,10 @@ export default {
       errorMessage: "",
       searchTerm: "",
       searchInterval: null,
+      pageSize: 10,
+      pageNumber: 1,
+      totalPage: 1,
+      totalRecord: 0
     };
   },
   watch: {
@@ -142,22 +162,33 @@ export default {
       } else {
         const data = await response.text();
         console.log(data);
-        await this.getMessageList();
+        await this.getNewSearchResult();
       }
       this.$store.action.hideLoading();
+    },
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
     },
     async getSearchResult() {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedMessageId = "";
       const response = await fetch(
-        `${this.$currentOrigin}/api/message/search?filter=${this.searchTerm}`,
+        `${this.$currentOrigin}/api/message/search?filter=${this.searchTerm}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`,
         {
           credentials: "include",
         }
       );
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push('/login');
+        return;
+      }
       const data = await response.json();
-      this.messageList = data;
+      this.messageList = data.data;
+      this.totalPage = data.totalPage;
+      this.totalRecord = data.totalRecord;
       this.$store.action.hideLoading();
     },
     statusToText(messageStatus, responseStatus) {
@@ -172,7 +203,7 @@ export default {
     },
   },
   created() {
-    this.getMessageList();
+    this.getSearchResult();
   },
 };
 </script>

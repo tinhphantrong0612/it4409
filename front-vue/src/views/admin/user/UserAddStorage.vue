@@ -24,7 +24,7 @@
                         class="x-btn x-btn-primary m-1"
                         @click="addStorageIntoUser(storage.Id)"
                       >
-                        Add
+                        Thêm
                       </button>
                     </td>
                   </tr>

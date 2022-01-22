@@ -18,18 +18,18 @@
             class="x-input x-input-search"
             v-model="searchTerm"
             placeholder="Nhập tên hàng hóa"
-            @search="getNewSearchedList()"
+            @search="getNewSearchResult()"
           />
           <div
             class="xi xi-search x-input-search-icon xi-size-100"
-            @click="getNewSearchedList()"
+            @click="getNewSearchResult()"
           ></div>
         </div>
       </div>
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getSearchedList()"
+          @click="getSearchResult()"
         ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
@@ -64,16 +64,16 @@
     </div>
     <base-paging-bar
       :totalPage="totalPage"
-      :totalRecord="objectList.length"
+      :totalRecord="totalRecord"
       :pageNumber="pageNumber"
       :pageSize="pageSize"
       @update:page-number="
         pageNumber = $event;
-        getSearchedList();
+        getSearchResult();
       "
       @update:page-size="
         pageSize = $event;
-        getNewSearchedList();
+        getNewSearchResult();
       "
     ></base-paging-bar>
     <object-detail
@@ -85,7 +85,7 @@
         objectDetailShow = false;
         selectedObjectId = '';
       "
-      @save="getSearchedList()"
+      @save="getSearchResult()"
     ></object-detail>
     <object-add
       v-if="objectAddShow"
@@ -93,7 +93,7 @@
       @close="objectAddShow = false"
       @save="
         objectAddShow = false;
-        getSearchedList();
+        getSearchResult();
       "
     ></object-add>
     <base-inform-popup
@@ -144,11 +144,11 @@ export default {
     searchTerm: function () {
       clearInterval(this.searchInterval);
       this.searchInterval = setTimeout(() => {
-        this.getNewSearchedList();
+        this.getNewSearchResult();
       }, 1000);
     },
     storageId: function () {
-      if (this.storageId) this.getNewSearchedList();
+      if (this.storageId) this.getNewSearchResult();
     },
   },
   methods: {
@@ -169,11 +169,11 @@ export default {
       const data = await response.json();
       this.unitList = data;
     },
-    async getNewSearchedList() {
+    async getNewSearchResult() {
       this.pageNumber = 1;
-      await this.getSearchedList();
+      await this.getSearchResult();
     },
-    async getSearchedList() {
+    async getSearchResult() {
       this.$store.action.showLoading();
       this.selectedObjectId = "";
       clearInterval(this.searchInterval);
@@ -184,20 +184,14 @@ export default {
         }
       );
       if (response.status == 401) {
-        this.$router.push('/authorize');
+        this.$store.action.hideLoading();
+        this.$router.push("/authorize");
         return;
       }
       const data = await response.json();
-      if (data.data.length == 0) {
-        this.errorMessage = `Searched for "${this.searchTerm}" : No result found!`;
-        this.totalRecord = 0;
-        this.totalPage = 1;
-        this.data = [];
-      } else {
-        this.totalRecord = data.totalRecord;
-        this.totalPage = data.totalPage;
-        this.objectList = data.data;
-      }
+      this.totalRecord = data.totalRecord;
+      this.totalPage = data.totalPage;
+      this.objectList = data.data;
 
       this.$store.action.hideLoading();
     },
@@ -216,13 +210,13 @@ export default {
       } else {
         const data = await response.text();
         console.log(data);
-        await this.getNewSearchedList();
+        await this.getNewSearchResult();
       }
       this.$store.action.hideLoading();
     },
   },
   created() {
-    this.getSearchedList();
+    this.getSearchResult();
     this.getUnitList();
   },
 };

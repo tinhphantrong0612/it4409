@@ -14,15 +14,18 @@
             class="x-input x-input-search"
             placeholder="Nhập tên nhà cung cấp"
             v-model="searchTerm"
-            @search="getSearchResult()"
+            @search="getNewSearchResult()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
+          <div
+            class="xi xi-search x-input-search-icon xi-size-100"
+            @click="getNewSearchResult()"
+          ></div>
         </div>
       </div>
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getImportList()"
+          @click="getSearchResult()"
         ></button>
       </div>
     </div>
@@ -58,7 +61,7 @@
       @close="importAddShow = false"
       @save="
         importAddShow = false;
-        getImportList();
+        getNewSearchResult();
       "
     ></import-add>
     <import-detail
@@ -72,11 +75,11 @@
       "
       @save="
         theImportDetailShow = false;
-        getImportList();
+        getNewSearchResult();
       "
       @error="
         selectedImportId = '';
-        getImportList();
+        getNewSearchResult();
         theImportDetailShow = false;
         errorMessage = $event;
       "
@@ -86,6 +89,20 @@
       :message="errorMessage"
       @close="errorMessage = ''"
     ></base-inform-popup>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="totalRecord"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchResult();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchResult();
+      "
+    ></base-paging-bar>
   </div>
 </template>
 
@@ -93,13 +110,15 @@
 import ImportAdd from "./ImportAdd.vue";
 import ImportDetail from "./ImportDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
-  components: { 
+  components: {
     ImportAdd,
     ImportDetail,
-    BaseInformPopup
-    },
+    BaseInformPopup,
+    BasePagingBar,
+  },
   name: "ImportView",
   data() {
     return {
@@ -110,49 +129,67 @@ export default {
       theImportDetailShow: false,
       selectedImportId: "",
       errorMessage: "",
-      searchTerm: '',
-      searchInterval: null
+      searchTerm: "",
+      searchInterval: null,
+      pageSize: 10,
+      pageNumber: 1,
+      totalPage: 1,
+      totalRecord: 0,
     };
   },
   watch: {
-    searchTerm: function() {
+    searchTerm: function () {
       clearInterval(this.searchInterval);
       this.searchInterval = setTimeout(() => {
-        this.getSearchResult();
-      }, 1000)
-    }
+        this.getNewSearchResult();
+      }, 1000);
+    },
   },
   methods: {
     async getImportList() {
       this.$store.action.showLoading();
       this.selectedImportId = "";
-      this.theImportList = await this.$store.action.getListOfThing('import');
+      this.theImportList = await this.$store.action.getListOfThing("import");
       this.$store.action.hideLoading();
     },
     async getSupplierList() {
-      this.supplierList = await this.$store.action.getListOfThing('supplier');
+      this.supplierList = await this.$store.action.getListOfThing("supplier");
     },
     async getObjectList() {
-      this.objectList = await this.$store.action.getListOfThing('object');
+      this.objectList = await this.$store.action.getListOfThing("object");
     },
     checkNull(data) {
       if (data == "null") return "";
       return data;
     },
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
+    },
     async getSearchResult() {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedImportId = "";
-      const response = await fetch(`${this.$currentOrigin}/api/import/search?filter=${this.searchTerm}`, {
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${this.$currentOrigin}/api/import/search?filter=${this.searchTerm}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push("/login");
+        return;
+      }
       const data = await response.json();
-      this.theImportList = data;
+      this.theImportList = data.data;
+      this.totalPage = data.totalPage;
+      this.totalRecord = data.totalRecord;
       this.$store.action.hideLoading();
-    }
+    },
   },
   created() {
-    this.getImportList();
+    this.getSearchResult();
     this.getSupplierList();
     this.getObjectList();
   },

@@ -19,7 +19,7 @@ module.exports = {
                 await Promise.all([IExportInfo.getTotalExportAmount(objectId, req.session.StorageId), // Choox nayf phair la object id day, param la cai exportinfoId
                 IImportInfo.getTotalImportAmount(objectId, req.session.StorageId),
                 IExportInfo.getExportAmount(req.params.id, req.session.StorageId)]);
-            if (totalImportAmount >= totalExportAmount - exportAmount + req.body.Amount) next();
+            if (Number(totalImportAmount) >= Number(totalExportAmount) - Number(exportAmount) + Number(req.body.Amount)) next();
             else res.status(400).send("Số lượng xuất ra không hợp lệ, tổng xuất lớn hơn tổng nhập");
         } catch (error) {
             console.log(error);

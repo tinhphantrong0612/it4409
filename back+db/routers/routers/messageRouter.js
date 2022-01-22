@@ -3,6 +3,7 @@ const messageController = require('../../modules/message/controller');
 const messageRouter = require('express').Router();
 const messageValidate = require('../../modules/message/middleware');
 const userValidate = require('../../modules/user/middleware');
+const globalMiddleware = require('../../middlewares/globalMiddleware');
 
 
 messageRouter
@@ -15,7 +16,7 @@ messageRouter
             res.status(500).send("Internal Server Error");
         }
     })
-    .get('/search', userValidate.isAdminValidate, messageController.searchByAdmin)
+    .get('/search', userValidate.isAdminValidate, globalMiddleware.pagingFilter, messageController.searchByAdmin)
     .get('/subscribe', userValidate.loggedInValidate, (req, res) => {
         if (req.session.Role == role.admin) messageController.adminSubscribe(req, res);
         else if (req.session.Role == role.user) messageController.userSubscribe(req, res);

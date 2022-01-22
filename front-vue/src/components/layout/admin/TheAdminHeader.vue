@@ -33,10 +33,6 @@ export default {
     return {
       dropdownItems: [
         {
-          text: "Thêm quản trị viên",
-          onClick: () => (this.$parent.isAdminSignupShow = true),
-        },
-        {
           text: "Đăng xuất",
           onClick: () => this.logout(),
         },

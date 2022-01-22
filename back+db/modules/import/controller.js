@@ -68,7 +68,7 @@ module.exports = {
     },
     search: async (req, res) => {
         try {
-            const result = await IImport.searchBySupplierName(req.query.filter, req.session.StorageId);
+            const result = await IImport.searchBySupplierName(req.query.filter, req.query.pageSize, req.query.pageNumber, req.session.StorageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);

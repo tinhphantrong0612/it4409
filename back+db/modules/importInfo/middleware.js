@@ -20,7 +20,7 @@ module.exports = {
                 IImportInfo.getTotalImportAmount(req.body.ObjectId, req.session.StorageId),
                 IImportInfo.getImportAmount(req.params.id, req.session.StorageId)]
             );
-            if (totalImportAmount - importAmount + req.body.Amount >= totalExportAmount) next();
+            if (Number(totalImportAmount) - Number(importAmount) + Number(req.body.Amount) >= Number(totalExportAmount)) next();
             else res.status(400).send("Số lượng thay đổi không hợp lệ, tổng xuất lớn hơn tổng nhập");
         } catch (error) {
             console.log(error);
@@ -31,7 +31,7 @@ module.exports = {
         try {
             let ObjectId = await IImportInfo.getObjectId(req.params.id, req.session.StorageId);
             const [totalExportAmount, totalImportAmount, importAmount] = await Promise.all([IExportInfo.getTotalExportAmount(ObjectId, req.session.StorageId), IImportInfo.getTotalImportAmount(ObjectId, req.session.StorageId), IImportInfo.getImportAmount(req.params.id, req.session.StorageId)]);
-            if (totalImportAmount - importAmount >= totalExportAmount) next();
+            if (Number(totalImportAmount) - Number(importAmount) >= Number(totalExportAmount)) next();
             else res.status(400).send("Không thể xóa, do số lượng hàng xuất sẽ vượt số hàng nhập");
         } catch (error) {
             console.log(error);

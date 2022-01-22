@@ -117,7 +117,7 @@ class IExport {
             resultImport.unshift(0);
             let totalExport = resultExport.reduce((a, b) => a + b.Amount);
             let totalImport = resultImport.reduce((a, b) => a + b.Amount);
-            if (totalExport + amount > totalImport) throw new Error(`Số lượng hàng đã xuất: ${totalExport}\nLượng hàng đã nhập: ${totalImport}\n Lượng hàng sẽ xuất: ${amount}`);
+            if (Number(totalExport) + Number(amount) > Number(totalImport)) throw new Error(`Số lượng hàng đã xuất: ${totalExport}\nLượng hàng đã nhập: ${totalImport}\n Lượng hàng sẽ xuất: ${amount}`);
             else return true;
         } catch (error) {
             console.log(error);
@@ -125,10 +125,18 @@ class IExport {
         }
     }
 
-    static async searchByCustomerName(customerName, storageId) {
-        const query = `SELECT export.Id, export.ExportDate, export.CustomerId, customer.DisplayName as CustomerName FROM export INNER JOIN customer ON export.CustomerId = customer.Id WHERE export.StorageId='${storageId}' AND customer.DisplayName LIKE '%${customerName}%'`;
-        console.log(query);
-        return await connection.queryDB(query);
+    static async searchByCustomerName(customerName, pageSize, pageNumber, storageId) {
+        let startAfter = (pageNumber-1) * pageSize;
+        let query = `SELECT export.Id, export.ExportDate, export.CustomerId, customer.DisplayName as CustomerName FROM export INNER JOIN customer ON export.CustomerId = customer.Id WHERE export.StorageId='${storageId}' AND customer.DisplayName LIKE '%${customerName}%' LIMIT ${startAfter}, ${pageSize}`;
+        let queryCount = `SELECT Count(export.Id) as totalRecord FROM export INNER JOIN customer ON export.CustomerId = customer.Id WHERE export.StorageId='${storageId}' AND customer.DisplayName LIKE '%${customerName}%'`;
+        let [data, countResult] = await Promise.all([connection.queryDB(query), connection.queryDB(queryCount)]);
+        let totalRecord = countResult[0].totalRecord;
+        let totalPage = totalRecord % pageSize == 0 && totalRecord !== 0 ? totalRecord / pageSize : Math.floor(totalRecord/pageSize) + 1;
+        return {
+            totalRecord,
+            totalPage,
+            data
+        }
     }
 }
 

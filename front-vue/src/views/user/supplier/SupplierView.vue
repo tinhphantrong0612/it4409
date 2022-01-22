@@ -7,16 +7,19 @@
       </button>
     </div>
     <div class="x-toolbar justify-content-between">
-      <div class = "x-toolbar">
+      <div class="x-toolbar">
         <div class="x-searchgroup">
           <div class="x-input-searchbox">
             <input
               type="search"
               class="x-input x-input-search"
-              v-model = "searchTerm"
-              placeholder = "Nhập từ khóa tìm kiếm"
+              v-model="searchTerm"
+              placeholder="Nhập từ khóa tìm kiếm"
             />
-            <div class="xi xi-search x-input-search-icon xi-size-100" @click = "getSearchResult()"></div>
+            <div
+              class="xi xi-search x-input-search-icon xi-size-100"
+              @click="getSearchResult()"
+            ></div>
           </div>
         </div>
         <!-- <dropdown-menu :arrays="dropdownItems">
@@ -26,7 +29,7 @@
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getSupplierList()"
+          @click="getSearchResult()"
         ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
@@ -70,7 +73,7 @@
       @close="supplierAddShow = false"
       @save="
         supplierAddShow = false;
-        getSupplierList();
+        getSearchResult();
       "
     ></supplier-add>
     <supplier-detail
@@ -83,7 +86,7 @@
       "
       @save="
         supplierDetailShow = false;
-        getSupplierList();
+        getNewSearchResult();
       "
     ></supplier-detail>
     <base-inform-popup
@@ -91,6 +94,20 @@
       :message="errorMessage"
       @close="errorMessage = ''"
     ></base-inform-popup>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="totalRecord"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchResult();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchResult();
+      "
+    ></base-paging-bar>
   </div>
 </template>
 
@@ -98,10 +115,10 @@
 import SupplierAdd from "./SupplierAdd.vue";
 import SupplierDetail from "./SupplierDetail.vue";
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
-// import DropdownMenu from "../../../components/components/Dropdown/DropdownMenu.vue";
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
-  components: { SupplierAdd, SupplierDetail, BaseInformPopup },
+  components: { SupplierAdd, SupplierDetail, BaseInformPopup, BasePagingBar },
   name: "SupplierView",
   data() {
     return {
@@ -111,63 +128,65 @@ export default {
       selectedSupplierId: "",
       errorMessage: "",
       searchTerm: "",
-      // searchFilter: SEARCH_FILTER.displayName,
-      // dropdownItems: [
-      //    {
-      //     text: SEARCH_FILTER.displayName,
-      //     onClick: () => this.searchFilter = SEARCH_FILTER.displayName,
-      //   },
-      //   {
-      //     text: SEARCH_FILTER.address,
-      //     onClick: () => this.searchFilter = SEARCH_FILTER.address,
-      //   },
-      //   {
-      //     text: SEARCH_FILTER.phone,
-      //     onClick: () => this.searchFilter = SEARCH_FILTER.phone,
-      //   },
-      //   {
-      //     text: SEARCH_FILTER.email,
-      //     onClick: () => this.searchFilter = SEARCH_FILTER.email,
-      //   },
-      //   {
-      //     text: SEARCH_FILTER.moreInfo,
-      //     onClick: () => this.searchFilter = SEARCH_FILTER.moreInfo,
-      //   },
-      // ]
+      totalPage: 1,
+      searchInterval: null,
+      totalRecord: 0,
+      pageNumber: 1,
+      pageSize: 10,
     };
+  },
+  watch: {
+    searchTerm: function () {
+      clearInterval(this.searchInterval);
+      this.searchInterval = setTimeout(() => {
+        this.getNewSearchResult();
+      }, 1000);
+    },
   },
   methods: {
     async getSupplierList() {
       this.$store.action.showLoading();
       this.selectedSupplierId = "";
       const response = await fetch(`${this.$currentOrigin}/api/supplier`, {
-        credentials: 'include',
+        credentials: "include",
       });
       const data = await response.json();
       this.supplierList = data;
       this.$store.action.hideLoading();
     },
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
+    },
     async getSearchResult() {
-      // if (!this.searchTerm) return;
-      // let keyIndex = Object.values(SEARCH_FILTER).indexOf(this.searchFilter);
-      // let key =  Object.keys(SEARCH_FILTER)[keyIndex];
       this.$store.action.showLoading();
       this.selectedSupplierId = "";
-      const response = await fetch(`${this.$currentOrigin}/api/supplier/search?filter=${this.searchTerm}`, {
-        credentials: 'include',
-      });
+      clearInterval(this.searchInterval);
+      const response = await fetch(
+        `${this.$currentOrigin}/api/supplier/search?filter=${this.searchTerm}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push("/login");
+        return;
+      }
       const data = await response.json();
-      this.supplierList = data;
+      this.supplierList = data.data;
+      this.totalPage = data.totalPage;
+      this.totalRecord = data.totalRecord;
       this.$store.action.hideLoading();
     },
     async deleteSupplier() {
-      if (!this.selectedSupplierId) return; 
+      if (!this.selectedSupplierId) return;
       this.$store.action.showLoading();
       const response = await fetch(
         `${this.$currentOrigin}/api/supplier/${this.selectedSupplierId}`,
         {
           method: "DELETE",
-          credentials: 'include',
+          credentials: "include",
         }
       );
       if (response.status > 300) {
@@ -175,7 +194,7 @@ export default {
       } else {
         const data = await response.text();
         console.log(data);
-        await this.getSupplierList();
+        await this.getNewSearchResult();
       }
       this.$store.action.hideLoading();
     },
@@ -185,15 +204,7 @@ export default {
     },
   },
   created() {
-    this.getSupplierList();
+    this.getSearchResult();
   },
 };
-
-// const SEARCH_FILTER = { 
-//   displayName: 'Tên nhà cung cấp', 
-//   address: 'Địa chỉ', 
-//   phone: 'Số điện thoại',
-//   email: 'Email', 
-//   moreInfo: 'Mô tả'
-// }
 </script>

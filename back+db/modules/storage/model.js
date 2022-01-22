@@ -164,9 +164,18 @@ class IStorage {
      * Get list of all storages
      * @returns List of storages
      */
-     static async search(name) {
-        let query = `SELECT * FROM Storage WHERE DisplayName LIKE '%${name}%'`;
-        return await connection.queryDB(query);
+     static async search(name, pageSize, pageNumber) {
+        let startAfter = (pageNumber-1) * pageSize;
+        let query = `SELECT * FROM Storage WHERE DisplayName LIKE '%${name}%' LIMIT ${startAfter}, ${pageSize}`;
+        let queryCount = `SELECT Count(Id) as totalRecord FROM Storage WHERE DisplayName LIKE '%${name}%'`;
+        let [data, countResult] = await Promise.all([connection.queryDB(query), connection.queryDB(queryCount)]);
+        let totalRecord = countResult[0].totalRecord;
+        let totalPage = totalRecord % pageSize == 0 && totalRecord !== 0 ? totalRecord / pageSize : Math.floor(totalRecord/pageSize) + 1;
+        return {
+            totalRecord,
+            totalPage,
+            data
+        }
     }
 }
 

@@ -1,10 +1,11 @@
+const globalMiddleware = require('../../middlewares/globalMiddleware');
 const exportController = require('../../modules/export/controller');
 const exportRouter = require('express').Router();
 const exportValidate = require('../../modules/export/middleware');
 
 exportRouter
     .get('/', exportController.getAll)
-    .get('/search', exportController.search)
+    .get('/search', globalMiddleware.pagingFilter, exportController.search)
     .get('/:id', exportController.getById)
     .post('/', exportValidate.emptyValidate,
         exportValidate.customerValidate,

@@ -81,7 +81,7 @@
               class="x-btn w-100 x-btn-primary"
               @click="storageAddUserShow = true"
             >
-              Add
+              Thêm thủ kho
             </button>
           </div>
           <span class="x-label-error" v-show="errorMessage != ''">{{

@@ -13,7 +13,7 @@ module.exports = {
     },
     searchByAdmin: async (req, res) => {
         try {
-            let result = await Message.searchByAdmin(req.query.filter);
+            let result = await Message.searchByAdmin(req.query.filter, req.query.pageSize, req.query.pageNumber);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);

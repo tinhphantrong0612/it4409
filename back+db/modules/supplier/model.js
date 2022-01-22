@@ -27,9 +27,18 @@ class Supplier {
         return await connection.queryDB(query);
     }
 
-    static async getSearchResult(term, storageId) {
-        let query = `SELECT * FROM supplier WHERE storageId='${storageId}' AND (DisplayName LIKE '%${term}%' OR Phone LIKE '%${term}%' OR Email LIKE '%${term}%')`;
-        return await connection.queryDB(query);
+    static async search(term, pageSize, pageNumber, storageId) {
+        let startAfter = (pageNumber-1) * pageSize;
+        let query = `SELECT * FROM Supplier WHERE storageId='${storageId}' AND (DisplayName LIKE '%${term}%' OR Email LIKE '%${term}%' OR Phone LIKE '%${term}%') LIMIT ${startAfter}, ${pageSize}`;
+        let queryCount = `SELECT Count(Id) as totalRecord FROM Supplier WHERE storageId='${storageId}' AND (DisplayName LIKE '%${term}%' OR Email LIKE '%${term}%' OR Phone LIKE '%${term}%')`;
+        let [data, countResult] = await Promise.all([connection.queryDB(query), connection.queryDB(queryCount)]);
+        let totalRecord = countResult[0].totalRecord;
+        let totalPage = totalRecord % pageSize == 0 && totalRecord !== 0 ? totalRecord / pageSize : Math.floor(totalRecord/pageSize) + 1;
+        return {
+            totalRecord,
+            totalPage,
+            data
+        }
     }
 
     static async post(name, address, phone, email, storageId, moreInfo = null) {

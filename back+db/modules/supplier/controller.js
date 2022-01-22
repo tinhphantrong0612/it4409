@@ -24,9 +24,9 @@ module.exports = {
             res.status(500).send("Internal Server Error");
         }
     },
-    getSearchResult: async (req, res) => {
+    search: async (req, res) => {
         try {
-            const result = await Supplier.getSearchResult(req.query.filter, req.session.StorageId);
+            const result = await Supplier.search(req.query.filter, req.query.pageSize, req.query.pageNumber, req.session.StorageId);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);

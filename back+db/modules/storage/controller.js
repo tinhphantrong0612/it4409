@@ -119,7 +119,7 @@ module.exports = {
     },
     search: async (req, res) => {
         try {
-            let result = await IStorage.search(req.query.filter);
+            let result = await IStorage.search(req.query.filter, req.query.pageSize, req.query.pageNumber);
             res.status(200).send(result);
         } catch (error) {
             console.log(error);

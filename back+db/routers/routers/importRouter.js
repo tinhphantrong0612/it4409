@@ -1,10 +1,11 @@
+const globalMiddleware = require('../../middlewares/globalMiddleware');
 const importController = require('../../modules/import/controller');
 const importRouter = require('express').Router();
 const importValidate = require('../../modules/import/middleware');
 
 importRouter
     .get('/', importController.getAll)
-    .get('/search', importController.search)
+    .get('/search', globalMiddleware.pagingFilter, importController.search)
     .get('/:id', importController.getById)
     .post('/',
         importValidate.emptyValidate,

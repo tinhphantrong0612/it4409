@@ -18,15 +18,15 @@
             class="x-input x-input-search"
             placeholder="Nhập tên kho hàng"
             v-model="searchTerm"
-            @search="getSearchResult()"
+            @search="getNewSearchResult()"
           />
-          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getSearchResult()"></div>
+          <div class="xi xi-search x-input-search-icon xi-size-100" @click="getNewSearchResult()"></div>
         </div>
       </div>
       <div class="x-btngroup">
         <button
           class="x-btn x-btn-secondary xi xi-size-x2 xi-reload"
-          @click="getStorageList()"
+          @click="getSearchResult()"
         ></button>
         <button
           class="x-btn x-btn-danger xi xi-size-x2 xi-close"
@@ -67,14 +67,14 @@
         storageDetailShow = false;
         selectedStorageId = '';
       "
-      @save="getStorageList()"
+      @save="getNewStorageList()"
     ></storage-detail>
     <storage-add
       v-if="storageAddShow"
       @close="storageAddShow = false"
       @save="
         storageAddShow = false;
-        getStorageList();
+        getSearchResult();
       "
     ></storage-add>
     <base-inform-popup
@@ -82,6 +82,20 @@
       :message="errorMessage"
       @close="errorMessage = ''"
     ></base-inform-popup>
+    <base-paging-bar
+      :totalPage="totalPage"
+      :totalRecord="totalRecord"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      @update:page-number="
+        pageNumber = $event;
+        getSearchResult();
+      "
+      @update:page-size="
+        pageSize = $event;
+        getNewSearchResult();
+      "
+    ></base-paging-bar>
   </div>
 </template>
 
@@ -89,13 +103,15 @@
 import BaseInformPopup from "../../../components/components/BaseInformPopup.vue";
 import StorageAdd from './StorageAdd.vue';
 import StorageDetail from './StorageDetail.vue';
+import BasePagingBar from "../../../components/components/BasePagingBar.vue";
 
 export default {
   name: "StorageView",
   components: {
     BaseInformPopup,
     StorageAdd,
-    StorageDetail
+    StorageDetail,
+    BasePagingBar
   },
   
   data() {
@@ -106,7 +122,11 @@ export default {
       storageDetailShow: false,
       storageAddShow: false,
       searchTerm: '',
-      searchInterval: null
+      searchInterval: null,
+      pageSize: 10,
+      pageNumber: 1,
+      totalRecord: 0,
+      totalPage: 0,
     };
   },
   watch: {
@@ -157,24 +177,35 @@ export default {
       } else {
         const data = await response.text();
         console.log(data);
-        await this.getStorageList();
+        await this.getNewSearchResult();
       }
       this.$store.action.hideLoading();
+    },
+    async getNewSearchResult() {
+      this.pageNumber = 1;
+      await this.getSearchResult();
     },
     async getSearchResult() {
       this.$store.action.showLoading();
       clearInterval(this.searchInterval);
       this.selectedStorageId = "";
-      const response = await fetch(`${this.$currentOrigin}/api/storage/search?filter=${this.searchTerm}`, {
+      const response = await fetch(`${this.$currentOrigin}/api/storage/search?filter=${this.searchTerm}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`, {
         credentials: 'include',
       });
+      if (response.status == 401) {
+        this.$store.action.hideLoading();
+        this.$router.push('/login');
+        return;
+      }
       const data = await response.json();
-      this.storageList = data;
+      this.storageList = data.data;
+      this.totalRecord = data.totalRecord;
+      this.totalPage = data.totalPage;
       this.$store.action.hideLoading();
     },
   },
   created() {
-    this.getStorageList();
+    this.getSearchResult();
   },
 };
 </script>

@@ -3,6 +3,7 @@ const storageController = require('../../modules/storage/controller');
 const storageRouter = require('express').Router();
 const storageValidate = require('../../modules/storage/middleware');
 const userValidate = require('../../modules/user/middleware');
+const globalMiddleware = require('../../middlewares/globalMiddleware');
 
 
 storageRouter
@@ -15,7 +16,7 @@ storageRouter
             res.status(500).send("Internal Server Error");
         }
     })
-    .get('/search', userValidate.isAdminValidate, storageController.search)
+    .get('/search', userValidate.isAdminValidate, globalMiddleware.pagingFilter, storageController.search)
     .get('/:id', userValidate.isAdminValidate, storageController.getDetailById)
     .post('/',
         userValidate.isAdminValidate, // Must be admin

@@ -18,7 +18,13 @@
         <option value="50">50 bản ghi/trang</option>
       </select>
       <div class="x-pagination">
-        <div class="x-prev" @click="handlePageSwitch(pageNumber - 1)" :class="{'x-blur': pageNumber == 1}">Trước</div>
+        <div
+          class="x-prev"
+          @click="handlePageSwitch(pageNumber - 1)"
+          :class="{ 'x-blur': pageNumber == 1 }"
+        >
+          Trước
+        </div>
         <div class="x-page-numbs">
           <div
             class="x-page-number"
@@ -30,7 +36,13 @@
             {{ page }}
           </div>
         </div>
-        <div class="x-next" @click="handlePageSwitch(pageNumber + 1)" :class="{'x-blur': pageNumber == totalPage}">Sau</div>
+        <div
+          class="x-next"
+          @click="handlePageSwitch(pageNumber + 1)"
+          :class="{ 'x-blur': pageNumber == totalPage }"
+        >
+          Sau
+        </div>
       </div>
     </div>
   </div>
@@ -72,6 +84,18 @@ export default {
         result.push(this.totalPage);
       }
       return result;
+    },
+  },
+  watch: {
+    pageNumber: function () {
+      if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
+        this.$emit("update:page-number", 1);
+      }
+    },
+    totalPage: function () {
+      if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
+        this.$emit("update:page-number", 1);
+      }
     },
   },
   methods: {
